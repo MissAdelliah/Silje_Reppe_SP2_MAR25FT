@@ -1,16 +1,22 @@
 import { API_BASE_URL } from './config.js';
 
-import { clearUser, saveUser } from '../utils/storage.js';
+import { saveUser, clearUser } from '../utils/storage.js';
 
-// API
+// Helpers
 
-async function handleAuthResponse(response) {
-  const result = await response.json();
+async function parseResponse(response) {
+  let result;
+
+  try {
+    result = await response.json();
+  } catch {
+    throw new Error('Could not read the server response.');
+  }
 
   if (!response.ok) {
     const message =
-      result.errors?.[0]?.message ||
-      result.message ||
+      result?.errors?.[0]?.message ||
+      result?.message ||
       'Something went wrong. Please try again.';
 
     throw new Error(message);
@@ -19,9 +25,11 @@ async function handleAuthResponse(response) {
   return result.data;
 }
 
+// API
+
 /**
- * Register a new Noroff student account.
- * @param {object} user
+ * Register a new user.
+ * @param {{name: string, email: string, password: string}} user
  * @returns {Promise<object>}
  */
 export async function registerUser(user) {
@@ -35,12 +43,12 @@ export async function registerUser(user) {
     body: JSON.stringify(user),
   });
 
-  return handleAuthResponse(response);
+  return parseResponse(response);
 }
 
 /**
- * Log in and store the authenticated user.
- * @param {object} credentials
+ * Log in a user and save the session.
+ * @param {{email: string, password: string}} credentials
  * @returns {Promise<object>}
  */
 export async function loginUser(credentials) {
@@ -54,7 +62,7 @@ export async function loginUser(credentials) {
     body: JSON.stringify(credentials),
   });
 
-  const user = await handleAuthResponse(response);
+  const user = await parseResponse(response);
 
   saveUser(user);
 

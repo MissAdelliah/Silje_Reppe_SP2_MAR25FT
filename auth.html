@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="Log in or register for Second Story." />
+
+    <title>Register / Log in | Second Story</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Zalando+Sans+Expanded:ital,wght@0,200..900;1,200..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Material Symbols -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <script type="module" src="./js/pages/auth.js"></script>
+  </head>
+
+  <body class="flex min-h-dvh flex-col bg-page text-ink">
+    <!-- ========================================
+         Header
+    ========================================= -->
+
+    <header class="site-header">
+      <div
+        class="flex h-[68px] w-full items-center justify-between px-[9px] lg:h-[100px] lg:px-[130px]"
+      >
+        <a
+          href="./index.html"
+          class="font-display text-[20px] font-semibold leading-none tracking-[-0.02em] sm:text-[24px] lg:text-[32px]"
+          aria-label="Second Story home"
+        >
+          <span class="text-ink">Second</span>
+          <span class="text-ink lg:text-brand">Story</span>
+        </a>
+
+        <!-- Mobile menu -->
+        <button
+          id="auth-menu-button"
+          type="button"
+          class="flex size-11 flex-col items-center justify-center gap-[5px] lg:hidden"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="auth-mobile-menu"
+        >
+          <span class="h-[1.5px] w-[20px] bg-ink"></span>
+
+          <span class="h-[1.5px] w-[20px] bg-ink"></span>
+
+          <span class="h-[1.5px] w-[20px] bg-ink"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile menu backdrop -->
+    <div
+      id="auth-menu-backdrop"
+      hidden
+      class="fixed inset-0 z-40 bg-black/30 opacity-0 transition-opacity duration-300 lg:hidden"
+    ></div>
+
+    <!-- Mobile menu -->
+    <aside
+      id="auth-mobile-menu"
+      inert
+      aria-hidden="true"
+      class="fixed inset-y-0 right-0 z-50 flex w-[min(86%,340px)] translate-x-full flex-col bg-page px-6 shadow-drawer transition-transform duration-300 ease-out lg:hidden"
+    >
+      <div
+        class="flex h-[82px] items-center justify-between border-b border-divider"
+      >
+        <span class="font-display text-[22px] font-semibold">
+          Second Story
+        </span>
+
+        <button
+          id="auth-menu-close"
+          type="button"
+          class="flex size-10 items-center justify-center"
+          aria-label="Close navigation menu"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">
+            close
+          </span>
+        </button>
+      </div>
+
+      <nav class="pt-6" aria-label="Mobile navigation">
+        <a href="./index.html" class="block border-b border-divider py-4">
+          Home
+        </a>
+
+        <a
+          href="./index.html#listings"
+          class="block border-b border-divider py-4"
+        >
+          Browse listings
+        </a>
+      </nav>
+    </aside>
+
+    <!-- ========================================
+         Authentication
+    ========================================= -->
+
+    <main class="flex flex-1 items-start lg:items-center">
+      <div
+        class="mx-auto w-full px-[20px] pt-[10px] pb-[58px] sm:max-w-[520px] sm:px-[30px] lg:grid lg:min-h-[620px] lg:max-w-[1260px] lg:grid-cols-[500px_420px] lg:items-center lg:justify-center lg:gap-[105px] lg:px-[40px] lg:pt-0 lg:pb-[65px]"
+      >
+        <!-- Desktop image -->
+        <div class="hidden overflow-hidden lg:block">
+          <img
+            src="./assets/images/hero.jpeg"
+            alt="Student photographing second-hand shoes with a phone"
+            class="h-[500px] w-[500px] object-cover object-center"
+          />
+        </div>
+
+        <!-- Form content -->
+        <section
+          class="mx-auto w-full max-w-[420px]"
+          aria-labelledby="auth-heading"
+        >
+          <h1 id="auth-heading" class="sr-only">Register or log in</h1>
+
+          <!-- Auth tabs -->
+          <div
+            class="mb-[44px] flex items-end justify-center gap-[26px] lg:mb-[62px] lg:justify-start lg:gap-[18px]"
+            role="tablist"
+            aria-label="Authentication"
+          >
+            <button
+              id="login-tab"
+              type="button"
+              role="tab"
+              data-auth-mode="login"
+              aria-selected="true"
+              aria-controls="auth-form"
+              class="border-b border-ink px-[3px] pb-[5px] font-display text-[13px] font-semibold text-brand transition-colors duration-200 sm:text-[15px] lg:px-[5px] lg:pb-[9px] lg:text-[20px]"
+            >
+              Log in
+            </button>
+
+            <button
+              id="register-tab"
+              type="button"
+              role="tab"
+              data-auth-mode="register"
+              aria-selected="false"
+              aria-controls="auth-form"
+              class="border-b border-transparent px-[3px] pb-[5px] font-display text-[13px] font-semibold text-muted transition-colors duration-200 hover:text-ink sm:text-[15px] lg:px-[5px] lg:pb-[9px] lg:text-[20px]"
+            >
+              Register
+            </button>
+          </div>
+
+          <form id="auth-form" novalidate>
+            <!-- Name -->
+            <div id="name-group" hidden>
+              <label
+                for="name"
+                class="block text-[11px] font-semibold sm:text-[13px]"
+              >
+                Name
+              </label>
+
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autocomplete="username"
+                autocapitalize="none"
+                spellcheck="false"
+                placeholder="Isabella_Eriksen"
+                aria-describedby="name-error"
+                class="mt-[8px] h-[29px] w-full rounded-[8px] border border-border bg-page px-[12px] text-[11px] outline-none transition-colors duration-200 placeholder:text-border focus:border-ink sm:h-[42px] sm:text-[13px] lg:mt-[10px] lg:h-[44px] lg:rounded-[10px] lg:px-[16px]"
+              />
+
+              <p
+                id="name-error"
+                hidden
+                class="mt-[5px] text-[11px] text-brand"
+              ></p>
+            </div>
+
+            <!-- Email -->
+            <div id="email-group">
+              <label
+                for="email"
+                class="block text-[11px] font-semibold sm:text-[13px]"
+              >
+                Email
+              </label>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                inputmode="email"
+                autocomplete="email"
+                autocapitalize="none"
+                spellcheck="false"
+                placeholder="Isabella@stud.noroff.no"
+                aria-describedby="email-error"
+                class="mt-[8px] h-[29px] w-full rounded-[8px] border border-border bg-page px-[12px] text-[11px] outline-none transition-colors duration-200 placeholder:text-border focus:border-ink sm:h-[42px] sm:text-[13px] lg:mt-[10px] lg:h-[44px] lg:rounded-[10px] lg:px-[16px]"
+              />
+
+              <p
+                id="email-error"
+                hidden
+                class="mt-[5px] text-[11px] text-brand"
+              ></p>
+            </div>
+
+            <!-- Password -->
+            <div class="mt-[17px] sm:mt-[24px] lg:mt-[30px]">
+              <label
+                for="password"
+                class="block text-[11px] font-semibold sm:text-[13px]"
+              >
+                Password
+              </label>
+
+              <div class="relative mt-[8px] lg:mt-[10px]">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="Password"
+                  aria-describedby="password-error"
+                  class="h-[29px] w-full rounded-[8px] border border-border bg-page pr-[72px] pl-[12px] text-[11px] outline-none transition-colors duration-200 placeholder:text-border focus:border-ink sm:h-[42px] sm:text-[13px] lg:h-[44px] lg:rounded-[10px] lg:pr-[86px] lg:pl-[16px]"
+                />
+
+                <button
+                  id="password-toggle"
+                  type="button"
+                  class="absolute top-1/2 right-[10px] flex -translate-y-1/2 items-center gap-[4px] text-[10px] text-muted transition-colors duration-150 hover:text-ink lg:right-[14px] lg:text-[11px]"
+                  aria-label="Show password"
+                  aria-pressed="false"
+                >
+                  <span
+                    id="password-icon"
+                    class="material-symbols-outlined text-[14px] lg:text-[16px]"
+                    aria-hidden="true"
+                  >
+                    visibility
+                  </span>
+
+                  <span id="password-status"> Show </span>
+                </button>
+              </div>
+
+              <p
+                id="password-error"
+                hidden
+                class="mt-[5px] text-[11px] text-brand"
+              ></p>
+            </div>
+
+            <!-- Description -->
+            <p
+              id="auth-description"
+              class="mt-[42px] text-center text-[10px] text-muted sm:text-[12px] lg:mt-[62px]"
+            >
+              Sign in to bid and create listings.
+            </p>
+
+            <!-- Server error -->
+            <div
+              id="form-error"
+              hidden
+              class="mt-3 rounded-[8px] border border-brand/30 bg-sand px-3 py-2 text-[11px] text-brand"
+              role="alert"
+              aria-live="assertive"
+            ></div>
+
+            <!-- Submit -->
+            <button
+              id="submit-button"
+              type="submit"
+              class="mt-[12px] flex h-[32px] w-full items-center justify-center rounded-[8px] bg-ink font-display text-[11px] font-medium text-white transition-colors duration-200 hover:bg-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-not-allowed disabled:opacity-60 sm:h-[46px] sm:text-[14px] lg:mt-[13px] lg:h-[48px] lg:rounded-[9px] lg:text-[15px]"
+            >
+              <span id="submit-text"> Log in </span>
+
+              <span
+                id="submit-spinner"
+                hidden
+                class="size-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
+                aria-hidden="true"
+              ></span>
+            </button>
+
+            <!-- Cancel -->
+            <a
+              href="./index.html"
+              class="mt-[8px] flex h-[32px] w-full items-center justify-center text-[11px] transition-colors duration-150 hover:text-brand lg:hidden"
+            >
+              Cancel
+            </a>
+          </form>
+        </section>
+      </div>
+    </main>
+
+    <!-- ========================================
+         Footer
+    ========================================= -->
+
+    <footer class="mt-auto bg-sand">
+      <div
+        class="mx-auto w-full px-[30px] py-[30px] text-center lg:grid lg:min-h-[330px] lg:max-w-[1280px] lg:grid-cols-3 lg:items-start lg:px-[72px] lg:pt-[82px] lg:pb-[50px] lg:text-left"
+      >
+        <!-- Brand -->
+        <div>
+          <a
+            href="./index.html"
+            class="font-display text-[18px] font-semibold leading-none sm:text-[24px] lg:text-[28px]"
+          >
+            <span class="text-ink">Second</span>
+            <span class="text-ink lg:text-brand">Story</span>
+          </a>
+
+          <p class="mt-[7px] text-[9px] text-muted lg:hidden">
+            Made by students for students.
+          </p>
+        </div>
+
+        <!-- Mobile socials -->
+        <div
+          class="mt-[18px] flex items-center justify-center gap-[18px] lg:hidden"
+          aria-label="Social media"
+        >
+          <a href="#" aria-label="Instagram"> ◎ </a>
+
+          <a href="#" aria-label="TikTok"> ♪ </a>
+
+          <a href="#" aria-label="Facebook"> f </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav
+          class="mt-[38px] flex items-center justify-center gap-[38px] text-[8px] lg:mt-0 lg:flex-col lg:gap-[30px] lg:text-[14px] lg:font-semibold"
+          aria-label="Footer navigation"
+        >
+          <a href="#">Service</a>
+
+          <a href="#">Q&amp;A</a>
+
+          <a href="#">About us</a>
+        </nav>
+
+        <!-- Desktop socials -->
+        <div class="hidden justify-self-end text-right lg:block">
+          <div class="flex justify-end gap-5" aria-label="Social media">
+            <a href="#" aria-label="Instagram">◎</a>
+            <a href="#" aria-label="TikTok">♪</a>
+            <a href="#" aria-label="Facebook">f</a>
+          </div>
+
+          <p class="mt-7 font-display text-[14px] font-semibold">
+            Follow our socials
+          </p>
+        </div>
+
+        <!-- Copyright -->
+        <p
+          class="mt-[22px] text-center text-[8px] lg:col-span-3 lg:mt-[32px] lg:text-[13px]"
+        >
+          © 2026 Secondstory AS. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

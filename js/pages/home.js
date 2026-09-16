@@ -1,7 +1,8 @@
 import { getListings } from '../api/listings.js';
+
 import { initHeader } from '../components/header.js';
+
 import { createListingCard } from '../components/listingCard.js';
-import '../components/authSheet.js';
 
 import { formatTimeLeft, getAuctionStatus } from '../utils/dates.js';
 
@@ -16,7 +17,6 @@ import {
   saveFilters,
   secondaryFilterGroups,
 } from '../utils/filters.js';
-
 // DOM
 
 const mobileSearchForm = document.querySelector('#search-form-mobile');

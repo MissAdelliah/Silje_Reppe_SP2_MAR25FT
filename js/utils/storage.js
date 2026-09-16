@@ -3,7 +3,7 @@
 const USER_KEY = 'secondStoryUser';
 
 /**
- * Save the authenticated user.
+ * Save authenticated user data.
  * @param {object} user
  */
 export function saveUser(user) {
@@ -11,20 +11,21 @@ export function saveUser(user) {
 }
 
 /**
- * Get the authenticated user.
+ * Get authenticated user data.
  * @returns {object|null}
  */
 export function getUser() {
-  const storedUser = localStorage.getItem(USER_KEY);
+  const value = localStorage.getItem(USER_KEY);
 
-  if (!storedUser) {
+  if (!value) {
     return null;
   }
 
   try {
-    return JSON.parse(storedUser);
+    return JSON.parse(value);
   } catch {
     localStorage.removeItem(USER_KEY);
+
     return null;
   }
 }
@@ -38,7 +39,7 @@ export function getAccessToken() {
 }
 
 /**
- * Check if a user is authenticated.
+ * Check authentication state.
  * @returns {boolean}
  */
 export function isLoggedIn() {
@@ -46,11 +47,11 @@ export function isLoggedIn() {
 }
 
 /**
- * Remove the authenticated user.
+ * Clear authenticated user data.
  */
 export function clearUser() {
   localStorage.removeItem(USER_KEY);
 }
 
-// Alias for older imports.
+// Compatibility with older imports.
 export const removeUser = clearUser;

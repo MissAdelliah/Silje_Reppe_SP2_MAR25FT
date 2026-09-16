@@ -2,25 +2,21 @@
 
 const STUDENT_EMAIL_PATTERN = /^[^\s@]+@stud\.noroff\.no$/i;
 
-const NAME_PATTERN = /^[a-zA-Z0-9_]+$/;
+const USERNAME_PATTERN = /^[A-Za-z0-9_]+$/;
 
 /**
  * Validate a Noroff username.
- * @param {string} name
+ * @param {string} value
  * @returns {string}
  */
-export function validateName(name) {
-  const value = name.trim();
+export function validateName(value) {
+  const name = value.trim();
 
-  if (!value) {
+  if (!name) {
     return 'Name is required.';
   }
 
-  if (value.length < 2) {
-    return 'Name must be at least 2 characters.';
-  }
-
-  if (!NAME_PATTERN.test(value)) {
+  if (!USERNAME_PATTERN.test(name)) {
     return 'Use letters, numbers and underscores only.';
   }
 
@@ -29,17 +25,17 @@ export function validateName(name) {
 
 /**
  * Validate a Noroff student email.
- * @param {string} email
+ * @param {string} value
  * @returns {string}
  */
-export function validateEmail(email) {
-  const value = email.trim();
+export function validateEmail(value) {
+  const email = value.trim();
 
-  if (!value) {
+  if (!email) {
     return 'Email is required.';
   }
 
-  if (!STUDENT_EMAIL_PATTERN.test(value)) {
+  if (!STUDENT_EMAIL_PATTERN.test(email)) {
     return 'Use your @stud.noroff.no email.';
   }
 
@@ -47,16 +43,16 @@ export function validateEmail(email) {
 }
 
 /**
- * Validate a password.
- * @param {string} password
+ * Validate a Noroff password.
+ * @param {string} value
  * @returns {string}
  */
-export function validatePassword(password) {
-  if (!password) {
+export function validatePassword(value) {
+  if (!value) {
     return 'Password is required.';
   }
 
-  if (password.length < 8) {
+  if (value.length < 8) {
     return 'Password must be at least 8 characters.';
   }
 
