@@ -9,45 +9,27 @@ import {
 // DOM
 
 const form = document.querySelector('#auth-form');
-
 const loginTab = document.querySelector('#login-tab');
-
 const registerTab = document.querySelector('#register-tab');
-
 const nameGroup = document.querySelector('#name-group');
-
 const nameInput = document.querySelector('#name');
-
 const emailGroup = document.querySelector('#email-group');
-
 const emailInput = document.querySelector('#email');
-
 const passwordInput = document.querySelector('#password');
-
 const passwordToggle = document.querySelector('#password-toggle');
-
 const passwordIcon = document.querySelector('#password-icon');
-
 const passwordStatus = document.querySelector('#password-status');
-
 const description = document.querySelector('#auth-description');
-
 const formError = document.querySelector('#form-error');
-
 const submitButton = document.querySelector('#submit-button');
-
 const submitText = document.querySelector('#submit-text');
-
 const submitSpinner = document.querySelector('#submit-spinner');
 
 // Mobile navigation
 
 const menuButton = document.querySelector('#auth-menu-button');
-
 const menu = document.querySelector('#auth-mobile-menu');
-
 const menuClose = document.querySelector('#auth-menu-close');
-
 const menuBackdrop = document.querySelector('#auth-menu-backdrop');
 
 // State
@@ -77,11 +59,8 @@ function clearFieldError(input) {
   }
 
   const error = getFieldError(input);
-
   input.classList.remove('border-brand');
-
   input.classList.add('border-border');
-
   input.removeAttribute('aria-invalid');
 
   if (error) {
@@ -96,11 +75,8 @@ function showFieldError(input, message) {
   }
 
   const error = getFieldError(input);
-
   input.classList.remove('border-border');
-
   input.classList.add('border-brand');
-
   input.setAttribute('aria-invalid', 'true');
 
   if (error) {
@@ -123,7 +99,6 @@ function clearErrors() {
   clearFieldError(nameInput);
   clearFieldError(emailInput);
   clearFieldError(passwordInput);
-
   clearFormError();
 }
 
@@ -131,13 +106,9 @@ function clearErrors() {
 
 function setTabState(tab, isActive) {
   tab.setAttribute('aria-selected', String(isActive));
-
   tab.classList.toggle('text-brand', isActive);
-
   tab.classList.toggle('text-muted', !isActive);
-
   tab.classList.toggle('border-ink', isActive);
-
   tab.classList.toggle('border-transparent', !isActive);
 }
 
@@ -150,17 +121,12 @@ function setAuthMode(mode) {
 
   // Register has an additional name field.
   nameGroup.hidden = !isRegister;
-
   nameInput.required = isRegister;
 
   emailGroup.classList.toggle('mt-[17px]', isRegister);
-
   emailGroup.classList.toggle('sm:mt-[24px]', isRegister);
-
   emailGroup.classList.toggle('lg:mt-[30px]', isRegister);
-
   passwordInput.autocomplete = isRegister ? 'new-password' : 'current-password';
-
   description.textContent = isRegister
     ? 'Register to bid and create listings.'
     : 'Sign in to bid and create listings.';
@@ -168,7 +134,6 @@ function setAuthMode(mode) {
   submitText.textContent = isRegister ? 'Register' : 'Log in';
 
   setTabState(loginTab, !isRegister);
-
   setTabState(registerTab, isRegister);
 }
 
@@ -224,13 +189,9 @@ function validateForm() {
 
 function togglePassword() {
   const shouldShow = passwordInput.type === 'password';
-
   passwordInput.type = shouldShow ? 'text' : 'password';
-
   passwordIcon.textContent = shouldShow ? 'visibility_off' : 'visibility';
-
   passwordStatus.textContent = shouldShow ? 'Hide' : 'Show';
-
   passwordToggle.setAttribute(
     'aria-label',
     shouldShow ? 'Hide password' : 'Show password',
@@ -245,7 +206,6 @@ function setSubmitting(value) {
   isSubmitting = value;
 
   submitButton.disabled = value;
-
   submitText.hidden = value;
   submitSpinner.hidden = !value;
 
@@ -256,7 +216,6 @@ function setSubmitting(value) {
   }
 
   submitButton.removeAttribute('aria-busy');
-
   submitText.textContent = authMode === 'register' ? 'Register' : 'Log in';
 }
 
@@ -265,7 +224,6 @@ function setSubmitting(value) {
 async function handleLogin() {
   return loginUser({
     email: emailInput.value.trim().toLowerCase(),
-
     password: passwordInput.value,
   });
 }
@@ -273,9 +231,7 @@ async function handleLogin() {
 async function handleRegister() {
   const user = {
     name: nameInput.value.trim(),
-
     email: emailInput.value.trim().toLowerCase(),
-
     password: passwordInput.value,
   };
 
@@ -327,20 +283,14 @@ function openMenu() {
   }
 
   menu.inert = false;
-
   menu.setAttribute('aria-hidden', 'false');
-
   menuButton.setAttribute('aria-expanded', 'true');
-
   menuBackdrop.hidden = false;
 
   requestAnimationFrame(() => {
     menu.classList.remove('translate-x-full');
-
     menu.classList.add('translate-x-0');
-
     menuBackdrop.classList.remove('opacity-0');
-
     menuBackdrop.classList.add('opacity-100');
   });
 
@@ -355,17 +305,11 @@ function closeMenu() {
   }
 
   menu.classList.remove('translate-x-0');
-
   menu.classList.add('translate-x-full');
-
   menuBackdrop.classList.remove('opacity-100');
-
   menuBackdrop.classList.add('opacity-0');
-
   menuButton.setAttribute('aria-expanded', 'false');
-
   menu.setAttribute('aria-hidden', 'true');
-
   menu.inert = true;
 
   document.body.classList.remove('overflow-hidden');
@@ -414,11 +358,8 @@ function setupAuthEvents() {
 
 function setupMenuEvents() {
   menuButton?.addEventListener('click', openMenu);
-
   menuClose?.addEventListener('click', closeMenu);
-
   menuBackdrop?.addEventListener('click', closeMenu);
-
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
       closeMenu();
@@ -430,7 +371,6 @@ function setupMenuEvents() {
 
 function init() {
   setAuthMode(getInitialMode());
-
   setupAuthEvents();
   setupMenuEvents();
 }

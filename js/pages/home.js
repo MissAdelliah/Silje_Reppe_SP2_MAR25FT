@@ -226,7 +226,6 @@ function updateSortControls() {
 
   sortControls.forEach((control) => {
     const label = control.querySelector('[data-sort-label]');
-
     const options = control.querySelectorAll('[data-sort]');
 
     if (label) {
@@ -235,9 +234,7 @@ function updateSortControls() {
 
     options.forEach((option) => {
       const isSelected = option.dataset.sort === state.sort;
-
       option.classList.toggle('font-semibold', isSelected);
-
       option.setAttribute('aria-current', isSelected ? 'true' : 'false');
     });
   });
@@ -245,9 +242,7 @@ function updateSortControls() {
 
 function openSortMenu(control) {
   const button = control.querySelector('[data-sort-toggle]');
-
   const menu = control.querySelector('[data-sort-menu]');
-
   const icon = control.querySelector('[data-sort-icon]');
 
   if (!button || !menu) {
@@ -279,9 +274,7 @@ function openSortMenu(control) {
 
 function closeSortMenu(control) {
   const button = control.querySelector('[data-sort-toggle]');
-
   const menu = control.querySelector('[data-sort-menu]');
-
   const icon = control.querySelector('[data-sort-icon]');
 
   if (!button || !menu) {
@@ -361,11 +354,8 @@ function setupSort() {
       }
 
       state.sort = selectedSort;
-
       updateSortControls();
-
       closeSortMenu(control);
-
       loadListings();
     });
   });
@@ -385,9 +375,7 @@ function createFilterChip(group, value) {
   const button = document.createElement('button');
 
   button.type = 'button';
-
   button.dataset.removeFilter = value;
-
   button.dataset.filterGroup = group;
 
   button.className =
@@ -401,17 +389,11 @@ function createFilterChip(group, value) {
   );
 
   const text = document.createElement('span');
-
   text.textContent = formatFilterLabel(value);
-
   const close = document.createElement('span');
-
   close.className = 'material-symbols-outlined text-[17px] leading-none';
-
   close.textContent = 'close';
-
   close.setAttribute('aria-hidden', 'true');
-
   button.append(text, close);
 
   return button;
@@ -419,11 +401,8 @@ function createFilterChip(group, value) {
 
 function createClearButton(section) {
   const button = document.createElement('button');
-
   button.type = 'button';
-
   button.dataset.clearFilterSection = section;
-
   button.className =
     'inline-flex h-[32px] shrink-0 items-center rounded-full border border-divider bg-page px-4 text-[14px] text-muted transition-colors duration-150 hover:border-ink hover:text-ink';
 
@@ -434,9 +413,7 @@ function createClearButton(section) {
 
 function createFilterRow(groups, section) {
   const row = document.createElement('div');
-
   row.className = 'scrollbar-hidden flex items-center gap-2 overflow-x-auto';
-
   let hasFilters = false;
 
   groups.forEach((group) => {
@@ -462,9 +439,7 @@ function renderFilterChips(container) {
   }
 
   container.innerHTML = '';
-
   const primary = createFilterRow(primaryFilterGroups, 'primary');
-
   const secondary = createFilterRow(secondaryFilterGroups, 'secondary');
 
   if (!primary && !secondary) {
@@ -486,7 +461,6 @@ function renderFilterChips(container) {
 
 function renderActiveFilters() {
   renderFilterChips(activeFiltersMobile);
-
   renderFilterChips(activeFiltersDesktop);
 }
 
@@ -494,7 +468,6 @@ function renderActiveFilters() {
 
 function createCheckbox(group, value) {
   const label = document.createElement('label');
-
   label.className = 'flex cursor-pointer items-center gap-3 py-1 text-sm';
 
   const input = document.createElement('input');
@@ -503,6 +476,7 @@ function createCheckbox(group, value) {
   input.dataset.filterGroup = group;
   input.checked = state.filters[group].includes(value);
   input.className = 'size-4 accent-ink';
+
   const text = document.createElement('span');
   text.textContent = formatFilterLabel(value);
   label.append(input, text);
@@ -513,8 +487,8 @@ function createCheckbox(group, value) {
 function createCategoryGroup(available) {
   const details = document.createElement('details');
   details.className = 'group border-b border-divider';
-  const summary = document.createElement('summary');
 
+  const summary = document.createElement('summary');
   summary.className =
     'flex min-h-[58px] cursor-pointer list-none items-center justify-between px-5 text-sm';
 
