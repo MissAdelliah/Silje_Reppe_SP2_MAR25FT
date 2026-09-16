@@ -1,126 +1,137 @@
-import { logoutUser } from '../api/auth.js';
-
 import { getProfile } from '../api/profiles.js';
-
-import { getUser } from '../utils/storage.js';
+import { clearUser, getUser } from '../utils/storage.js';
 
 // DOM
 
+const authElements = document.querySelectorAll('[data-auth-only]');
+const guestElements = document.querySelectorAll('[data-guest-only]');
+const creditElements = document.querySelectorAll('[data-credit]');
+const avatarElements = document.querySelectorAll('[data-profile-avatar]');
+const initialElements = document.querySelectorAll('[data-profile-initial]');
+const nameElements = document.querySelectorAll('[data-profile-name]');
+const logoutButtons = document.querySelectorAll('[data-logout]');
+
+// Mobile menu
+
 const menuButton = document.querySelector('#menu-button');
-
 const mobileMenu = document.querySelector('#mobile-menu');
-
 const menuBackdrop = document.querySelector('#menu-backdrop');
+const menuClose = document.querySelector('[data-menu-close]');
 
-const menuCloseButton = document.querySelector('[data-menu-close]');
+// Authentication state
 
-// State
-
-let previousFocus = null;
-
-// Auth
-
-function setAuthVisibility(isLoggedIn) {
-  document.querySelectorAll('[data-auth-only]').forEach((element) => {
-    element.hidden = !isLoggedIn;
+function showGuestHeader() {
+  authElements.forEach((element) => {
+    element.hidden = true;
   });
 
-  document.querySelectorAll('[data-guest-only]').forEach((element) => {
-    element.hidden = isLoggedIn;
+  guestElements.forEach((element) => {
+    element.hidden = false;
+  });
+}
+
+function showAuthenticatedHeader() {
+  guestElements.forEach((element) => {
+    element.hidden = true;
   });
 
-  document.body.classList.toggle('pb-20', isLoggedIn);
+  authElements.forEach((element) => {
+    element.hidden = false;
+  });
+}
+
+// Profile UI
+
+function getProfileInitial(name) {
+  if (!name) {
+    return 'S';
+  }
+
+  return name.charAt(0).toUpperCase();
 }
 
 function updateCredits(credits) {
-  const formatted = Number(credits ?? 0).toLocaleString('nb-NO');
-
-  document.querySelectorAll('[data-credit]').forEach((element) => {
-    element.textContent = `${formatted} cr`;
+  creditElements.forEach((element) => {
+    element.textContent = `${credits ?? 0} cr`;
   });
 }
 
-function updateProfile(profile) {
-  const initial = profile?.name?.charAt(0)?.toUpperCase() || 'S';
-
-  document.querySelectorAll('[data-profile-name]').forEach((element) => {
-    element.textContent = profile.name;
+function updateNames(name) {
+  nameElements.forEach((element) => {
+    element.textContent = name || 'Profile';
   });
 
-  document.querySelectorAll('[data-profile-initial]').forEach((element) => {
-    element.textContent = initial;
+  initialElements.forEach((element) => {
+    element.textContent = getProfileInitial(name);
+  });
+}
+
+function updateAvatars(avatar, name) {
+  const avatarUrl = avatar?.url;
+
+  avatarElements.forEach((image) => {
+    if (!avatarUrl) {
+      image.hidden = true;
+
+      return;
+    }
+
+    image.src = avatarUrl;
+    image.alt = avatar?.alt || `${name}'s profile picture`;
+    image.hidden = false;
   });
 
-  if (!profile.avatar?.url) {
+  initialElements.forEach((initial) => {
+    initial.hidden = Boolean(avatarUrl);
+  });
+}
+
+function updateProfileUI(profile) {
+  if (!profile) {
     return;
   }
 
-  document.querySelectorAll('[data-profile-avatar]').forEach((image) => {
-    image.src = profile.avatar.url;
-
-    image.alt = profile.avatar.alt || `${profile.name}'s profile image`;
-
-    image.hidden = false;
-
-    const fallback = image.parentElement.querySelector(
-      '[data-profile-initial]',
-    );
-
-    if (fallback) {
-      fallback.hidden = true;
-    }
-  });
+  updateCredits(profile.credits);
+  updateNames(profile.name);
+  updateAvatars(profile.avatar, profile.name);
 }
 
-// Menu
+// Mobile menu
 
 function openMenu() {
-  previousFocus = document.activeElement;
+  if (!mobileMenu || !menuBackdrop) {
+    return;
+  }
 
   mobileMenu.inert = false;
-
   mobileMenu.setAttribute('aria-hidden', 'false');
-
-  menuButton.setAttribute('aria-expanded', 'true');
-
+  menuButton?.setAttribute('aria-expanded', 'true');
   menuBackdrop.hidden = false;
 
   requestAnimationFrame(() => {
     mobileMenu.classList.remove('translate-x-full');
-
     mobileMenu.classList.add('translate-x-0');
-
     menuBackdrop.classList.remove('opacity-0');
-
     menuBackdrop.classList.add('opacity-100');
   });
 
   document.body.classList.add('overflow-hidden');
 
-  menuCloseButton.focus();
+  menuClose?.focus();
 }
 
 function closeMenu() {
-  if (mobileMenu.getAttribute('aria-hidden') === 'true') {
+  if (!mobileMenu || !menuBackdrop) {
     return;
   }
 
-  previousFocus?.focus();
-
   mobileMenu.classList.remove('translate-x-0');
-
   mobileMenu.classList.add('translate-x-full');
-
   menuBackdrop.classList.remove('opacity-100');
-
   menuBackdrop.classList.add('opacity-0');
-
-  menuButton.setAttribute('aria-expanded', 'false');
-
-  mobileMenu.inert = true;
-
   mobileMenu.setAttribute('aria-hidden', 'true');
-
+  mobileMenu.inert = true;
+  menuButton?.setAttribute('aria-expanded', 'false');
   document.body.classList.remove('overflow-hidden');
 
   window.setTimeout(() => {
@@ -128,63 +139,56 @@ function closeMenu() {
   }, 300);
 }
 
-function setupMenu() {
-  menuButton.addEventListener('click', openMenu);
+// Logout
 
-  menuCloseButton.addEventListener('click', closeMenu);
+function handleLogout() {
+  clearUser();
 
-  menuBackdrop.addEventListener('click', closeMenu);
+  window.location.assign('./index.html');
+}
+
+// Events
+
+function setupHeaderEvents() {
+  menuButton?.addEventListener('click', openMenu);
+
+  menuClose?.addEventListener('click', closeMenu);
+
+  menuBackdrop?.addEventListener('click', closeMenu);
+
+  logoutButtons.forEach((button) => {
+    button.addEventListener('click', handleLogout);
+  });
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
       closeMenu();
     }
   });
-
-  window.addEventListener('resize', () => {
-    if (window.innerWidth >= 1024) {
-      closeMenu();
-    }
-  });
 }
 
-// Logout
+// Init
 
-function setupLogout() {
-  document.querySelectorAll('[data-logout]').forEach((button) => {
-    button.addEventListener('click', () => {
-      logoutUser();
-
-      window.location.href = './index.html';
-    });
-  });
-}
-
-/**
- * Initialise shared header.
- */
 export async function initHeader() {
+  setupHeaderEvents();
+
   const user = getUser();
 
-  const isLoggedIn = Boolean(user?.accessToken);
+  if (!user || !user.accessToken) {
+    showGuestHeader();
 
-  setAuthVisibility(isLoggedIn);
-
-  setupMenu();
-  setupLogout();
-
-  if (!isLoggedIn) {
     return;
   }
 
-  updateProfile(user);
+  showAuthenticatedHeader();
+
+  // Show stored user information immediately.
+  updateNames(user.name);
 
   try {
     const profile = await getProfile(user.name);
 
-    updateProfile(profile);
-
-    updateCredits(profile.credits);
+    updateProfileUI(profile);
   } catch (error) {
     console.error('Could not load profile:', error);
   }
