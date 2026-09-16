@@ -1,47 +1,31 @@
 import { API_BASE_URL, API_KEY } from './config.js';
-import { getUser } from '../utils/storage.js';
 
-// API
-
-export class ApiError extends Error {
-  constructor(message, status) {
-    super(message);
-
-    this.name = 'ApiError';
-    this.status = status;
-  }
-}
+import { getAccessToken } from '../utils/storage.js';
 
 /**
- * Make a request to the Noroff API.
+ * Send a request to the Noroff API.
  * @param {string} endpoint
  * @param {object} options
  * @returns {Promise<any>}
  */
 export async function apiRequest(
   endpoint,
-  { method = 'GET', body = null, requiresAuth = false, signal } = {},
+  { method = 'GET', body = null, auth = false, signal } = {},
 ) {
-  const headers = new Headers({
-    Accept: 'application/json',
-  });
+  const headers = new Headers();
 
-  if (body) {
+  if (body !== null) {
     headers.set('Content-Type', 'application/json');
   }
 
-  if (requiresAuth) {
-    const user = getUser();
+  if (auth) {
+    const accessToken = getAccessToken();
 
-    if (!user?.accessToken) {
-      throw new ApiError('You must be logged in.', 401);
+    if (!accessToken) {
+      throw new Error('You must be logged in.');
     }
 
-    if (!API_KEY || API_KEY === 'PASTE_YOUR_API_KEY_HERE') {
-      throw new Error('Add your API key in js/api/config.js.');
-    }
-
-    headers.set('Authorization', `Bearer ${user.accessToken}`);
+    headers.set('Authorization', `Bearer ${accessToken}`);
 
     headers.set('X-Noroff-API-Key', API_KEY);
   }
@@ -49,24 +33,23 @@ export async function apiRequest(
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     method,
     headers,
-    body: body ? JSON.stringify(body) : undefined,
     signal,
+
+    body: body === null ? undefined : JSON.stringify(body),
   });
 
   if (response.status === 204) {
     return null;
   }
 
-  const result = await response.json().catch(() => null);
+  const result = await response.json();
 
   if (!response.ok) {
     const message =
-      result?.errors?.[0]?.message ||
-      result?.message ||
-      'Something went wrong.';
+      result?.errors?.[0]?.message || result?.message || 'API request failed.';
 
-    throw new ApiError(message, response.status);
+    throw new Error(message);
   }
 
-  return result?.data ?? result;
+  return result.data;
 }

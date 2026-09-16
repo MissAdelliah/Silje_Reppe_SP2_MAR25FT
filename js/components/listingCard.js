@@ -142,7 +142,7 @@ export function createListingCard(listing) {
 
   const title = createElement(
     'a',
-    'block truncate text-[15px] font-normal leading-[1.35] hover:underline lg:text-base',
+    'block truncate text-[16px] font-normal leading-[1.35] hover:underline lg:text-base',
     listing.title || 'Untitled listing',
   );
 

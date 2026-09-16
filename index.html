@@ -31,11 +31,11 @@
     <!-- Compiled Tailwind -->
     <link rel="stylesheet" href="./css/style.css" />
 
-    <!-- Home -->
+    <!-- Home page -->
     <script type="module" src="./js/pages/home.js"></script>
   </head>
 
-  <body class="bg-page text-ink lg:pb-0">
+  <body class="bg-page text-ink">
     <!-- ========================================
          Site header
     ========================================= -->
@@ -49,14 +49,14 @@
         <!-- Logo -->
         <a
           href="./index.html"
-          class="site-header__logo justify-self-start whitespace-nowrap font-display text-[28px] font-semibold leading-none tracking-[-0.02em] lg:text-[32px]"
+          class="site-header__logo justify-self-start whitespace-nowrap font-display text-[20px] font-semibold leading-none tracking-[-0.02em] lg:text-[32px]"
           aria-label="Second Story home"
         >
           <span class="text-ink">Second</span>
           <span class="text-ink lg:text-brand">Story</span>
         </a>
 
-        <!-- Mobile header -->
+        <!-- Mobile header actions -->
         <div
           class="site-header__mobile flex items-center gap-3 justify-self-end lg:hidden"
         >
@@ -67,13 +67,13 @@
               aria-label="Credit balance"
             >
               <span
-                class="material-symbols-outlined text-[16px]"
+                class="material-symbols-outlined text-[16px] leading-none"
                 aria-hidden="true"
               >
                 wallet
               </span>
 
-              <span data-credit class="text-[13px]" aria-live="polite">
+              <span data-credit class="text-[14px]" aria-live="polite">
                 0 cr
               </span>
             </div>
@@ -141,7 +141,9 @@
                 </span>
               </a>
 
-              <span class="mt-1 text-[10px] text-muted"> Create </span>
+              <span class="mt-1 text-[14px] text-muted" aria-hidden="true">
+                Create
+              </span>
             </div>
 
             <!-- Profile -->
@@ -167,18 +169,20 @@
                 </span>
               </a>
 
-              <span class="mt-1 text-[10px] text-brand"> Profile </span>
+              <span class="mt-1 text-[14px] text-brand" aria-hidden="true">
+                Profile
+              </span>
 
-              <!-- Hover/focus dropdown -->
+              <!-- Profile dropdown -->
               <div
-                class="pointer-events-none invisible absolute top-full right-0 z-40 w-40 translate-y-1 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
+                class="pointer-events-none invisible absolute top-full right-0 z-40 w-[160px] translate-y-1 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
               >
                 <div
                   class="overflow-hidden rounded-xl border border-divider bg-page shadow-control"
                 >
                   <a
                     href="./profile.html"
-                    class="block px-4 py-3 text-sm transition-colors duration-150 hover:bg-sand"
+                    class="block px-4 py-3 text-sm transition-colors duration-150 hover:bg-sand focus:bg-sand focus:outline-none"
                   >
                     Profile
                   </a>
@@ -186,7 +190,7 @@
                   <button
                     data-logout
                     type="button"
-                    class="w-full px-4 py-3 text-left text-sm transition-colors duration-150 hover:bg-sand"
+                    class="w-full px-4 py-3 text-left text-sm transition-colors duration-150 hover:bg-sand focus:bg-sand focus:outline-none"
                   >
                     Log out
                   </button>
@@ -210,7 +214,9 @@
                 <span data-credit class="text-[16px]"> 0 cr </span>
               </div>
 
-              <span class="mt-1 text-[10px] text-muted"> My Credit </span>
+              <span class="mt-1 text-[14px] text-muted" aria-hidden="true">
+                My Credit
+              </span>
             </div>
           </nav>
         </div>
@@ -218,7 +224,7 @@
     </header>
 
     <!-- ========================================
-         Mobile menu
+         Mobile navigation
     ========================================= -->
 
     <div
@@ -232,20 +238,23 @@
       inert
       aria-hidden="true"
       aria-label="Navigation menu"
-      class="fixed inset-y-0 right-0 z-50 flex h-dvh w-[min(100%,390px)] translate-x-full flex-col bg-page shadow-drawer transition-transform duration-300 ease-out lg:hidden"
+      class="mobile-menu fixed inset-y-0 right-0 z-50 flex h-dvh w-[min(100%,390px)] translate-x-full flex-col bg-page shadow-drawer transition-transform duration-300 ease-out lg:hidden"
     >
-      <!-- Drawer header -->
+      <!-- Menu header -->
       <div
         class="grid h-[96px] grid-cols-[1fr_auto] items-center border-b border-divider px-6"
       >
-        <a href="./index.html" class="font-display text-[26px] font-semibold">
+        <a
+          href="./index.html"
+          class="justify-self-start font-display text-[26px] font-semibold"
+        >
           Second Story
         </a>
 
         <button
           data-menu-close
           type="button"
-          class="flex size-11 items-center justify-center"
+          class="flex size-11 items-center justify-center justify-self-end"
           aria-label="Close navigation menu"
         >
           <span
@@ -268,7 +277,7 @@
           </a>
         </div>
 
-        <!-- Profile -->
+        <!-- Logged in profile -->
         <div data-auth-only hidden class="border-b border-divider py-6">
           <a href="./profile.html" class="flex items-center gap-4">
             <div
@@ -294,7 +303,7 @@
           </a>
         </div>
 
-        <!-- Auth navigation -->
+        <!-- Logged in navigation -->
         <nav
           data-auth-only
           hidden
@@ -323,8 +332,13 @@
           </a>
         </nav>
 
+        <!-- Sign out -->
         <div data-auth-only hidden class="mt-auto pb-8 text-center">
-          <button data-logout type="button" class="text-sm text-muted">
+          <button
+            data-logout
+            type="button"
+            class="text-sm text-muted transition-colors duration-150 hover:text-ink"
+          >
             Sign out
           </button>
 
@@ -337,10 +351,13 @@
          Home
     ========================================= -->
 
-    <main>
-      <!-- Mobile controls -->
+    <main class="home">
+      <!-- ========================================
+           Mobile search and sort
+      ========================================= -->
+
       <section
-        class="px-[15px] pt-5 lg:hidden"
+        class="home-controls home-controls--mobile px-[15px] pt-5 lg:hidden"
         aria-label="Search and sort listings"
       >
         <div class="grid grid-cols-[minmax(0,1fr)_140px] items-center gap-3">
@@ -364,27 +381,32 @@
                 type="search"
                 autocomplete="off"
                 placeholder="Search"
-                class="h-11 w-full rounded-full border border-border bg-page pr-3 pl-10 text-[15px] outline-none transition-colors duration-200 focus:border-ink"
+                class="h-11 w-full min-w-0 rounded-full border border-border bg-page pr-3 pl-10 text-[16px] outline-none transition-colors duration-200 focus:border-ink"
               />
             </div>
           </form>
 
           <!-- Sort -->
-          <div class="sort-control relative" data-sort-control>
+          <div class="sort-control relative min-w-0" data-sort-control>
             <button
               id="mobile-sort-button"
               data-sort-toggle
               type="button"
-              class="flex h-11 w-full items-center justify-between rounded-full border border-border bg-page px-5 text-[15px] outline-none transition-colors duration-200 hover:border-ink focus:border-ink"
+              class="flex h-11 w-full min-w-0 items-center justify-between gap-2 rounded-full border border-border bg-page px-4 text-[14px] outline-none transition-colors duration-200 hover:border-ink focus:border-ink"
               aria-label="Sort listings"
               aria-expanded="false"
               aria-controls="mobile-sort-menu"
             >
-              <span data-sort-label> All </span>
+              <span
+                data-sort-label
+                class="min-w-0 flex-1 truncate whitespace-nowrap text-left"
+              >
+                All
+              </span>
 
               <span
                 data-sort-icon
-                class="material-symbols-outlined text-[19px] transition-transform duration-200"
+                class="material-symbols-outlined shrink-0 text-[19px] transition-transform duration-200"
                 aria-hidden="true"
               >
                 expand_more
@@ -394,12 +416,15 @@
             <div
               id="mobile-sort-menu"
               data-sort-menu
-              class="pointer-events-none invisible absolute top-[52px] right-0 z-30 w-[225px] translate-y-1 scale-[0.98] overflow-hidden rounded-2xl border border-divider bg-page opacity-0 shadow-control transition-all duration-200"
+              role="menu"
+              aria-label="Sort listings"
+              class="pointer-events-none invisible absolute top-[52px] right-0 z-30 w-[225px] origin-top-right translate-y-1 scale-[0.98] overflow-hidden rounded-2xl border border-divider bg-page opacity-0 shadow-control transition-[opacity,transform,visibility] duration-200 ease-out"
             >
               <button
                 type="button"
                 data-sort="default"
-                class="block w-full border-b border-divider px-5 py-4 text-left hover:bg-soft"
+                role="menuitem"
+                class="block w-full border-b border-divider px-5 py-4 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
               >
                 All
               </button>
@@ -407,7 +432,8 @@
               <button
                 type="button"
                 data-sort="endingSoon"
-                class="block w-full border-b border-divider px-5 py-4 text-left hover:bg-soft"
+                role="menuitem"
+                class="block w-full border-b border-divider px-5 py-4 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
               >
                 Ending soon
               </button>
@@ -415,7 +441,8 @@
               <button
                 type="button"
                 data-sort="priceLow"
-                class="block w-full border-b border-divider px-5 py-4 text-left hover:bg-soft"
+                role="menuitem"
+                class="block w-full border-b border-divider px-5 py-4 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
               >
                 Price: low to high
               </button>
@@ -423,7 +450,8 @@
               <button
                 type="button"
                 data-sort="priceHigh"
-                class="block w-full px-5 py-4 text-left hover:bg-soft"
+                role="menuitem"
+                class="block w-full px-5 py-4 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
               >
                 Price: high to low
               </button>
@@ -431,7 +459,7 @@
           </div>
         </div>
 
-        <!-- Mobile filter chips -->
+        <!-- Active filters -->
         <div
           id="active-filters-mobile"
           hidden
@@ -440,21 +468,27 @@
         ></div>
       </section>
 
-      <!-- Hero -->
-      <section class="mt-5 lg:mt-0" aria-labelledby="hero-heading">
+      <!-- ========================================
+           Hero
+      ========================================= -->
+
+      <section class="hero mt-5 lg:mt-0" aria-labelledby="hero-heading">
         <div
-          class="relative mx-[14px] overflow-hidden rounded-[14px] lg:mx-0 lg:rounded-none"
+          class="hero__media relative mx-[14px] overflow-hidden rounded-[14px] lg:mx-0 lg:rounded-none"
         >
           <img
             src="./assets/images/hero.jpeg"
             alt="Student photographing second-hand shoes with a phone"
-            class="h-[240px] w-full object-cover object-center md:h-[360px] lg:h-[560px]"
+            fetchpriority="high"
+            class="h-[240px] w-full object-cover object-center sm:h-[300px] md:h-[360px] lg:h-[560px]"
           />
 
           <div
-            class="absolute inset-x-0 bottom-[18px] px-[20px] text-white lg:bottom-[52px] lg:px-[130px]"
+            class="hero__content absolute inset-x-0 bottom-[18px] px-[20px] text-white lg:bottom-[52px] lg:px-[130px]"
           >
-            <p class="text-[14px] lg:text-[18px]">Featured today</p>
+            <p class="text-[14px] leading-tight lg:text-[18px]">
+              Featured today
+            </p>
 
             <h1
               id="hero-heading"
@@ -466,14 +500,20 @@
         </div>
       </section>
 
-      <!-- Desktop controls -->
-      <section class="hidden lg:block" aria-label="Search and sort listings">
+      <!-- ========================================
+           Desktop search and sort
+      ========================================= -->
+
+      <section
+        class="home-controls home-controls--desktop hidden lg:block"
+        aria-label="Search and sort listings"
+      >
         <div class="mx-auto w-full max-w-[952px] pt-[38px]">
           <div class="grid grid-cols-[1fr_auto] items-center">
             <!-- Search -->
             <form
               id="search-form-desktop"
-              class="flex items-center gap-2"
+              class="flex items-center gap-2 justify-self-start"
               role="search"
             >
               <div class="relative w-[292px]">
@@ -494,19 +534,19 @@
                   type="search"
                   autocomplete="off"
                   placeholder="Search"
-                  class="h-[32px] w-full rounded-full border border-border bg-page pr-3 pl-9 text-[13px] outline-none transition-colors duration-200 focus:border-ink"
+                  class="h-[32px] w-full rounded-full border border-border bg-page pr-3 pl-9 text-[14px] outline-none transition-colors duration-200 focus:border-ink"
                 />
               </div>
 
               <button
                 type="submit"
-                class="h-[32px] rounded-[7px] border border-border px-[18px] text-[13px] transition-colors duration-200 hover:border-ink hover:bg-soft"
+                class="h-[32px] rounded-[7px] border border-border bg-page px-[18px] text-[14px] transition-colors duration-200 hover:border-ink hover:bg-soft"
               >
                 Search
               </button>
             </form>
 
-            <!-- Desktop sort -->
+            <!-- Sort -->
             <div
               class="sort-control relative justify-self-end"
               data-sort-control
@@ -515,16 +555,21 @@
                 id="desktop-sort-button"
                 data-sort-toggle
                 type="button"
-                class="flex h-[32px] w-[150px] items-center justify-between rounded-full border border-border px-4 text-[13px] outline-none transition-colors duration-200 hover:border-ink focus:border-ink"
+                class="flex h-[32px] w-[180px] items-center justify-between gap-3 rounded-full border border-border bg-page px-4 text-[14px] outline-none transition-colors duration-200 hover:border-ink focus:border-ink"
                 aria-label="Sort listings"
                 aria-expanded="false"
                 aria-controls="desktop-sort-menu"
               >
-                <span data-sort-label> All </span>
+                <span
+                  data-sort-label
+                  class="min-w-0 flex-1 truncate whitespace-nowrap text-left"
+                >
+                  All
+                </span>
 
                 <span
                   data-sort-icon
-                  class="material-symbols-outlined text-[17px] transition-transform duration-200"
+                  class="material-symbols-outlined shrink-0 text-[17px] transition-transform duration-200"
                   aria-hidden="true"
                 >
                   expand_more
@@ -534,12 +579,15 @@
               <div
                 id="desktop-sort-menu"
                 data-sort-menu
-                class="pointer-events-none invisible absolute top-[40px] right-0 z-30 w-[210px] translate-y-1 scale-[0.98] overflow-hidden rounded-[14px] border border-divider bg-page opacity-0 shadow-control transition-all duration-200"
+                role="menu"
+                aria-label="Sort listings"
+                class="pointer-events-none invisible absolute top-[40px] right-0 z-30 w-[210px] origin-top-right translate-y-1 scale-[0.98] overflow-hidden rounded-[14px] border border-divider bg-page opacity-0 shadow-control transition-[opacity,transform,visibility] duration-200 ease-out"
               >
                 <button
                   type="button"
                   data-sort="default"
-                  class="block w-full border-b border-divider px-4 py-3 text-left text-[13px] hover:bg-soft"
+                  role="menuitem"
+                  class="block w-full border-b border-divider px-4 py-3 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
                 >
                   All
                 </button>
@@ -547,7 +595,8 @@
                 <button
                   type="button"
                   data-sort="endingSoon"
-                  class="block w-full border-b border-divider px-4 py-3 text-left text-[13px] hover:bg-soft"
+                  role="menuitem"
+                  class="block w-full border-b border-divider px-4 py-3 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
                 >
                   Ending soon
                 </button>
@@ -555,7 +604,8 @@
                 <button
                   type="button"
                   data-sort="priceLow"
-                  class="block w-full border-b border-divider px-4 py-3 text-left text-[13px] hover:bg-soft"
+                  role="menuitem"
+                  class="block w-full border-b border-divider px-4 py-3 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
                 >
                   Price: low to high
                 </button>
@@ -563,7 +613,8 @@
                 <button
                   type="button"
                   data-sort="priceHigh"
-                  class="block w-full px-4 py-3 text-left text-[13px] hover:bg-soft"
+                  role="menuitem"
+                  class="block w-full px-4 py-3 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
                 >
                   Price: high to low
                 </button>
@@ -573,10 +624,13 @@
         </div>
       </section>
 
-      <!-- Listings -->
+      <!-- ========================================
+           Listings
+      ========================================= -->
+
       <section
         id="listings"
-        class="mt-[22px] lg:mt-0"
+        class="listings mt-[22px] lg:mt-0"
         aria-labelledby="listings-heading"
       >
         <div
@@ -584,18 +638,24 @@
         >
           <h2 id="listings-heading" class="sr-only">Auction listings</h2>
 
+          <!-- Results toolbar -->
           <div
-            class="mx-auto mb-[22px] grid w-full max-w-[380px] grid-cols-[1fr_auto] items-center md:max-w-[588px] lg:mb-[34px] lg:max-w-none"
+            class="listings__toolbar mx-auto mb-[22px] grid w-full max-w-[380px] grid-cols-[1fr_auto] items-center md:max-w-[588px] lg:mb-[34px] lg:max-w-none"
           >
-            <p id="result-count" class="text-[15px]" aria-live="polite">
+            <p
+              id="result-count"
+              class="justify-self-start text-[16px]"
+              aria-live="polite"
+            >
               Loading...
             </p>
 
             <button
               id="filter-button"
               type="button"
-              class="flex h-[36px] items-center gap-2 rounded-full border border-border px-[15px] text-[14px] shadow-control transition-colors duration-200 hover:border-ink hover:bg-soft"
+              class="flex h-[36px] items-center gap-2 justify-self-end rounded-full border border-border bg-page px-[15px] text-[14px] shadow-control transition-colors duration-200 hover:border-ink hover:bg-soft"
               aria-expanded="false"
+              aria-controls="mobile-filter-sheet desktop-filter-drawer"
             >
               <span
                 class="material-symbols-outlined text-[18px]"
@@ -604,10 +664,11 @@
                 filter_list
               </span>
 
-              Filter
+              <span>Filter</span>
             </button>
           </div>
 
+          <!-- Desktop active filters -->
           <div class="hidden lg:block">
             <div
               id="active-filters-desktop"
@@ -617,6 +678,7 @@
             ></div>
           </div>
 
+          <!-- Loading -->
           <div
             id="loading-state"
             class="py-20 text-center text-muted"
@@ -625,15 +687,17 @@
             Loading listings...
           </div>
 
+          <!-- Error -->
           <div
             id="error-state"
             hidden
             class="rounded-xl border border-brand bg-sand p-5"
             role="alert"
           >
-            Could not load listings. Please try again.
+            <p>Could not load listings. Please try again.</p>
           </div>
 
+          <!-- Empty -->
           <div id="empty-state" hidden class="py-24 text-center">
             <h3 class="font-display text-xl font-semibold">
               No listings found
@@ -642,9 +706,10 @@
             <p class="mt-2 text-muted">Try changing your search or filters.</p>
           </div>
 
+          <!-- Listing cards -->
           <div
             id="listing-grid"
-            class="mx-auto grid w-full max-w-[380px] grid-cols-2 gap-x-5 gap-y-[34px] md:max-w-[588px] md:grid-cols-3 md:gap-x-6 lg:max-w-[952px] lg:grid-cols-[repeat(4,220px)] lg:gap-x-6 lg:gap-y-10"
+            class="listings__grid mx-auto grid w-full max-w-[380px] grid-cols-2 gap-x-5 gap-y-[34px] md:max-w-[588px] md:grid-cols-3 md:gap-x-6 lg:max-w-[952px] lg:grid-cols-[repeat(4,220px)] lg:gap-x-6 lg:gap-y-10"
           ></div>
         </div>
       </section>
@@ -665,20 +730,22 @@
       inert
       aria-hidden="true"
       aria-labelledby="mobile-filter-heading"
-      class="fixed inset-x-0 bottom-0 z-50 flex max-h-[88dvh] translate-y-full flex-col rounded-t-[28px] bg-page shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden"
+      class="filter-panel filter-panel--mobile fixed inset-x-0 bottom-0 z-50 flex max-h-[88dvh] translate-y-full flex-col rounded-t-[28px] bg-page shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden"
     >
+      <!-- Drag handle -->
       <div class="flex justify-center pt-3" aria-hidden="true">
         <span class="h-1 w-10 rounded-full bg-border"></span>
       </div>
 
+      <!-- Filter heading -->
       <div
         class="grid min-h-16 grid-cols-[40px_1fr_40px] items-center border-b border-divider px-5"
       >
-        <span></span>
+        <span aria-hidden="true"></span>
 
         <h2
           id="mobile-filter-heading"
-          class="justify-self-center font-display font-semibold"
+          class="justify-self-center font-display text-base font-semibold"
         >
           Filters
         </h2>
@@ -686,20 +753,24 @@
         <button
           data-mobile-filter-close
           type="button"
-          class="flex size-10 items-center justify-center"
+          class="flex size-10 items-center justify-center justify-self-end"
           aria-label="Close filters"
         >
-          <span class="material-symbols-outlined" aria-hidden="true">
+          <span
+            class="material-symbols-outlined text-[26px]"
+            aria-hidden="true"
+          >
             close
           </span>
         </button>
       </div>
 
+      <!-- Filter form -->
       <form id="mobile-filter-form" class="flex min-h-0 flex-1 flex-col">
         <div id="mobile-filter-options" class="flex-1 overflow-y-auto"></div>
 
         <div
-          class="border-t border-divider px-[14px] pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))]"
+          class="border-t border-divider bg-page px-[14px] pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))]"
         >
           <button
             type="submit"
@@ -711,7 +782,7 @@
           <button
             data-clear-all-filters
             type="button"
-            class="mt-2 h-10 w-full text-sm text-muted"
+            class="mt-2 h-10 w-full text-sm text-muted transition-colors duration-150 hover:text-ink"
           >
             Clear all
           </button>
@@ -728,8 +799,9 @@
       inert
       aria-hidden="true"
       aria-labelledby="desktop-filter-heading"
-      class="fixed top-[100px] right-0 bottom-0 z-40 hidden w-[390px] translate-x-full flex-col bg-sand shadow-drawer transition-transform duration-300 ease-out lg:flex"
+      class="filter-panel filter-panel--desktop fixed top-[100px] right-0 bottom-0 z-40 hidden w-[390px] translate-x-full flex-col bg-sand shadow-drawer transition-transform duration-300 ease-out lg:flex"
     >
+      <!-- Filter heading -->
       <div
         class="grid min-h-16 grid-cols-[1fr_auto] items-center border-b border-divider px-6"
       >
@@ -743,19 +815,23 @@
         <button
           data-desktop-filter-close
           type="button"
-          class="flex size-10 items-center justify-center"
+          class="flex size-10 items-center justify-center justify-self-end"
           aria-label="Close filters"
         >
-          <span class="material-symbols-outlined" aria-hidden="true">
+          <span
+            class="material-symbols-outlined text-[20px]"
+            aria-hidden="true"
+          >
             close
           </span>
         </button>
       </div>
 
+      <!-- Filter form -->
       <form id="desktop-filter-form" class="flex min-h-0 flex-1 flex-col">
         <div id="desktop-filter-options" class="flex-1 overflow-y-auto"></div>
 
-        <div class="border-t border-divider p-6">
+        <div class="border-t border-divider bg-sand p-6">
           <button
             type="submit"
             class="h-12 w-full rounded-xl bg-ink font-display font-semibold text-white transition-colors duration-200 hover:bg-brand"
@@ -766,7 +842,7 @@
           <button
             data-clear-all-filters
             type="button"
-            class="mt-2 h-10 w-full text-sm text-muted"
+            class="mt-2 h-10 w-full text-sm text-muted transition-colors duration-150 hover:text-ink"
           >
             Clear all
           </button>
@@ -774,52 +850,235 @@
       </form>
     </aside>
 
+    <!-- Mobile navigation spacing -->
+    <div data-auth-only hidden class="h-20 lg:hidden" aria-hidden="true"></div>
+
     <!-- ========================================
          Footer
     ========================================= -->
 
     <footer class="site-footer bg-sand">
       <div
-        class="mx-auto w-full px-[30px] py-[48px] text-center lg:grid lg:min-h-[330px] lg:max-w-[1280px] lg:grid-cols-3 lg:items-start lg:px-[72px] lg:pt-[82px] lg:text-left"
+        class="site-footer__inner mx-auto w-full px-[30px] py-[48px] text-center lg:grid lg:min-h-[330px] lg:max-w-[1280px] lg:grid-cols-3 lg:items-start lg:px-[72px] lg:pt-[82px] lg:pb-[50px] lg:text-left"
       >
         <!-- Brand -->
-        <div>
-          <a href="./index.html" class="font-display text-[28px] font-semibold">
+        <div class="site-footer__brand">
+          <a
+            href="./index.html"
+            class="font-display text-[24px] font-semibold leading-none lg:text-[20px]"
+          >
             <span class="text-ink">Second</span>
             <span class="text-brand">Story</span>
           </a>
 
-          <p class="mt-2 text-[12px] text-muted lg:hidden">
+          <p class="mt-2 text-[14px] text-muted lg:hidden">
             Made by students for students.
           </p>
+
+          <!-- Mobile socials -->
+          <div
+            class="mt-6 flex items-center justify-center gap-4 lg:hidden"
+            aria-label="Social media"
+          >
+            <!-- Instagram -->
+            <a
+              href="#"
+              aria-label="Instagram"
+              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                class="size-[18px]"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                aria-hidden="true"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+
+                <circle cx="12" cy="12" r="4"></circle>
+
+                <circle
+                  cx="17.5"
+                  cy="6.5"
+                  r="1"
+                  fill="currentColor"
+                  stroke="none"
+                ></circle>
+              </svg>
+            </a>
+
+            <!-- TikTok -->
+            <a
+              href="#"
+              aria-label="TikTok"
+              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                class="size-[18px]"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M14 4v10.2a4.2 4.2 0 1 1-3.4-4.1"></path>
+
+                <path d="M14 4c.4 2.2 1.8 3.7 4 4"></path>
+
+                <path d="M18 8v3c-1.5-.1-2.9-.6-4-1.5"></path>
+              </svg>
+            </a>
+
+            <!-- Facebook -->
+            <a
+              href="#"
+              aria-label="Facebook"
+              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                class="size-[18px]"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M13.6 21v-8h2.7l.4-3.1h-3.1V8c0-.9.3-1.5 1.6-1.5H17V3.7c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5v1.8H7V13h3v8h3.6Z"
+                ></path>
+              </svg>
+            </a>
+          </div>
         </div>
 
-        <!-- Social mobile -->
-        <div
-          class="mt-6 flex justify-center gap-6 lg:hidden"
-          aria-label="Social media"
-        >
-          <a href="#" aria-label="Instagram">◎</a>
-          <a href="#" aria-label="TikTok">♪</a>
-          <a href="#" aria-label="Facebook">f</a>
-        </div>
-
-        <!-- Navigation -->
+        <!-- Footer navigation -->
         <nav
-          class="mt-10 flex items-center justify-center gap-10 text-[12px] lg:mt-0 lg:flex-col lg:gap-[30px] lg:text-[14px] lg:font-semibold"
+          class="site-footer__navigation mt-10 flex items-center justify-center gap-10 text-[14px] lg:mt-0 lg:flex-col lg:gap-[30px] lg:text-[14px] lg:font-semibold"
           aria-label="Footer navigation"
         >
-          <a href="#">Service</a>
-          <a href="#">Q&amp;A</a>
-          <a href="#">About us</a>
+          <!-- Mobile -->
+          <a
+            href="#"
+            class="transition-colors duration-150 hover:text-brand lg:hidden"
+          >
+            Service
+          </a>
+
+          <a
+            href="#"
+            class="transition-colors duration-150 hover:text-brand lg:hidden"
+          >
+            Q&amp;A
+          </a>
+
+          <a
+            href="#"
+            class="transition-colors duration-150 hover:text-brand lg:hidden"
+          >
+            About us
+          </a>
+
+          <!-- Desktop -->
+          <a
+            href="#"
+            class="hidden transition-colors duration-150 hover:text-brand lg:block"
+          >
+            About us
+          </a>
+
+          <a
+            href="#"
+            class="hidden transition-colors duration-150 hover:text-brand lg:block"
+          >
+            T&amp;C
+          </a>
+
+          <a
+            href="#"
+            class="hidden transition-colors duration-150 hover:text-brand lg:block"
+          >
+            Contact
+          </a>
         </nav>
 
         <!-- Desktop socials -->
-        <div class="hidden justify-self-end text-right lg:block">
-          <div class="flex justify-end gap-5" aria-label="Social media">
-            <a href="#" aria-label="Instagram">◎</a>
-            <a href="#" aria-label="TikTok">♪</a>
-            <a href="#" aria-label="Facebook">f</a>
+        <div
+          class="site-footer__socials hidden justify-self-end text-right lg:block"
+        >
+          <div
+            class="flex items-center justify-end gap-4"
+            aria-label="Social media"
+          >
+            <!-- Instagram -->
+            <a
+              href="#"
+              aria-label="Instagram"
+              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                class="size-[18px]"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                aria-hidden="true"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+
+                <circle cx="12" cy="12" r="4"></circle>
+
+                <circle
+                  cx="17.5"
+                  cy="6.5"
+                  r="1"
+                  fill="currentColor"
+                  stroke="none"
+                ></circle>
+              </svg>
+            </a>
+
+            <!-- TikTok -->
+            <a
+              href="#"
+              aria-label="TikTok"
+              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                class="size-[18px]"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M14 4v10.2a4.2 4.2 0 1 1-3.4-4.1"></path>
+
+                <path d="M14 4c.4 2.2 1.8 3.7 4 4"></path>
+
+                <path d="M18 8v3c-1.5-.1-2.9-.6-4-1.5"></path>
+              </svg>
+            </a>
+
+            <!-- Facebook -->
+            <a
+              href="#"
+              aria-label="Facebook"
+              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                class="size-[18px]"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M13.6 21v-8h2.7l.4-3.1h-3.1V8c0-.9.3-1.5 1.6-1.5H17V3.7c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5v1.8H7V13h3v8h3.6Z"
+                ></path>
+              </svg>
+            </a>
           </div>
 
           <p class="mt-7 font-display text-[14px] font-semibold">
@@ -827,61 +1086,102 @@
           </p>
         </div>
 
-        <p class="mt-8 text-center text-[11px] lg:col-span-3 lg:text-[13px]">
-          © 2026 Secondstory AS. All rights reserved.
+        <!-- Copyright -->
+        <p
+          class="site-footer__copyright mt-8 text-center text-[14px] lg:col-span-3 lg:mt-[32px] lg:text-[14px]"
+        >
+          © 2026 Second Story AS. All rights reserved.
         </p>
       </div>
     </footer>
 
-    <!-- Mobile authenticated navigation -->
+    <!-- ========================================
+         Logged in mobile bottom navigation
+    ========================================= -->
+
     <div data-auth-only hidden class="lg:hidden">
       <nav
-        class="fixed inset-x-0 bottom-0 z-30 grid h-20 grid-cols-5 items-end border-t border-divider bg-page px-2 pb-2"
+        class="mobile-nav fixed inset-x-0 bottom-0 z-30 grid h-20 grid-cols-5 items-end border-t border-divider bg-page px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]"
         aria-label="Mobile navigation"
       >
+        <!-- Home -->
         <a
           href="./index.html"
           class="flex flex-col items-center gap-1 text-xs font-semibold"
+          aria-current="page"
         >
-          <span class="material-symbols-outlined">home</span>
-          Home
+          <span
+            class="material-symbols-outlined text-[23px]"
+            aria-hidden="true"
+          >
+            home
+          </span>
+
+          <span>Home</span>
         </a>
 
+        <!-- Search -->
         <a
           href="#search-input-mobile"
           class="flex flex-col items-center gap-1 text-xs text-muted"
         >
-          <span class="material-symbols-outlined">search</span>
-          Search
+          <span
+            class="material-symbols-outlined text-[23px]"
+            aria-hidden="true"
+          >
+            search
+          </span>
+
+          <span>Search</span>
         </a>
 
+        <!-- Create -->
         <a
           href="./create-listing.html"
           class="-mt-8 flex flex-col items-center gap-1 text-xs"
         >
           <span
-            class="flex size-16 items-center justify-center rounded-full bg-ink text-white"
+            class="flex size-16 items-center justify-center rounded-full bg-ink text-white shadow-control"
           >
-            <span class="material-symbols-outlined"> add </span>
+            <span
+              class="material-symbols-outlined text-[30px]"
+              aria-hidden="true"
+            >
+              add
+            </span>
           </span>
 
-          Create
+          <span>Create</span>
         </a>
 
+        <!-- Bids -->
         <a
           href="./profile.html?tab=bids"
           class="flex flex-col items-center gap-1 text-xs text-muted"
         >
-          <span class="material-symbols-outlined">gavel</span>
-          My Bids
+          <span
+            class="material-symbols-outlined text-[23px]"
+            aria-hidden="true"
+          >
+            gavel
+          </span>
+
+          <span>My Bids</span>
         </a>
 
+        <!-- Profile -->
         <a
           href="./profile.html"
           class="flex flex-col items-center gap-1 text-xs text-muted"
         >
-          <span class="material-symbols-outlined">person</span>
-          Profile
+          <span
+            class="material-symbols-outlined text-[23px]"
+            aria-hidden="true"
+          >
+            person
+          </span>
+
+          <span>Profile</span>
         </a>
       </nav>
     </div>

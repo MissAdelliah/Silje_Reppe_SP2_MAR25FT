@@ -1,11 +1,7 @@
 import { getListings } from '../api/listings.js';
-
 import { initHeader } from '../components/header.js';
-
 import { createListingCard } from '../components/listingCard.js';
-
 import { formatTimeLeft, getAuctionStatus } from '../utils/dates.js';
-
 import {
   createEmptyFilters,
   formatFilterLabel,
@@ -396,8 +392,8 @@ function createFilterChip(group, value) {
 
   button.className =
     group === 'category'
-      ? 'inline-flex h-[32px] shrink-0 items-center gap-1.5 rounded-full bg-ink px-3 text-[13px] text-white'
-      : 'inline-flex h-[32px] shrink-0 items-center gap-1.5 rounded-full border border-ink bg-page px-3 text-[13px] text-ink';
+      ? 'inline-flex h-[32px] shrink-0 items-center gap-1.5 rounded-full bg-ink px-3 text-[14px] text-white'
+      : 'inline-flex h-[32px] shrink-0 items-center gap-1.5 rounded-full border border-ink bg-page px-3 text-[14px] text-ink';
 
   button.setAttribute(
     'aria-label',
@@ -429,7 +425,7 @@ function createClearButton(section) {
   button.dataset.clearFilterSection = section;
 
   button.className =
-    'inline-flex h-[32px] shrink-0 items-center rounded-full border border-divider bg-page px-4 text-[13px] text-muted transition-colors duration-150 hover:border-ink hover:text-ink';
+    'inline-flex h-[32px] shrink-0 items-center rounded-full border border-divider bg-page px-4 text-[14px] text-muted transition-colors duration-150 hover:border-ink hover:text-ink';
 
   button.textContent = 'Clear all';
 
