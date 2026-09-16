@@ -89,7 +89,7 @@ const sortOptions = {
   },
 
   titleAZ: {
-    mobileLabel: 'A–Z',
+    mobileLabel: 'A-Z',
     sort: 'title',
     sortOrder: 'asc',
   },
