@@ -1,34 +1,60 @@
-import { apiRequest } from './request.js';
+import { API_BASE_URL } from './config.js';
+
 import { clearUser, saveUser } from '../utils/storage.js';
 
-// Auth
+// API
 
-/**
- * Register a new user.
- * @param {object} userData
- * @returns {Promise<object>}
- */
-export async function registerUser(userData) {
-  return apiRequest('/auth/register', {
-    method: 'POST',
-    body: userData,
-  });
+async function handleAuthResponse(response) {
+  const result = await response.json();
+
+  if (!response.ok) {
+    const message =
+      result.errors?.[0]?.message ||
+      result.message ||
+      'Something went wrong. Please try again.';
+
+    throw new Error(message);
+  }
+
+  return result.data;
 }
 
 /**
- * Login user and save session.
- * @param {string} email
- * @param {string} password
+ * Register a new Noroff student account.
+ * @param {object} user
  * @returns {Promise<object>}
  */
-export async function loginUser(email, password) {
-  const user = await apiRequest('/auth/login', {
+export async function registerUser(user) {
+  const response = await fetch(`${API_BASE_URL}/auth/register`, {
     method: 'POST',
-    body: {
-      email,
-      password,
+
+    headers: {
+      'Content-Type': 'application/json',
     },
+
+    body: JSON.stringify(user),
   });
+
+  return handleAuthResponse(response);
+}
+
+/**
+ * Log in and store the authenticated user.
+ * @param {object} credentials
+ * @returns {Promise<object>}
+ */
+export async function loginUser(credentials) {
+  const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: 'POST',
+
+    headers: {
+      'Content-Type': 'application/json',
+    },
+
+    body: JSON.stringify(credentials),
+  });
+
+  const user = await handleAuthResponse(response);
 
   saveUser(user);
 
@@ -36,7 +62,7 @@ export async function loginUser(email, password) {
 }
 
 /**
- * Log out current user.
+ * Log out the current user.
  */
 export function logoutUser() {
   clearUser();
