@@ -140,19 +140,17 @@ function init() {
     return valid;
   }
 
-  function togglePassword() {
-    const passwordIsVisible = passwordInput.type === 'text';
-    passwordInput.type = passwordIsVisible ? 'password' : 'text';
-
-    const nowVisible = !passwordIsVisible;
-    passwordToggle.setAttribute('aria-pressed', String(nowVisible));
+  function togglePasswordVisibility() {
+    const visible = passwordInput.type === 'text';
+    passwordInput.type = visible ? 'password' : 'text';
+    passwordToggle.setAttribute('aria-pressed', String(!visible));
     passwordToggle.setAttribute(
       'aria-label',
-      nowVisible ? 'Hide password' : 'Show password',
+      visible ? 'Show password' : 'Hide password',
     );
 
-    passwordStatus.textContent = nowVisible ? 'Hide' : 'Show';
-    passwordIcon.textContent = nowVisible ? 'visibility_off' : 'visibility';
+    passwordStatus.textContent = visible ? 'Hiding' : 'Showing';
+    passwordIcon.textContent = visible ? 'visibility_off' : 'visibility';
   }
 
   function setSubmitting(submitting) {
@@ -212,7 +210,7 @@ function init() {
     setAuthMode('register');
   });
 
-  passwordToggle.addEventListener('click', togglePassword);
+  passwordToggle.addEventListener('click', togglePasswordVisibility);
 
   form.addEventListener('submit', handleSubmit);
 

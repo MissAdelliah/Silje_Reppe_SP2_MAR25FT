@@ -18,19 +18,16 @@ function createListingImage(listing) {
     'div',
     'relative aspect-[9/10] w-full overflow-hidden rounded-[14px] bg-soft md:h-[200px] md:w-[180px] md:aspect-auto lg:h-[275px] lg:w-[220px] lg:rounded-none',
   );
-  const image = document.createElement('img');
   const media = listing.media?.[0];
+  const image = document.createElement('img');
 
-  image.src = media?.url || './assets/images/hero.jpeg';
-  image.alt = media?.alt || listing.title || 'Auction listing';
+  image.src = media.url;
+  image.alt = media.alt || listing.title || 'Auction listing';
   image.loading = 'lazy';
   image.className =
     'h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]';
-
-  // Prevent broken image icon if an external image URL fails.
   image.addEventListener('error', () => {
-    image.src = './assets/images/hero.jpeg';
-    image.alt = 'Image unavailable';
+    article.remove();
   });
 
   wrapper.append(image);

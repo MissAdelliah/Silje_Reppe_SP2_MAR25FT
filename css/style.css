@@ -1726,6 +1726,9 @@
       font-size: var(--text-xl);
       line-height: var(--tw-leading, var(--text-xl--line-height));
     }
+    .lg\:text-\[16px\] {
+      font-size: 16px;
+    }
     .lg\:font-semibold {
       --tw-font-weight: var(--font-weight-semibold);
       font-weight: var(--font-weight-semibold);

@@ -3,9 +3,7 @@ import { setupDrawer } from '../components/drawer.js';
 import { initFooter } from '../components/footer.js';
 import { initHeader } from '../components/header.js';
 import { createListingCard } from '../components/listingCard.js';
-
 import { formatTimeLeft, getAuctionStatusDetails } from '../utils/dates.js';
-
 import {
   createEmptyFilters,
   formatFilterLabel,
@@ -133,11 +131,44 @@ const filterDetails = {
 };
 
 // Listings
+function hasWorkingImage(listing) {
+  return new Promise((resolve) => {
+    const imageUrl = listing.media?.[0]?.url?.trim();
+
+    if (!imageUrl) {
+      resolve(false);
+      return;
+    }
+
+    try {
+      new URL(imageUrl);
+    } catch {
+      resolve(false);
+      return;
+    }
+
+    const image = new Image();
+    image.onload = () => resolve(true);
+    image.onerror = () => resolve(false);
+    image.src = imageUrl;
+  });
+}
+
+function isCompleteListing(listing) {
+  const hasTitle = Boolean(listing.title?.trim());
+  const hasDescription = Boolean(listing.description?.trim());
+  const endDate = new Date(listing.endsAt);
+  const hasValidEndTime = !Number.isNaN(endDate.getTime());
+
+  return hasTitle && hasDescription && hasValidEndTime;
+}
 
 function getVisibleListings() {
-  const listings = state.listings.filter((listing) => {
-    return matchesFilters(listing, state.filters);
-  });
+  const listings = state.listings
+    .filter(isCompleteListing)
+    .filter((listing) => {
+      return matchesFilters(listing, state.filters);
+    });
 
   const clientSort = sortOptions[state.sort]?.clientSort;
 
@@ -164,13 +195,11 @@ function renderListings() {
   const listings = getVisibleListings();
 
   listingGrid.innerHTML = '';
-
   resultCount.textContent = `${listings.length} ${
     listings.length === 1 ? 'item' : 'items'
   }`;
 
   emptyState.hidden = listings.length > 0;
-
   listings.forEach((listing) => {
     listingGrid.append(createListingCard(listing));
   });
@@ -227,7 +256,6 @@ function updateSortControls() {
 
   sortControls.forEach((control) => {
     const label = control.querySelector('[data-sort-label]');
-
     const options = control.querySelectorAll('[data-sort]');
 
     if (label) {
@@ -236,9 +264,7 @@ function updateSortControls() {
 
     options.forEach((option) => {
       const selected = option.dataset.sort === state.sort;
-
       option.classList.toggle('font-semibold', selected);
-
       option.setAttribute('aria-pressed', String(selected));
     });
   });
@@ -246,9 +272,7 @@ function updateSortControls() {
 
 function closeSortMenu(control) {
   const button = control.querySelector('[data-sort-toggle]');
-
   const menu = control.querySelector('[data-sort-menu]');
-
   const icon = control.querySelector('[data-sort-icon]');
 
   if (!button || !menu) return;
@@ -284,9 +308,7 @@ function closeSortMenus(exceptControl = null) {
 
 function openSortMenu(control) {
   const button = control.querySelector('[data-sort-toggle]');
-
   const menu = control.querySelector('[data-sort-menu]');
-
   const icon = control.querySelector('[data-sort-icon]');
 
   if (!button || !menu) return;
@@ -350,9 +372,7 @@ function setupSort() {
       state.sort = option.dataset.sort;
 
       updateSortControls();
-
       closeSortMenu(control);
-
       loadListings();
     });
   });
@@ -376,9 +396,7 @@ function createFilterChip(group, value) {
   const button = document.createElement('button');
 
   button.type = 'button';
-
   button.dataset.removeFilter = value;
-
   button.dataset.filterGroup = group;
 
   button.className =
@@ -392,17 +410,12 @@ function createFilterChip(group, value) {
   );
 
   const text = document.createElement('span');
-
   text.textContent = formatFilterLabel(value);
 
   const close = document.createElement('span');
-
   close.className = 'material-symbols-outlined text-[18px] leading-none';
-
   close.textContent = 'close';
-
   close.setAttribute('aria-hidden', 'true');
-
   button.append(text, close);
 
   return button;
@@ -413,7 +426,6 @@ function createClearButton(section) {
 
   button.type = 'button';
   button.dataset.clearFilterSection = section;
-
   button.className =
     'inline-flex min-h-8 shrink-0 items-center rounded-full border border-divider bg-page px-4 text-sm text-muted transition-colors duration-150 hover:border-ink hover:text-ink';
   button.textContent = 'Clear all';
@@ -451,7 +463,6 @@ function renderFilterChips(container) {
   container.innerHTML = '';
 
   const primary = createFilterRow(primaryFilterGroups, 'primary');
-
   const secondary = createFilterRow(secondaryFilterGroups, 'secondary');
 
   if (!primary && !secondary) {
@@ -480,23 +491,17 @@ function renderActiveFilters() {
 
 function createCheckbox(group, value) {
   const label = document.createElement('label');
-
   label.className = 'flex cursor-pointer items-center gap-3 py-1 text-sm';
 
   const input = document.createElement('input');
-
   input.type = 'checkbox';
   input.value = value;
   input.dataset.filterGroup = group;
-
   input.checked = state.filters[group]?.includes(value) ?? false;
-
   input.className = 'size-4 accent-ink';
 
   const text = document.createElement('span');
-
   text.textContent = formatFilterLabel(value);
-
   label.append(input, text);
 
   return label;
@@ -504,47 +509,32 @@ function createCheckbox(group, value) {
 
 function createDetailsGroup({ label, icon, groups, available }) {
   const details = document.createElement('details');
-
   details.className = 'group border-b border-divider';
 
   const summary = document.createElement('summary');
-
   summary.className =
     'flex min-h-[58px] cursor-pointer list-none items-center justify-between px-5 text-sm';
 
   const left = document.createElement('span');
-
   left.className = 'flex items-center gap-4';
 
   const iconElement = document.createElement('span');
-
   iconElement.className = 'material-symbols-outlined text-[18px]';
-
   iconElement.textContent = icon;
-
   iconElement.setAttribute('aria-hidden', 'true');
 
   const title = document.createElement('span');
-
   title.textContent = label;
 
   const arrow = document.createElement('span');
-
   arrow.className =
     'material-symbols-outlined text-[18px] transition-transform duration-200 group-open:rotate-180';
-
   arrow.textContent = 'expand_more';
-
   arrow.setAttribute('aria-hidden', 'true');
-
   left.append(iconElement, title);
-
   summary.append(left, arrow);
-
   const content = document.createElement('div');
-
   content.className = 'space-y-2 px-5 pb-5 pl-14';
-
   let optionCount = 0;
 
   groups.forEach((group) => {
@@ -557,11 +547,8 @@ function createDetailsGroup({ label, icon, groups, available }) {
 
   if (!optionCount) {
     const message = document.createElement('p');
-
     message.className = 'text-sm text-muted';
-
     message.textContent = 'No options available.';
-
     content.append(message);
   }
 
@@ -590,9 +577,7 @@ function renderFilterOptions(container) {
     container.append(
       createDetailsGroup({
         label: filterDetails[group].label,
-
         icon: filterDetails[group].icon,
-
         groups: [group],
         available,
       }),
@@ -602,7 +587,6 @@ function renderFilterOptions(container) {
 
 function renderFilterPanels() {
   renderFilterOptions(mobileFilterOptions);
-
   renderFilterOptions(desktopFilterOptions);
 }
 
@@ -624,7 +608,6 @@ function applyFilters(filters) {
   state.filters = filters;
 
   saveFilters(filters);
-
   renderActiveFilters();
   renderFilterPanels();
   renderListings();
@@ -660,17 +643,11 @@ function setupFilterDrawers() {
   if (mobileFilterSheet) {
     mobileFilterController = setupDrawer({
       trigger: filterButton,
-
       panel: mobileFilterSheet,
-
       backdrop: mobileFilterBackdrop,
-
       closeButtons: [mobileFilterClose],
-
       openClasses: ['translate-y-0'],
-
       closedClasses: ['translate-y-full'],
-
       bindTrigger: false,
     });
   }
@@ -678,17 +655,11 @@ function setupFilterDrawers() {
   if (desktopFilterPanel) {
     desktopFilterController = setupDrawer({
       trigger: filterButton,
-
       panel: desktopFilterPanel,
-
       closeButtons: [desktopFilterClose],
-
       openClasses: ['translate-x-0'],
-
       closedClasses: ['translate-x-full'],
-
       lockScroll: false,
-
       bindTrigger: false,
     });
   }
@@ -709,9 +680,7 @@ function setupFilterDrawers() {
 function setupFilterEvents() {
   mobileFilterForm?.addEventListener('submit', (event) => {
     event.preventDefault();
-
     applyFilters(readFilterForm(mobileFilterForm));
-
     mobileFilterController?.close();
   });
 
@@ -731,11 +700,7 @@ function setupFilterEvents() {
     const remove = event.target.closest('[data-remove-filter]');
 
     if (remove) {
-      removeFilter(
-        remove.dataset.filterGroup,
-
-        remove.dataset.removeFilter,
-      );
+      removeFilter(remove.dataset.filterGroup, remove.dataset.removeFilter);
 
       return;
     }
@@ -783,7 +748,6 @@ function updateTimeDisplays() {
     const details = getAuctionStatusDetails(element.dataset.statusEndsAt);
 
     dot.classList.remove('bg-open', 'bg-ending', 'bg-muted');
-
     dot.classList.add(details.dotClass);
 
     text.textContent = details.label;
@@ -794,11 +758,8 @@ function updateTimeDisplays() {
 
 async function loadListings() {
   requestController?.abort();
-
   const controller = new AbortController();
-
   requestController = controller;
-
   loadingState.hidden = false;
   errorState.hidden = true;
   emptyState.hidden = true;
