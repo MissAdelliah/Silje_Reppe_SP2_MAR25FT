@@ -9,7 +9,6 @@
 
     <title>Register / Log in | Second Story</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,107 +18,21 @@
       rel="stylesheet"
     />
 
-    <!-- Material Symbols -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
 
     <link rel="stylesheet" href="./css/style.css" />
-
-    <script type="module" src="./js/pages/auth.js"></script>
   </head>
 
   <body class="flex min-h-dvh flex-col bg-page text-ink">
-    <!-- ========================================
-         Header
-    ========================================= -->
-
-    <header class="site-header">
-      <div
-        class="flex h-[68px] w-full items-center justify-between px-[9px] lg:h-[100px] lg:px-[130px]"
-      >
-        <a
-          href="./index.html"
-          class="font-display text-[20px] font-semibold leading-none tracking-[-0.02em] sm:text-[24px] lg:text-[32px]"
-          aria-label="Second Story home"
-        >
-          <span class="text-ink">Second</span>
-          <span class="text-ink lg:text-brand">Story</span>
-        </a>
-
-        <!-- Mobile menu -->
-        <button
-          id="auth-menu-button"
-          type="button"
-          class="flex size-11 flex-col items-center justify-center gap-[5px] lg:hidden"
-          aria-label="Open navigation menu"
-          aria-expanded="false"
-          aria-controls="auth-mobile-menu"
-        >
-          <span class="h-[1.5px] w-[20px] bg-ink"></span>
-
-          <span class="h-[1.5px] w-[20px] bg-ink"></span>
-
-          <span class="h-[1.5px] w-[20px] bg-ink"></span>
-        </button>
-      </div>
-    </header>
-
-    <!-- Mobile menu backdrop -->
-    <div
-      id="auth-menu-backdrop"
-      hidden
-      class="fixed inset-0 z-40 bg-black/30 opacity-0 transition-opacity duration-300 lg:hidden"
-    ></div>
-
-    <!-- Mobile menu -->
-    <aside
-      id="auth-mobile-menu"
-      inert
-      aria-hidden="true"
-      class="fixed inset-y-0 right-0 z-50 flex w-[min(86%,340px)] translate-x-full flex-col bg-page px-6 shadow-drawer transition-transform duration-300 ease-out lg:hidden"
-    >
-      <div
-        class="flex h-[82px] items-center justify-between border-b border-divider"
-      >
-        <span class="font-display text-[22px] font-semibold">
-          Second Story
-        </span>
-
-        <button
-          id="auth-menu-close"
-          type="button"
-          class="flex size-10 items-center justify-center"
-          aria-label="Close navigation menu"
-        >
-          <span class="material-symbols-outlined" aria-hidden="true">
-            close
-          </span>
-        </button>
-      </div>
-
-      <nav class="pt-6" aria-label="Mobile navigation">
-        <a href="./index.html" class="block border-b border-divider py-4">
-          Home
-        </a>
-
-        <a
-          href="./index.html#listings"
-          class="block border-b border-divider py-4"
-        >
-          Browse listings
-        </a>
-      </nav>
-    </aside>
-
-    <!-- ========================================
-         Authentication
-    ========================================= -->
+    <!-- Logo-only shared header -->
+    <header id="site-header" data-header-variant="minimal"></header>
 
     <main class="flex flex-1 items-start lg:items-center">
       <div
-        class="mx-auto w-full px-[20px] pt-[10px] pb-[58px] sm:max-w-[520px] sm:px-[30px] lg:grid lg:min-h-[620px] lg:max-w-[1260px] lg:grid-cols-[500px_420px] lg:items-center lg:justify-center lg:gap-[105px] lg:px-[40px] lg:pt-0 lg:pb-[65px]"
+        class="mx-auto w-full px-5 pt-8 pb-16 sm:max-w-[520px] sm:px-[30px] lg:grid lg:min-h-[620px] lg:max-w-[1260px] lg:grid-cols-[500px_420px] lg:items-center lg:justify-center lg:gap-[105px] lg:px-10 lg:pt-0 lg:pb-16"
       >
         <!-- Desktop image -->
         <div class="hidden overflow-hidden lg:block">
@@ -130,27 +43,22 @@
           />
         </div>
 
-        <!-- Form content -->
         <section
           class="mx-auto w-full max-w-[420px]"
           aria-labelledby="auth-heading"
         >
           <h1 id="auth-heading" class="sr-only">Register or log in</h1>
 
-          <!-- Auth tabs -->
+          <!-- Login / register -->
           <div
-            class="mb-[44px] flex items-end justify-center gap-[26px] lg:mb-[62px] lg:justify-start lg:gap-[18px]"
-            role="tablist"
-            aria-label="Authentication"
+            class="mb-11 flex items-end justify-center gap-7 lg:mb-16 lg:justify-start lg:gap-5"
+            aria-label="Authentication mode"
           >
             <button
               id="login-tab"
               type="button"
-              role="tab"
-              data-auth-mode="login"
-              aria-selected="true"
-              aria-controls="auth-form"
-              class="border-b border-ink px-[3px] pb-[5px] font-display text-[14px] font-semibold text-brand transition-colors duration-200 sm:text-[16px] lg:px-[5px] lg:pb-[9px] lg:text-[20px]"
+              aria-pressed="true"
+              class="border-b border-ink px-1 pb-2 font-display text-base font-semibold text-brand transition-colors duration-200 lg:text-xl"
             >
               Log in
             </button>
@@ -158,23 +66,17 @@
             <button
               id="register-tab"
               type="button"
-              role="tab"
-              data-auth-mode="register"
-              aria-selected="false"
-              aria-controls="auth-form"
-              class="border-b border-transparent px-[3px] pb-[5px] font-display text-[14px] font-semibold text-muted transition-colors duration-200 hover:text-ink sm:text-[16px] lg:px-[5px] lg:pb-[9px] lg:text-[20px]"
+              aria-pressed="false"
+              class="border-b border-transparent px-1 pb-2 font-display text-base font-semibold text-muted transition-colors duration-200 hover:text-ink lg:text-xl"
             >
               Register
             </button>
           </div>
 
-          <form id="auth-form" novalidate>
-            <!-- Name -->
+          <form id="auth-form" novalidate class="space-y-6">
+            <!-- Name: register only -->
             <div id="name-group" hidden>
-              <label
-                for="name"
-                class="block text-[14px] font-semibold sm:text-[14px]"
-              >
+              <label for="name" class="block text-sm font-semibold">
                 Name
               </label>
 
@@ -187,22 +89,15 @@
                 spellcheck="false"
                 placeholder="Isabella_Eriksen"
                 aria-describedby="name-error"
-                class="mt-[8px] h-[29px] w-full rounded-[8px] border border-border bg-page px-[12px] text-[14px] outline-none transition-colors duration-200 placeholder:text-border focus:border-ink sm:h-[42px] sm:text-[14px] lg:mt-[10px] lg:h-[44px] lg:rounded-[10px] lg:px-[16px]"
+                class="mt-2 h-11 w-full rounded-lg border border-border bg-page px-4 text-base outline-none transition-colors duration-200 placeholder:text-border focus:border-ink"
               />
 
-              <p
-                id="name-error"
-                hidden
-                class="mt-[5px] text-[14px] text-brand"
-              ></p>
+              <p id="name-error" hidden class="mt-1.5 text-sm text-brand"></p>
             </div>
 
             <!-- Email -->
-            <div id="email-group">
-              <label
-                for="email"
-                class="block text-[14px] font-semibold sm:text-[14px]"
-              >
+            <div>
+              <label for="email" class="block text-sm font-semibold">
                 Email
               </label>
 
@@ -210,32 +105,24 @@
                 id="email"
                 name="email"
                 type="email"
-                inputmode="email"
                 autocomplete="email"
                 autocapitalize="none"
                 spellcheck="false"
-                placeholder="Isabella@stud.noroff.no"
+                placeholder="isabella@stud.noroff.no"
                 aria-describedby="email-error"
-                class="mt-[8px] h-[29px] w-full rounded-[8px] border border-border bg-page px-[12px] text-[14px] outline-none transition-colors duration-200 placeholder:text-border focus:border-ink sm:h-[42px] sm:text-[14px] lg:mt-[10px] lg:h-[44px] lg:rounded-[10px] lg:px-[16px]"
+                class="mt-2 h-11 w-full rounded-lg border border-border bg-page px-4 text-base outline-none transition-colors duration-200 placeholder:text-border focus:border-ink"
               />
 
-              <p
-                id="email-error"
-                hidden
-                class="mt-[5px] text-[14px] text-brand"
-              ></p>
+              <p id="email-error" hidden class="mt-1.5 text-sm text-brand"></p>
             </div>
 
             <!-- Password -->
-            <div class="mt-[17px] sm:mt-[24px] lg:mt-[30px]">
-              <label
-                for="password"
-                class="block text-[14px] font-semibold sm:text-[14px]"
-              >
+            <div>
+              <label for="password" class="block text-sm font-semibold">
                 Password
               </label>
 
-              <div class="relative mt-[8px] lg:mt-[10px]">
+              <div class="relative mt-2">
                 <input
                   id="password"
                   name="password"
@@ -243,19 +130,19 @@
                   autocomplete="current-password"
                   placeholder="Password"
                   aria-describedby="password-error"
-                  class="h-[29px] w-full rounded-[8px] border border-border bg-page pr-[72px] pl-[12px] text-[14px] outline-none transition-colors duration-200 placeholder:text-border focus:border-ink sm:h-[42px] sm:text-[14px] lg:h-[44px] lg:rounded-[10px] lg:pr-[86px] lg:pl-[16px]"
+                  class="h-11 w-full rounded-lg border border-border bg-page pr-24 pl-4 text-base outline-none transition-colors duration-200 placeholder:text-border focus:border-ink"
                 />
 
                 <button
                   id="password-toggle"
                   type="button"
-                  class="absolute top-1/2 right-[10px] flex -translate-y-1/2 items-center gap-[4px] text-[14px] text-muted transition-colors duration-150 hover:text-ink lg:right-[14px] lg:text-[14px]"
+                  class="absolute top-1/2 right-2 flex min-h-10 -translate-y-1/2 items-center gap-1.5 px-2 text-sm text-muted transition-colors duration-150 hover:text-ink"
                   aria-label="Show password"
                   aria-pressed="false"
                 >
                   <span
                     id="password-icon"
-                    class="material-symbols-outlined text-[14px] lg:text-[16px]"
+                    class="material-symbols-outlined text-[18px]"
                     aria-hidden="true"
                   >
                     visibility
@@ -268,32 +155,29 @@
               <p
                 id="password-error"
                 hidden
-                class="mt-[5px] text-[14px] text-brand"
+                class="mt-1.5 text-sm text-brand"
               ></p>
             </div>
 
-            <!-- Description -->
             <p
               id="auth-description"
-              class="mt-[42px] text-center text-[14px] text-muted sm:text-[12px] lg:mt-[62px]"
+              class="pt-5 text-center text-sm text-muted lg:pt-8"
             >
               Sign in to bid and create listings.
             </p>
 
-            <!-- Server error -->
             <div
               id="form-error"
               hidden
-              class="mt-3 rounded-[8px] border border-brand/30 bg-sand px-3 py-2 text-[14px] text-brand"
+              class="rounded-lg border border-brand/30 bg-sand px-3 py-2 text-sm text-brand"
               role="alert"
               aria-live="assertive"
             ></div>
 
-            <!-- Submit -->
             <button
               id="submit-button"
               type="submit"
-              class="mt-[12px] flex h-[32px] w-full items-center justify-center rounded-[8px] bg-ink font-display text-[14px] font-medium text-white transition-colors duration-200 hover:bg-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-not-allowed disabled:opacity-60 sm:h-[46px] sm:text-[14px] lg:mt-[13px] lg:h-[48px] lg:rounded-[9px] lg:text-[16px]"
+              class="flex h-12 w-full items-center justify-center rounded-lg bg-ink font-display text-base font-medium text-white transition-colors duration-200 hover:bg-brand disabled:cursor-not-allowed disabled:opacity-60"
             >
               <span id="submit-text"> Log in </span>
 
@@ -305,10 +189,9 @@
               ></span>
             </button>
 
-            <!-- Cancel -->
             <a
               href="./index.html"
-              class="mt-[8px] flex h-[32px] w-full items-center justify-center text-[14px] transition-colors duration-150 hover:text-brand lg:hidden"
+              class="flex min-h-11 w-full items-center justify-center text-sm transition-colors duration-150 hover:text-brand lg:hidden"
             >
               Cancel
             </a>
@@ -317,246 +200,9 @@
       </div>
     </main>
 
-    <!-- ========================================
-         Footer
-    ========================================= -->
+    <footer id="site-footer"></footer>
 
-    <footer class="site-footer bg-sand">
-      <div
-        class="site-footer__inner mx-auto w-full px-[30px] py-[48px] text-center lg:grid lg:min-h-[330px] lg:max-w-[1280px] lg:grid-cols-3 lg:items-start lg:px-[72px] lg:pt-[82px] lg:pb-[50px] lg:text-left"
-      >
-        <!-- Brand -->
-        <div class="site-footer__brand">
-          <a
-            href="./index.html"
-            class="font-display text-[24px] font-semibold leading-none lg:text-[20px]"
-          >
-            <span class="text-ink">Second</span>
-            <span class="text-brand">Story</span>
-          </a>
-
-          <p class="mt-2 text-[14px] text-muted lg:hidden">
-            Made by students for students.
-          </p>
-
-          <!-- Mobile socials -->
-          <div
-            class="mt-6 flex items-center justify-center gap-4 lg:hidden"
-            aria-label="Social media"
-          >
-            <!-- Instagram -->
-            <a
-              href="#"
-              aria-label="Instagram"
-              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                class="size-[18px]"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                aria-hidden="true"
-              >
-                <rect x="3" y="3" width="18" height="18" rx="5"></rect>
-
-                <circle cx="12" cy="12" r="4"></circle>
-
-                <circle
-                  cx="17.5"
-                  cy="6.5"
-                  r="1"
-                  fill="currentColor"
-                  stroke="none"
-                ></circle>
-              </svg>
-            </a>
-
-            <!-- TikTok -->
-            <a
-              href="#"
-              aria-label="TikTok"
-              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                class="size-[18px]"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M14 4v10.2a4.2 4.2 0 1 1-3.4-4.1"></path>
-
-                <path d="M14 4c.4 2.2 1.8 3.7 4 4"></path>
-
-                <path d="M18 8v3c-1.5-.1-2.9-.6-4-1.5"></path>
-              </svg>
-            </a>
-
-            <!-- Facebook -->
-            <a
-              href="#"
-              aria-label="Facebook"
-              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                class="size-[18px]"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  d="M13.6 21v-8h2.7l.4-3.1h-3.1V8c0-.9.3-1.5 1.6-1.5H17V3.7c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5v1.8H7V13h3v8h3.6Z"
-                ></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        <!-- Footer navigation -->
-        <nav
-          class="site-footer__navigation mt-10 flex items-center justify-center gap-10 text-[14px] lg:mt-0 lg:flex-col lg:gap-[30px] lg:text-[14px] lg:font-semibold"
-          aria-label="Footer navigation"
-        >
-          <!-- Mobile -->
-          <a
-            href="#"
-            class="transition-colors duration-150 hover:text-brand lg:hidden"
-          >
-            Service
-          </a>
-
-          <a
-            href="#"
-            class="transition-colors duration-150 hover:text-brand lg:hidden"
-          >
-            Q&amp;A
-          </a>
-
-          <a
-            href="#"
-            class="transition-colors duration-150 hover:text-brand lg:hidden"
-          >
-            About us
-          </a>
-
-          <!-- Desktop -->
-          <a
-            href="#"
-            class="hidden transition-colors duration-150 hover:text-brand lg:block"
-          >
-            About us
-          </a>
-
-          <a
-            href="#"
-            class="hidden transition-colors duration-150 hover:text-brand lg:block"
-          >
-            T&amp;C
-          </a>
-
-          <a
-            href="#"
-            class="hidden transition-colors duration-150 hover:text-brand lg:block"
-          >
-            Contact
-          </a>
-        </nav>
-
-        <!-- Desktop socials -->
-        <div
-          class="site-footer__socials hidden justify-self-end text-right lg:block"
-        >
-          <div
-            class="flex items-center justify-end gap-4"
-            aria-label="Social media"
-          >
-            <!-- Instagram -->
-            <a
-              href="#"
-              aria-label="Instagram"
-              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                class="size-[18px]"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                aria-hidden="true"
-              >
-                <rect x="3" y="3" width="18" height="18" rx="5"></rect>
-
-                <circle cx="12" cy="12" r="4"></circle>
-
-                <circle
-                  cx="17.5"
-                  cy="6.5"
-                  r="1"
-                  fill="currentColor"
-                  stroke="none"
-                ></circle>
-              </svg>
-            </a>
-
-            <!-- TikTok -->
-            <a
-              href="#"
-              aria-label="TikTok"
-              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                class="size-[18px]"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M14 4v10.2a4.2 4.2 0 1 1-3.4-4.1"></path>
-
-                <path d="M14 4c.4 2.2 1.8 3.7 4 4"></path>
-
-                <path d="M18 8v3c-1.5-.1-2.9-.6-4-1.5"></path>
-              </svg>
-            </a>
-
-            <!-- Facebook -->
-            <a
-              href="#"
-              aria-label="Facebook"
-              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                class="size-[18px]"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  d="M13.6 21v-8h2.7l.4-3.1h-3.1V8c0-.9.3-1.5 1.6-1.5H17V3.7c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5v1.8H7V13h3v8h3.6Z"
-                ></path>
-              </svg>
-            </a>
-          </div>
-
-          <p class="mt-7 font-display text-[14px] font-semibold">
-            Follow our socials
-          </p>
-        </div>
-
-        <!-- Copyright -->
-        <p
-          class="site-footer__copyright mt-8 text-center text-[14px] lg:col-span-3 lg:mt-[32px] lg:text-[14px]"
-        >
-          © 2026 Second Story AS. All rights reserved.
-        </p>
-      </div>
-    </footer>
+    <!-- Keep the module here so the HTML definitely exists first -->
+    <script type="module" src="./js/pages/auth.js"></script>
   </body>
 </html>

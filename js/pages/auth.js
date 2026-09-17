@@ -1,327 +1,209 @@
 import { loginUser, registerUser } from '../api/auth.js';
-
+import { initFooter } from '../components/footer.js';
+import { initHeader } from '../components/header.js';
 import {
-  validateEmail,
-  validateName,
   validatePassword,
+  validateStudentEmail,
+  validateUsername,
 } from '../utils/validation.js';
 
-// DOM
+function init() {
+  const form = document.querySelector('#auth-form');
+  const loginTab = document.querySelector('#login-tab');
+  const registerTab = document.querySelector('#register-tab');
+  const nameGroup = document.querySelector('#name-group');
+  const nameInput = document.querySelector('#name');
+  const emailInput = document.querySelector('#email');
+  const passwordInput = document.querySelector('#password');
+  const passwordToggle = document.querySelector('#password-toggle');
+  const passwordIcon = document.querySelector('#password-icon');
+  const passwordStatus = document.querySelector('#password-status');
+  const description = document.querySelector('#auth-description');
+  const formError = document.querySelector('#form-error');
+  const submitButton = document.querySelector('#submit-button');
+  const submitText = document.querySelector('#submit-text');
+  const submitSpinner = document.querySelector('#submit-spinner');
 
-const form = document.querySelector('#auth-form');
-const loginTab = document.querySelector('#login-tab');
-const registerTab = document.querySelector('#register-tab');
-const nameGroup = document.querySelector('#name-group');
-const nameInput = document.querySelector('#name');
-const emailGroup = document.querySelector('#email-group');
-const emailInput = document.querySelector('#email');
-const passwordInput = document.querySelector('#password');
-const passwordToggle = document.querySelector('#password-toggle');
-const passwordIcon = document.querySelector('#password-icon');
-const passwordStatus = document.querySelector('#password-status');
-const description = document.querySelector('#auth-description');
-const formError = document.querySelector('#form-error');
-const submitButton = document.querySelector('#submit-button');
-const submitText = document.querySelector('#submit-text');
-const submitSpinner = document.querySelector('#submit-spinner');
+  // Stop here if the wrong HTML is loaded.
+  if (
+    !form ||
+    !loginTab ||
+    !registerTab ||
+    !nameGroup ||
+    !nameInput ||
+    !emailInput ||
+    !passwordInput ||
+    !passwordToggle ||
+    !passwordIcon ||
+    !passwordStatus ||
+    !description ||
+    !formError ||
+    !submitButton ||
+    !submitText ||
+    !submitSpinner
+  ) {
+    console.error(
+      'Auth page could not initialise because required HTML elements are missing.',
+    );
 
-// Mobile navigation
-
-const menuButton = document.querySelector('#auth-menu-button');
-const menu = document.querySelector('#auth-mobile-menu');
-const menuClose = document.querySelector('#auth-menu-close');
-const menuBackdrop = document.querySelector('#auth-menu-backdrop');
-
-// State
-
-let authMode = 'login';
-let isSubmitting = false;
-
-// Helpers
-
-function getInitialMode() {
-  const params = new URLSearchParams(window.location.search);
-
-  return params.get('mode') === 'register' ? 'register' : 'login';
-}
-
-function getFieldError(input) {
-  if (!input) {
-    return null;
-  }
-
-  return document.querySelector(`#${input.id}-error`);
-}
-
-function clearFieldError(input) {
-  if (!input) {
     return;
   }
 
-  const error = getFieldError(input);
-  input.classList.remove('border-brand');
-  input.classList.add('border-border');
-  input.removeAttribute('aria-invalid');
+  let authMode = 'login';
+  let isSubmitting = false;
 
-  if (error) {
-    error.textContent = '';
-    error.hidden = true;
-  }
-}
+  function setFieldError(input, message) {
+    const error = document.querySelector(`#${input.id}-error`);
 
-function showFieldError(input, message) {
-  if (!input) {
-    return;
-  }
+    input.setAttribute('aria-invalid', String(Boolean(message)));
 
-  const error = getFieldError(input);
-  input.classList.remove('border-border');
-  input.classList.add('border-brand');
-  input.setAttribute('aria-invalid', 'true');
+    if (!error) return;
 
-  if (error) {
     error.textContent = message;
-    error.hidden = false;
-  }
-}
-
-function clearFormError() {
-  formError.textContent = '';
-  formError.hidden = true;
-}
-
-function showFormError(message) {
-  formError.textContent = message;
-  formError.hidden = false;
-}
-
-function clearErrors() {
-  clearFieldError(nameInput);
-  clearFieldError(emailInput);
-  clearFieldError(passwordInput);
-  clearFormError();
-}
-
-// Auth mode
-
-function setTabState(tab, isActive) {
-  tab.setAttribute('aria-selected', String(isActive));
-  tab.classList.toggle('text-brand', isActive);
-  tab.classList.toggle('text-muted', !isActive);
-  tab.classList.toggle('border-ink', isActive);
-  tab.classList.toggle('border-transparent', !isActive);
-}
-
-function setAuthMode(mode) {
-  authMode = mode === 'register' ? 'register' : 'login';
-
-  const isRegister = authMode === 'register';
-
-  clearErrors();
-
-  // Register has an additional name field.
-  nameGroup.hidden = !isRegister;
-  nameInput.required = isRegister;
-
-  emailGroup.classList.toggle('mt-[17px]', isRegister);
-  emailGroup.classList.toggle('sm:mt-[24px]', isRegister);
-  emailGroup.classList.toggle('lg:mt-[30px]', isRegister);
-  passwordInput.autocomplete = isRegister ? 'new-password' : 'current-password';
-  description.textContent = isRegister
-    ? 'Register to bid and create listings.'
-    : 'Sign in to bid and create listings.';
-
-  submitText.textContent = isRegister ? 'Register' : 'Log in';
-
-  setTabState(loginTab, !isRegister);
-  setTabState(registerTab, isRegister);
-}
-
-// Validation
-
-function validateField(input) {
-  let message = '';
-
-  if (input === nameInput) {
-    message = validateName(input.value);
+    error.hidden = !message;
   }
 
-  if (input === emailInput) {
-    message = validateEmail(input.value);
+  function clearErrors() {
+    [nameInput, emailInput, passwordInput].forEach((input) => {
+      setFieldError(input, '');
+    });
+
+    formError.textContent = '';
+    formError.hidden = true;
   }
 
-  if (input === passwordInput) {
-    message = validatePassword(input.value);
+  function showFormError(message) {
+    formError.textContent = message;
+    formError.hidden = false;
   }
 
-  if (message) {
-    showFieldError(input, message);
-
-    return false;
+  function updateTab(button, active) {
+    button.setAttribute('aria-pressed', String(active));
+    button.classList.toggle('border-ink', active);
+    button.classList.toggle('border-transparent', !active);
+    button.classList.toggle('text-brand', active);
+    button.classList.toggle('text-muted', !active);
   }
 
-  clearFieldError(input);
+  function setAuthMode(mode) {
+    authMode = mode === 'register' ? 'register' : 'login';
 
-  return true;
-}
+    const registering = authMode === 'register';
 
-function validateForm() {
-  clearFormError();
+    nameGroup.hidden = !registering;
+    nameInput.required = registering;
+    passwordInput.autocomplete = registering
+      ? 'new-password'
+      : 'current-password';
 
-  let valid = true;
+    updateTab(loginTab, !registering);
 
-  if (authMode === 'register' && !validateField(nameInput)) {
-    valid = false;
+    updateTab(registerTab, registering);
+
+    submitText.textContent = registering ? 'Create account' : 'Log in';
+
+    description.textContent = registering
+      ? 'Create an account to bid and sell with credits.'
+      : 'Sign in to bid and create listings.';
+
+    clearErrors();
+
+    const url = new URL(window.location.href);
+
+    url.searchParams.set('mode', authMode);
+    window.history.replaceState({}, '', url);
   }
 
-  if (!validateField(emailInput)) {
-    valid = false;
-  }
+  function validateForm() {
+    let valid = true;
 
-  if (!validateField(passwordInput)) {
-    valid = false;
-  }
-
-  return valid;
-}
-
-// Password visibility
-
-function togglePassword() {
-  const shouldShow = passwordInput.type === 'password';
-  passwordInput.type = shouldShow ? 'text' : 'password';
-  passwordIcon.textContent = shouldShow ? 'visibility_off' : 'visibility';
-  passwordStatus.textContent = shouldShow ? 'Hide' : 'Show';
-  passwordToggle.setAttribute(
-    'aria-label',
-    shouldShow ? 'Hide password' : 'Show password',
-  );
-
-  passwordToggle.setAttribute('aria-pressed', String(shouldShow));
-}
-
-// Loading
-
-function setSubmitting(value) {
-  isSubmitting = value;
-
-  submitButton.disabled = value;
-  submitText.hidden = value;
-  submitSpinner.hidden = !value;
-
-  if (value) {
-    submitButton.setAttribute('aria-busy', 'true');
-
-    return;
-  }
-
-  submitButton.removeAttribute('aria-busy');
-  submitText.textContent = authMode === 'register' ? 'Register' : 'Log in';
-}
-
-// Authentication
-
-async function handleLogin() {
-  return loginUser({
-    email: emailInput.value.trim().toLowerCase(),
-    password: passwordInput.value,
-  });
-}
-
-async function handleRegister() {
-  const user = {
-    name: nameInput.value.trim(),
-    email: emailInput.value.trim().toLowerCase(),
-    password: passwordInput.value,
-  };
-
-  await registerUser(user);
-
-  // Registration does not provide an access token,
-  // so log the new user in afterwards.
-  return loginUser({
-    email: user.email,
-    password: user.password,
-  });
-}
-
-async function handleSubmit(event) {
-  event.preventDefault();
-
-  if (isSubmitting) {
-    return;
-  }
-
-  if (!validateForm()) {
-    form.querySelector('[aria-invalid="true"]')?.focus();
-
-    return;
-  }
-
-  setSubmitting(true);
-
-  try {
     if (authMode === 'register') {
-      await handleRegister();
-    } else {
-      await handleLogin();
+      const nameError = validateUsername(nameInput.value);
+
+      setFieldError(nameInput, nameError);
+
+      if (nameError) {
+        valid = false;
+      }
     }
 
-    window.location.assign('./index.html');
-  } catch (error) {
-    showFormError(error.message || 'Something went wrong. Please try again.');
-  } finally {
-    setSubmitting(false);
-  }
-}
+    const emailError = validateStudentEmail(emailInput.value);
+    const passwordError = validatePassword(passwordInput.value);
 
-// Mobile menu
+    setFieldError(emailInput, emailError);
+    setFieldError(passwordInput, passwordError);
 
-function openMenu() {
-  if (!menu || !menuBackdrop) {
-    return;
+    if (emailError || passwordError) {
+      valid = false;
+    }
+
+    return valid;
   }
 
-  menu.inert = false;
-  menu.setAttribute('aria-hidden', 'false');
-  menuButton.setAttribute('aria-expanded', 'true');
-  menuBackdrop.hidden = false;
+  function togglePassword() {
+    const passwordIsVisible = passwordInput.type === 'text';
+    passwordInput.type = passwordIsVisible ? 'password' : 'text';
 
-  requestAnimationFrame(() => {
-    menu.classList.remove('translate-x-full');
-    menu.classList.add('translate-x-0');
-    menuBackdrop.classList.remove('opacity-0');
-    menuBackdrop.classList.add('opacity-100');
-  });
+    const nowVisible = !passwordIsVisible;
+    passwordToggle.setAttribute('aria-pressed', String(nowVisible));
+    passwordToggle.setAttribute(
+      'aria-label',
+      nowVisible ? 'Hide password' : 'Show password',
+    );
 
-  document.body.classList.add('overflow-hidden');
-
-  menuClose.focus();
-}
-
-function closeMenu() {
-  if (!menu || !menuBackdrop) {
-    return;
+    passwordStatus.textContent = nowVisible ? 'Hide' : 'Show';
+    passwordIcon.textContent = nowVisible ? 'visibility_off' : 'visibility';
   }
 
-  menu.classList.remove('translate-x-0');
-  menu.classList.add('translate-x-full');
-  menuBackdrop.classList.remove('opacity-100');
-  menuBackdrop.classList.add('opacity-0');
-  menuButton.setAttribute('aria-expanded', 'false');
-  menu.setAttribute('aria-hidden', 'true');
-  menu.inert = true;
+  function setSubmitting(submitting) {
+    isSubmitting = submitting;
 
-  document.body.classList.remove('overflow-hidden');
+    submitButton.disabled = submitting;
+    submitText.hidden = submitting;
+    submitSpinner.hidden = !submitting;
+  }
 
-  window.setTimeout(() => {
-    menuBackdrop.hidden = true;
-  }, 300);
-}
+  async function handleSubmit(event) {
+    event.preventDefault();
 
-// Events
+    if (isSubmitting) return;
 
-function setupAuthEvents() {
+    clearErrors();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setSubmitting(true);
+
+    const credentials = {
+      email: emailInput.value.trim().toLowerCase(),
+      password: passwordInput.value,
+    };
+
+    try {
+      if (authMode === 'register') {
+        await registerUser({
+          name: nameInput.value.trim(),
+          email: credentials.email,
+          password: credentials.password,
+        });
+      }
+
+      await loginUser(credentials);
+
+      window.location.assign('./index.html');
+    } catch (error) {
+      showFormError(
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong. Please try again.',
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   loginTab.addEventListener('click', () => {
     setAuthMode('login');
   });
@@ -334,45 +216,34 @@ function setupAuthEvents() {
 
   form.addEventListener('submit', handleSubmit);
 
-  [nameInput, emailInput, passwordInput].forEach((input) => {
-    input.addEventListener('input', () => {
-      clearFieldError(input);
-      clearFormError();
-    });
-
-    input.addEventListener('blur', () => {
-      if (input === nameInput && authMode !== 'register') {
-        return;
-      }
-
-      // Avoid showing an error before
-      // the user has entered anything.
-      if (!input.value) {
-        return;
-      }
-
-      validateField(input);
-    });
-  });
-}
-
-function setupMenuEvents() {
-  menuButton?.addEventListener('click', openMenu);
-  menuClose?.addEventListener('click', closeMenu);
-  menuBackdrop?.addEventListener('click', closeMenu);
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      closeMenu();
+  nameInput.addEventListener('blur', () => {
+    if (authMode === 'register' && nameInput.value) {
+      setFieldError(nameInput, validateUsername(nameInput.value));
     }
   });
+
+  emailInput.addEventListener('blur', () => {
+    if (emailInput.value) {
+      setFieldError(emailInput, validateStudentEmail(emailInput.value));
+    }
+  });
+
+  passwordInput.addEventListener('blur', () => {
+    if (passwordInput.value) {
+      setFieldError(passwordInput, validatePassword(passwordInput.value));
+    }
+  });
+
+  const params = new URLSearchParams(window.location.search);
+
+  setAuthMode(params.get('mode'));
+
+  initHeader();
+  initFooter();
 }
 
-// Init
-
-function init() {
-  setAuthMode(getInitialMode());
-  setupAuthEvents();
-  setupMenuEvents();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
 }
-
-init();

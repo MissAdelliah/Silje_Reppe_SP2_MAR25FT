@@ -2,362 +2,38 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <meta
       name="description"
       content="Second Story is a student auction marketplace for buying and selling second-hand items."
     />
 
     <title>Second Story | Student Auction</title>
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Zalando+Sans+Expanded:ital,wght@0,200..900;1,200..900&display=swap"
       rel="stylesheet"
     />
-
-    <!-- Material Symbols -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
-
-    <!-- Compiled Tailwind -->
     <link rel="stylesheet" href="./css/style.css" />
-
-    <!-- Home page -->
     <script type="module" src="./js/pages/home.js"></script>
   </head>
 
   <body class="bg-page text-ink">
-    <!-- ========================================
-         Site header
-    ========================================= -->
+    <!-- Shared full navigation -->
+    <header id="site-header" data-header-variant="full"></header>
 
-    <header
-      class="site-header sticky top-0 z-30 border-b border-divider bg-page/95 backdrop-blur"
-    >
-      <div
-        class="site-header__inner grid h-[68px] w-full grid-cols-[1fr_auto] items-center px-[15px] lg:h-[100px] lg:px-[130px]"
-      >
-        <!-- Logo -->
-        <a
-          href="./index.html"
-          class="site-header__logo justify-self-start whitespace-nowrap font-display text-[20px] font-semibold leading-none tracking-[-0.02em] lg:text-[32px]"
-          aria-label="Second Story home"
-        >
-          <span class="text-ink">Second</span>
-          <span class="text-ink lg:text-brand">Story</span>
-        </a>
-
-        <!-- Mobile header actions -->
-        <div
-          class="site-header__mobile flex items-center gap-3 justify-self-end lg:hidden"
-        >
-          <!-- Credit -->
-          <div data-auth-only hidden>
-            <div
-              class="flex h-[30px] min-w-[98px] items-center justify-center gap-1.5 rounded-lg bg-ink px-3 text-white"
-              aria-label="Credit balance"
-            >
-              <span
-                class="material-symbols-outlined text-[16px] leading-none"
-                aria-hidden="true"
-              >
-                wallet
-              </span>
-
-              <span data-credit class="text-[14px]" aria-live="polite">
-                0 cr
-              </span>
-            </div>
-          </div>
-
-          <!-- Hamburger -->
-          <button
-            id="menu-button"
-            type="button"
-            class="flex size-11 flex-col items-center justify-center gap-[6px]"
-            aria-label="Open navigation menu"
-            aria-expanded="false"
-            aria-controls="mobile-menu"
-          >
-            <span
-              class="block h-[2px] w-[30px] bg-ink"
-              aria-hidden="true"
-            ></span>
-
-            <span
-              class="block h-[2px] w-[30px] bg-ink"
-              aria-hidden="true"
-            ></span>
-
-            <span
-              class="block h-[2px] w-[30px] bg-ink"
-              aria-hidden="true"
-            ></span>
-          </button>
-        </div>
-
-        <!-- Desktop guest -->
-        <div
-          class="site-header__guest col-start-2 row-start-1 hidden justify-self-end lg:block"
-        >
-          <div data-guest-only hidden>
-            <a
-              href="./auth.html"
-              class="inline-flex h-[36px] min-w-[150px] items-center justify-center rounded-[3px] bg-ink px-5 font-display text-[14px] font-semibold text-white transition-colors duration-200 hover:bg-brand"
-            >
-              Register / log in
-            </a>
-          </div>
-        </div>
-
-        <!-- Desktop authenticated -->
-        <div
-          class="site-header__account col-start-2 row-start-1 hidden justify-self-end lg:block"
-        >
-          <nav
-            data-auth-only
-            hidden
-            class="items-start gap-5 lg:flex"
-            aria-label="Account navigation"
-          >
-            <!-- Create -->
-            <div class="group relative flex flex-col items-center">
-              <a
-                href="./create-listing.html"
-                class="flex size-12 items-center justify-center rounded-full bg-ink text-white transition-colors duration-200 hover:bg-brand"
-                aria-label="Create listing"
-              >
-                <span class="material-symbols-outlined" aria-hidden="true">
-                  add
-                </span>
-              </a>
-
-              <span class="mt-1 text-[14px] text-muted" aria-hidden="true">
-                Create
-              </span>
-            </div>
-
-            <!-- Profile -->
-            <div class="group relative flex flex-col items-center">
-              <a
-                href="./profile.html"
-                class="flex size-12 items-center justify-center overflow-hidden rounded-full bg-soft"
-                aria-label="View profile"
-              >
-                <img
-                  data-profile-avatar
-                  hidden
-                  class="h-full w-full object-cover"
-                  alt=""
-                />
-
-                <span
-                  data-profile-initial
-                  class="font-display text-sm font-semibold"
-                  aria-hidden="true"
-                >
-                  S
-                </span>
-              </a>
-
-              <span class="mt-1 text-[14px] text-brand" aria-hidden="true">
-                Profile
-              </span>
-
-              <!-- Profile dropdown -->
-              <div
-                class="pointer-events-none invisible absolute top-full right-0 z-40 w-[160px] translate-y-1 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
-              >
-                <div
-                  class="overflow-hidden rounded-xl border border-divider bg-page shadow-control"
-                >
-                  <a
-                    href="./profile.html"
-                    class="block px-4 py-3 text-sm transition-colors duration-150 hover:bg-sand focus:bg-sand focus:outline-none"
-                  >
-                    Profile
-                  </a>
-
-                  <button
-                    data-logout
-                    type="button"
-                    class="w-full px-4 py-3 text-left text-sm transition-colors duration-150 hover:bg-sand focus:bg-sand focus:outline-none"
-                  >
-                    Log out
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Credit -->
-            <div class="flex flex-col items-center">
-              <div
-                class="flex h-[36px] min-w-[110px] items-center justify-center gap-1.5 rounded-lg bg-ink px-3 text-white"
-                aria-label="Credit balance"
-              >
-                <span
-                  class="material-symbols-outlined text-[17px]"
-                  aria-hidden="true"
-                >
-                  wallet
-                </span>
-
-                <span data-credit class="text-[16px]"> 0 cr </span>
-              </div>
-
-              <span class="mt-1 text-[14px] text-muted" aria-hidden="true">
-                My Credit
-              </span>
-            </div>
-          </nav>
-        </div>
-      </div>
-    </header>
-
-    <!-- ========================================
-         Mobile navigation
-    ========================================= -->
-
-    <div
-      id="menu-backdrop"
-      hidden
-      class="fixed inset-0 z-40 bg-black/35 opacity-0 transition-opacity duration-300 lg:hidden"
-    ></div>
-
-    <aside
-      id="mobile-menu"
-      inert
-      aria-hidden="true"
-      aria-label="Navigation menu"
-      class="mobile-menu fixed inset-y-0 right-0 z-50 flex h-dvh w-[min(100%,390px)] translate-x-full flex-col bg-page shadow-drawer transition-transform duration-300 ease-out lg:hidden"
-    >
-      <!-- Menu header -->
-      <div
-        class="grid h-[96px] grid-cols-[1fr_auto] items-center border-b border-divider px-6"
-      >
-        <a
-          href="./index.html"
-          class="justify-self-start font-display text-[26px] font-semibold"
-        >
-          Second Story
-        </a>
-
-        <button
-          data-menu-close
-          type="button"
-          class="flex size-11 items-center justify-center justify-self-end"
-          aria-label="Close navigation menu"
-        >
-          <span
-            class="material-symbols-outlined text-[30px]"
-            aria-hidden="true"
-          >
-            close
-          </span>
-        </button>
-      </div>
-
-      <div class="flex min-h-0 flex-1 flex-col overflow-y-auto px-6">
-        <!-- Guest -->
-        <div data-guest-only hidden class="pt-7">
-          <a
-            href="./auth.html"
-            class="flex min-h-[52px] w-full items-center justify-center rounded-xl bg-ink font-display text-[16px] font-semibold text-white transition-colors duration-200 hover:bg-brand"
-          >
-            Register / Log in
-          </a>
-        </div>
-
-        <!-- Logged in profile -->
-        <div data-auth-only hidden class="border-b border-divider py-6">
-          <a href="./profile.html" class="flex items-center gap-4">
-            <div
-              class="flex size-12 items-center justify-center overflow-hidden rounded-full bg-soft"
-            >
-              <img
-                data-profile-avatar
-                hidden
-                class="h-full w-full object-cover"
-                alt=""
-              />
-
-              <span data-profile-initial class="font-display font-semibold">
-                S
-              </span>
-            </div>
-
-            <div>
-              <p data-profile-name class="font-semibold">Profile</p>
-
-              <p class="text-sm text-muted">View profile →</p>
-            </div>
-          </a>
-        </div>
-
-        <!-- Logged in navigation -->
-        <nav
-          data-auth-only
-          hidden
-          class="py-4"
-          aria-label="Mobile account navigation"
-        >
-          <a
-            href="./profile.html?tab=bids"
-            class="block border-b border-divider py-4"
-          >
-            My Bids
-          </a>
-
-          <a
-            href="./profile.html?tab=listings"
-            class="block border-b border-divider py-4"
-          >
-            My Listings
-          </a>
-
-          <a
-            href="./edit-profile.html"
-            class="block border-b border-divider py-4"
-          >
-            Settings
-          </a>
-        </nav>
-
-        <!-- Sign out -->
-        <div data-auth-only hidden class="mt-auto pb-8 text-center">
-          <button
-            data-logout
-            type="button"
-            class="text-sm text-muted transition-colors duration-150 hover:text-ink"
-          >
-            Sign out
-          </button>
-
-          <p class="mt-4 text-sm text-muted">© 2026 Second Story AS</p>
-        </div>
-      </div>
-    </aside>
-
-    <!-- ========================================
-         Home
-    ========================================= -->
-
-    <main class="home">
+    <main>
       <!-- ========================================
-           Mobile search and sort
+           Mobile search / sort
       ========================================= -->
 
       <section
-        class="home-controls home-controls--mobile px-[15px] pt-5 lg:hidden"
+        class="px-[15px] pt-5 lg:hidden"
         aria-label="Search and sort listings"
       >
         <div class="grid grid-cols-[minmax(0,1fr)_140px] items-center gap-3">
@@ -369,7 +45,7 @@
 
             <div class="relative">
               <span
-                class="material-symbols-outlined pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[19px]"
+                class="material-symbols-outlined pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[20px]"
                 aria-hidden="true"
               >
                 search
@@ -381,32 +57,26 @@
                 type="search"
                 autocomplete="off"
                 placeholder="Search"
-                class="h-11 w-full min-w-0 rounded-full border border-border bg-page pr-3 pl-10 text-[16px] outline-none transition-colors duration-200 focus:border-ink"
+                class="h-11 w-full rounded-full border border-border bg-page pr-3 pl-10 text-base outline-none transition-colors duration-200 focus:border-ink"
               />
             </div>
           </form>
 
           <!-- Sort -->
-          <div class="sort-control relative min-w-0" data-sort-control>
+          <div class="relative" data-sort-control>
             <button
-              id="mobile-sort-button"
               data-sort-toggle
               type="button"
-              class="flex h-11 w-full min-w-0 items-center justify-between gap-2 rounded-full border border-border bg-page px-4 text-[14px] outline-none transition-colors duration-200 hover:border-ink focus:border-ink"
+              class="flex h-11 w-full items-center justify-between gap-2 rounded-full border border-border bg-page px-4 text-sm transition-colors duration-200 hover:border-ink focus:border-ink"
               aria-label="Sort listings"
               aria-expanded="false"
               aria-controls="mobile-sort-menu"
             >
-              <span
-                data-sort-label
-                class="min-w-0 flex-1 truncate whitespace-nowrap text-left"
-              >
-                All
-              </span>
+              <span data-sort-label class="truncate"> All </span>
 
               <span
                 data-sort-icon
-                class="material-symbols-outlined shrink-0 text-[19px] transition-transform duration-200"
+                class="material-symbols-outlined text-[20px] transition-transform duration-200"
                 aria-hidden="true"
               >
                 expand_more
@@ -416,15 +86,13 @@
             <div
               id="mobile-sort-menu"
               data-sort-menu
-              role="menu"
-              aria-label="Sort listings"
-              class="pointer-events-none invisible absolute top-[52px] right-0 z-30 w-[225px] origin-top-right translate-y-1 scale-[0.98] overflow-hidden rounded-2xl border border-divider bg-page opacity-0 shadow-control transition-[opacity,transform,visibility] duration-200 ease-out"
+              class="pointer-events-none invisible absolute top-[52px] right-0 z-30 w-[225px] translate-y-1 scale-[0.98] overflow-hidden rounded-2xl border border-divider bg-page opacity-0 shadow-control transition-[opacity,transform,visibility] duration-200"
             >
               <button
                 type="button"
                 data-sort="default"
-                role="menuitem"
-                class="block w-full border-b border-divider px-5 py-4 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
+                aria-pressed="true"
+                class="block w-full border-b border-divider px-5 py-4 text-left text-sm transition-colors hover:bg-soft"
               >
                 All
               </button>
@@ -432,8 +100,8 @@
               <button
                 type="button"
                 data-sort="endingSoon"
-                role="menuitem"
-                class="block w-full border-b border-divider px-5 py-4 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
+                aria-pressed="false"
+                class="block w-full border-b border-divider px-5 py-4 text-left text-sm transition-colors hover:bg-soft"
               >
                 Ending soon
               </button>
@@ -441,8 +109,8 @@
               <button
                 type="button"
                 data-sort="priceLow"
-                role="menuitem"
-                class="block w-full border-b border-divider px-5 py-4 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
+                aria-pressed="false"
+                class="block w-full border-b border-divider px-5 py-4 text-left text-sm transition-colors hover:bg-soft"
               >
                 Price: low to high
               </button>
@@ -450,8 +118,8 @@
               <button
                 type="button"
                 data-sort="priceHigh"
-                role="menuitem"
-                class="block w-full px-5 py-4 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
+                aria-pressed="false"
+                class="block w-full px-5 py-4 text-left text-sm transition-colors hover:bg-soft"
               >
                 Price: high to low
               </button>
@@ -459,7 +127,7 @@
           </div>
         </div>
 
-        <!-- Active filters -->
+        <!-- Selected filters -->
         <div
           id="active-filters-mobile"
           hidden
@@ -472,9 +140,9 @@
            Hero
       ========================================= -->
 
-      <section class="hero mt-5 lg:mt-0" aria-labelledby="hero-heading">
+      <section class="mt-5 lg:mt-0" aria-labelledby="hero-heading">
         <div
-          class="hero__media relative mx-[14px] overflow-hidden rounded-[14px] lg:mx-0 lg:rounded-none"
+          class="relative mx-[14px] overflow-hidden rounded-[14px] lg:mx-0 lg:rounded-none"
         >
           <img
             src="./assets/images/hero.jpeg"
@@ -484,15 +152,13 @@
           />
 
           <div
-            class="hero__content absolute inset-x-0 bottom-[18px] px-[20px] text-white lg:bottom-[52px] lg:px-[130px]"
+            class="absolute inset-x-0 bottom-[18px] px-5 text-white lg:bottom-[52px] lg:px-[130px]"
           >
-            <p class="text-[14px] leading-tight lg:text-[18px]">
-              Featured today
-            </p>
+            <p class="text-sm leading-tight lg:text-lg">Featured today</p>
 
             <h1
               id="hero-heading"
-              class="mt-1 font-display text-[26px] font-semibold leading-none lg:text-[34px]"
+              class="mt-1 font-display text-2xl font-semibold leading-none lg:text-4xl"
             >
               New arrivals
             </h1>
@@ -501,19 +167,16 @@
       </section>
 
       <!-- ========================================
-           Desktop search and sort
+           Desktop search / sort
       ========================================= -->
 
-      <section
-        class="home-controls home-controls--desktop hidden lg:block"
-        aria-label="Search and sort listings"
-      >
+      <section class="hidden lg:block" aria-label="Search and sort listings">
         <div class="mx-auto w-full max-w-[952px] pt-[38px]">
           <div class="grid grid-cols-[1fr_auto] items-center">
             <!-- Search -->
             <form
               id="search-form-desktop"
-              class="flex items-center gap-2 justify-self-start"
+              class="flex items-center gap-2"
               role="search"
             >
               <div class="relative w-[292px]">
@@ -522,7 +185,7 @@
                 </label>
 
                 <span
-                  class="material-symbols-outlined pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[17px]"
+                  class="material-symbols-outlined pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[18px]"
                   aria-hidden="true"
                 >
                   search
@@ -534,42 +197,33 @@
                   type="search"
                   autocomplete="off"
                   placeholder="Search"
-                  class="h-[32px] w-full rounded-full border border-border bg-page pr-3 pl-9 text-[14px] outline-none transition-colors duration-200 focus:border-ink"
+                  class="h-9 w-full rounded-full border border-border bg-page pr-3 pl-9 text-sm outline-none transition-colors duration-200 focus:border-ink"
                 />
               </div>
 
               <button
                 type="submit"
-                class="h-[32px] rounded-[7px] border border-border bg-page px-[18px] text-[14px] transition-colors duration-200 hover:border-ink hover:bg-soft"
+                class="h-9 rounded-lg border border-border bg-page px-4 text-sm transition-colors duration-200 hover:border-ink hover:bg-soft"
               >
                 Search
               </button>
             </form>
 
             <!-- Sort -->
-            <div
-              class="sort-control relative justify-self-end"
-              data-sort-control
-            >
+            <div class="relative" data-sort-control>
               <button
-                id="desktop-sort-button"
                 data-sort-toggle
                 type="button"
-                class="flex h-[32px] w-[180px] items-center justify-between gap-3 rounded-full border border-border bg-page px-4 text-[14px] outline-none transition-colors duration-200 hover:border-ink focus:border-ink"
+                class="flex h-9 w-[180px] items-center justify-between gap-2 rounded-full border border-border bg-page px-4 text-sm transition-colors duration-200 hover:border-ink focus:border-ink"
                 aria-label="Sort listings"
                 aria-expanded="false"
                 aria-controls="desktop-sort-menu"
               >
-                <span
-                  data-sort-label
-                  class="min-w-0 flex-1 truncate whitespace-nowrap text-left"
-                >
-                  All
-                </span>
+                <span data-sort-label class="truncate"> All </span>
 
                 <span
                   data-sort-icon
-                  class="material-symbols-outlined shrink-0 text-[17px] transition-transform duration-200"
+                  class="material-symbols-outlined text-[18px] transition-transform duration-200"
                   aria-hidden="true"
                 >
                   expand_more
@@ -579,15 +233,13 @@
               <div
                 id="desktop-sort-menu"
                 data-sort-menu
-                role="menu"
-                aria-label="Sort listings"
-                class="pointer-events-none invisible absolute top-[40px] right-0 z-30 w-[210px] origin-top-right translate-y-1 scale-[0.98] overflow-hidden rounded-[14px] border border-divider bg-page opacity-0 shadow-control transition-[opacity,transform,visibility] duration-200 ease-out"
+                class="pointer-events-none invisible absolute top-[44px] right-0 z-30 w-[210px] translate-y-1 scale-[0.98] overflow-hidden rounded-xl border border-divider bg-page opacity-0 shadow-control transition-[opacity,transform,visibility] duration-200"
               >
                 <button
                   type="button"
                   data-sort="default"
-                  role="menuitem"
-                  class="block w-full border-b border-divider px-4 py-3 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
+                  aria-pressed="true"
+                  class="block w-full border-b border-divider px-4 py-3 text-left text-sm transition-colors hover:bg-soft"
                 >
                   All
                 </button>
@@ -595,8 +247,8 @@
                 <button
                   type="button"
                   data-sort="endingSoon"
-                  role="menuitem"
-                  class="block w-full border-b border-divider px-4 py-3 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
+                  aria-pressed="false"
+                  class="block w-full border-b border-divider px-4 py-3 text-left text-sm transition-colors hover:bg-soft"
                 >
                   Ending soon
                 </button>
@@ -604,8 +256,8 @@
                 <button
                   type="button"
                   data-sort="priceLow"
-                  role="menuitem"
-                  class="block w-full border-b border-divider px-4 py-3 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
+                  aria-pressed="false"
+                  class="block w-full border-b border-divider px-4 py-3 text-left text-sm transition-colors hover:bg-soft"
                 >
                   Price: low to high
                 </button>
@@ -613,8 +265,8 @@
                 <button
                   type="button"
                   data-sort="priceHigh"
-                  role="menuitem"
-                  class="block w-full px-4 py-3 text-left text-[14px] transition-colors duration-150 hover:bg-soft focus:bg-soft focus:outline-none"
+                  aria-pressed="false"
+                  class="block w-full px-4 py-3 text-left text-sm transition-colors hover:bg-soft"
                 >
                   Price: high to low
                 </button>
@@ -630,21 +282,21 @@
 
       <section
         id="listings"
-        class="listings mt-[22px] lg:mt-0"
+        class="mt-[22px] lg:mt-0"
         aria-labelledby="listings-heading"
       >
         <div
-          class="mx-auto w-full px-[15px] pb-16 lg:max-w-[952px] lg:px-0 lg:pt-[48px] lg:pb-28"
+          class="mx-auto w-full px-[15px] pb-16 lg:max-w-[952px] lg:px-0 lg:pt-12 lg:pb-28"
         >
           <h2 id="listings-heading" class="sr-only">Auction listings</h2>
 
-          <!-- Results toolbar -->
+          <!-- Result count / filter -->
           <div
-            class="listings__toolbar mx-auto mb-[22px] grid w-full max-w-[380px] grid-cols-[1fr_auto] items-center md:max-w-[588px] lg:mb-[34px] lg:max-w-none"
+            class="mx-auto mb-[22px] grid w-full max-w-[340px] grid-cols-[1fr_auto] items-center md:max-w-[520px] lg:mb-8 lg:max-w-none"
           >
             <p
               id="result-count"
-              class="justify-self-start text-[16px]"
+              class="text-sm lg:text-base"
               aria-live="polite"
             >
               Loading...
@@ -653,9 +305,8 @@
             <button
               id="filter-button"
               type="button"
-              class="flex h-[36px] items-center gap-2 justify-self-end rounded-full border border-border bg-page px-[15px] text-[14px] shadow-control transition-colors duration-200 hover:border-ink hover:bg-soft"
+              class="flex h-9 items-center gap-2 rounded-full border border-border bg-page px-4 text-sm shadow-control transition-colors duration-200 hover:border-ink hover:bg-soft"
               aria-expanded="false"
-              aria-controls="mobile-filter-sheet desktop-filter-drawer"
             >
               <span
                 class="material-symbols-outlined text-[18px]"
@@ -668,7 +319,7 @@
             </button>
           </div>
 
-          <!-- Desktop active filters -->
+          <!-- Desktop selected filters -->
           <div class="hidden lg:block">
             <div
               id="active-filters-desktop"
@@ -681,7 +332,7 @@
           <!-- Loading -->
           <div
             id="loading-state"
-            class="py-20 text-center text-muted"
+            class="py-20 text-center text-sm text-muted"
             role="status"
           >
             Loading listings...
@@ -691,10 +342,10 @@
           <div
             id="error-state"
             hidden
-            class="rounded-xl border border-brand bg-sand p-5"
+            class="rounded-xl border border-brand bg-sand p-5 text-sm"
             role="alert"
           >
-            <p>Could not load listings. Please try again.</p>
+            Could not load listings. Please try again.
           </div>
 
           <!-- Empty -->
@@ -702,21 +353,19 @@
             <h3 class="font-display text-xl font-semibold">
               No listings found
             </h3>
-
-            <p class="mt-2 text-muted">Try changing your search or filters.</p>
+            <p class="mt-2 text-sm text-muted"></p>
           </div>
-
-          <!-- Listing cards -->
           <div
             id="listing-grid"
-            class="listings__grid mx-auto grid w-full max-w-[380px] grid-cols-2 gap-x-5 gap-y-[34px] md:max-w-[588px] md:grid-cols-3 md:gap-x-6 lg:max-w-[952px] lg:grid-cols-[repeat(4,220px)] lg:gap-x-6 lg:gap-y-10"
+            data-listing-grid
+            class="mx-auto grid w-full max-w-[376px] grid-cols-2 gap-x-4 gap-y-10 md:w-[572px] md:max-w-none md:grid-cols-[repeat(3,180px)] lg:w-[952px] lg:grid-cols-[repeat(4,220px)] lg:gap-x-6"
           ></div>
         </div>
       </section>
     </main>
 
     <!-- ========================================
-         Mobile filter
+         Mobile filter sheet
     ========================================= -->
 
     <div
@@ -730,14 +379,12 @@
       inert
       aria-hidden="true"
       aria-labelledby="mobile-filter-heading"
-      class="filter-panel filter-panel--mobile fixed inset-x-0 bottom-0 z-50 flex max-h-[88dvh] translate-y-full flex-col rounded-t-[28px] bg-page shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden"
+      class="fixed inset-x-0 bottom-0 z-50 flex max-h-[88dvh] translate-y-full flex-col rounded-t-[28px] bg-page shadow-2xl transition-transform duration-300 ease-out lg:hidden"
     >
-      <!-- Drag handle -->
       <div class="flex justify-center pt-3" aria-hidden="true">
         <span class="h-1 w-10 rounded-full bg-border"></span>
       </div>
 
-      <!-- Filter heading -->
       <div
         class="grid min-h-16 grid-cols-[40px_1fr_40px] items-center border-b border-divider px-5"
       >
@@ -745,7 +392,7 @@
 
         <h2
           id="mobile-filter-heading"
-          class="justify-self-center font-display text-base font-semibold"
+          class="justify-self-center font-display text-lg font-semibold"
         >
           Filters
         </h2>
@@ -753,11 +400,11 @@
         <button
           data-mobile-filter-close
           type="button"
-          class="flex size-10 items-center justify-center justify-self-end"
+          class="flex size-10 items-center justify-center"
           aria-label="Close filters"
         >
           <span
-            class="material-symbols-outlined text-[26px]"
+            class="material-symbols-outlined text-[24px]"
             aria-hidden="true"
           >
             close
@@ -765,7 +412,6 @@
         </button>
       </div>
 
-      <!-- Filter form -->
       <form id="mobile-filter-form" class="flex min-h-0 flex-1 flex-col">
         <div id="mobile-filter-options" class="flex-1 overflow-y-auto"></div>
 
@@ -774,7 +420,7 @@
         >
           <button
             type="submit"
-            class="h-[48px] w-full rounded-lg bg-ink font-display text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand"
+            class="h-12 w-full rounded-lg bg-ink font-display text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand"
           >
             Apply filters
           </button>
@@ -791,7 +437,7 @@
     </aside>
 
     <!-- ========================================
-         Desktop filter
+         Desktop filter drawer
     ========================================= -->
 
     <aside
@@ -799,9 +445,8 @@
       inert
       aria-hidden="true"
       aria-labelledby="desktop-filter-heading"
-      class="filter-panel filter-panel--desktop fixed top-[100px] right-0 bottom-0 z-40 hidden w-[390px] translate-x-full flex-col bg-sand shadow-drawer transition-transform duration-300 ease-out lg:flex"
+      class="fixed top-[100px] right-0 bottom-0 z-40 hidden w-[390px] translate-x-full flex-col bg-sand shadow-drawer transition-transform duration-300 ease-out lg:flex"
     >
-      <!-- Filter heading -->
       <div
         class="grid min-h-16 grid-cols-[1fr_auto] items-center border-b border-divider px-6"
       >
@@ -815,7 +460,7 @@
         <button
           data-desktop-filter-close
           type="button"
-          class="flex size-10 items-center justify-center justify-self-end"
+          class="flex size-10 items-center justify-center"
           aria-label="Close filters"
         >
           <span
@@ -827,14 +472,13 @@
         </button>
       </div>
 
-      <!-- Filter form -->
       <form id="desktop-filter-form" class="flex min-h-0 flex-1 flex-col">
         <div id="desktop-filter-options" class="flex-1 overflow-y-auto"></div>
 
         <div class="border-t border-divider bg-sand p-6">
           <button
             type="submit"
-            class="h-12 w-full rounded-xl bg-ink font-display font-semibold text-white transition-colors duration-200 hover:bg-brand"
+            class="h-12 w-full rounded-xl bg-ink font-display text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand"
           >
             Apply filters
           </button>
@@ -849,341 +493,8 @@
         </div>
       </form>
     </aside>
-
-    <!-- Mobile navigation spacing -->
     <div data-auth-only hidden class="h-20 lg:hidden" aria-hidden="true"></div>
-
-    <!-- ========================================
-         Footer
-    ========================================= -->
-
-    <footer class="site-footer bg-sand">
-      <div
-        class="site-footer__inner mx-auto w-full px-[30px] py-[48px] text-center lg:grid lg:min-h-[330px] lg:max-w-[1280px] lg:grid-cols-3 lg:items-start lg:px-[72px] lg:pt-[82px] lg:pb-[50px] lg:text-left"
-      >
-        <!-- Brand -->
-        <div class="site-footer__brand">
-          <a
-            href="./index.html"
-            class="font-display text-[24px] font-semibold leading-none lg:text-[20px]"
-          >
-            <span class="text-ink">Second</span>
-            <span class="text-brand">Story</span>
-          </a>
-
-          <p class="mt-2 text-[14px] text-muted lg:hidden">
-            Made by students for students.
-          </p>
-
-          <!-- Mobile socials -->
-          <div
-            class="mt-6 flex items-center justify-center gap-4 lg:hidden"
-            aria-label="Social media"
-          >
-            <!-- Instagram -->
-            <a
-              href="#"
-              aria-label="Instagram"
-              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                class="size-[18px]"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                aria-hidden="true"
-              >
-                <rect x="3" y="3" width="18" height="18" rx="5"></rect>
-
-                <circle cx="12" cy="12" r="4"></circle>
-
-                <circle
-                  cx="17.5"
-                  cy="6.5"
-                  r="1"
-                  fill="currentColor"
-                  stroke="none"
-                ></circle>
-              </svg>
-            </a>
-
-            <!-- TikTok -->
-            <a
-              href="#"
-              aria-label="TikTok"
-              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                class="size-[18px]"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M14 4v10.2a4.2 4.2 0 1 1-3.4-4.1"></path>
-
-                <path d="M14 4c.4 2.2 1.8 3.7 4 4"></path>
-
-                <path d="M18 8v3c-1.5-.1-2.9-.6-4-1.5"></path>
-              </svg>
-            </a>
-
-            <!-- Facebook -->
-            <a
-              href="#"
-              aria-label="Facebook"
-              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                class="size-[18px]"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  d="M13.6 21v-8h2.7l.4-3.1h-3.1V8c0-.9.3-1.5 1.6-1.5H17V3.7c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5v1.8H7V13h3v8h3.6Z"
-                ></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        <!-- Footer navigation -->
-        <nav
-          class="site-footer__navigation mt-10 flex items-center justify-center gap-10 text-[14px] lg:mt-0 lg:flex-col lg:gap-[30px] lg:text-[14px] lg:font-semibold"
-          aria-label="Footer navigation"
-        >
-          <!-- Mobile -->
-          <a
-            href="#"
-            class="transition-colors duration-150 hover:text-brand lg:hidden"
-          >
-            Service
-          </a>
-
-          <a
-            href="#"
-            class="transition-colors duration-150 hover:text-brand lg:hidden"
-          >
-            Q&amp;A
-          </a>
-
-          <a
-            href="#"
-            class="transition-colors duration-150 hover:text-brand lg:hidden"
-          >
-            About us
-          </a>
-
-          <!-- Desktop -->
-          <a
-            href="#"
-            class="hidden transition-colors duration-150 hover:text-brand lg:block"
-          >
-            About us
-          </a>
-
-          <a
-            href="#"
-            class="hidden transition-colors duration-150 hover:text-brand lg:block"
-          >
-            T&amp;C
-          </a>
-
-          <a
-            href="#"
-            class="hidden transition-colors duration-150 hover:text-brand lg:block"
-          >
-            Contact
-          </a>
-        </nav>
-
-        <!-- Desktop socials -->
-        <div
-          class="site-footer__socials hidden justify-self-end text-right lg:block"
-        >
-          <div
-            class="flex items-center justify-end gap-4"
-            aria-label="Social media"
-          >
-            <!-- Instagram -->
-            <a
-              href="#"
-              aria-label="Instagram"
-              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                class="size-[18px]"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                aria-hidden="true"
-              >
-                <rect x="3" y="3" width="18" height="18" rx="5"></rect>
-
-                <circle cx="12" cy="12" r="4"></circle>
-
-                <circle
-                  cx="17.5"
-                  cy="6.5"
-                  r="1"
-                  fill="currentColor"
-                  stroke="none"
-                ></circle>
-              </svg>
-            </a>
-
-            <!-- TikTok -->
-            <a
-              href="#"
-              aria-label="TikTok"
-              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                class="size-[18px]"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M14 4v10.2a4.2 4.2 0 1 1-3.4-4.1"></path>
-
-                <path d="M14 4c.4 2.2 1.8 3.7 4 4"></path>
-
-                <path d="M18 8v3c-1.5-.1-2.9-.6-4-1.5"></path>
-              </svg>
-            </a>
-
-            <!-- Facebook -->
-            <a
-              href="#"
-              aria-label="Facebook"
-              class="flex size-8 items-center justify-center transition-opacity duration-150 hover:opacity-60"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                class="size-[18px]"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  d="M13.6 21v-8h2.7l.4-3.1h-3.1V8c0-.9.3-1.5 1.6-1.5H17V3.7c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5v1.8H7V13h3v8h3.6Z"
-                ></path>
-              </svg>
-            </a>
-          </div>
-
-          <p class="mt-7 font-display text-[14px] font-semibold">
-            Follow our socials
-          </p>
-        </div>
-
-        <!-- Copyright -->
-        <p
-          class="site-footer__copyright mt-8 text-center text-[14px] lg:col-span-3 lg:mt-[32px] lg:text-[14px]"
-        >
-          © 2026 Second Story AS. All rights reserved.
-        </p>
-      </div>
-    </footer>
-
-    <!-- ========================================
-         Logged in mobile bottom navigation
-    ========================================= -->
-
-    <div data-auth-only hidden class="lg:hidden">
-      <nav
-        class="mobile-nav fixed inset-x-0 bottom-0 z-30 grid h-20 grid-cols-5 items-end border-t border-divider bg-page px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]"
-        aria-label="Mobile navigation"
-      >
-        <!-- Home -->
-        <a
-          href="./index.html"
-          class="flex flex-col items-center gap-1 text-xs font-semibold"
-          aria-current="page"
-        >
-          <span
-            class="material-symbols-outlined text-[23px]"
-            aria-hidden="true"
-          >
-            home
-          </span>
-
-          <span>Home</span>
-        </a>
-
-        <!-- Search -->
-        <a
-          href="#search-input-mobile"
-          class="flex flex-col items-center gap-1 text-xs text-muted"
-        >
-          <span
-            class="material-symbols-outlined text-[23px]"
-            aria-hidden="true"
-          >
-            search
-          </span>
-
-          <span>Search</span>
-        </a>
-
-        <!-- Create -->
-        <a
-          href="./create-listing.html"
-          class="-mt-8 flex flex-col items-center gap-1 text-xs"
-        >
-          <span
-            class="flex size-16 items-center justify-center rounded-full bg-ink text-white shadow-control"
-          >
-            <span
-              class="material-symbols-outlined text-[30px]"
-              aria-hidden="true"
-            >
-              add
-            </span>
-          </span>
-
-          <span>Create</span>
-        </a>
-
-        <!-- Bids -->
-        <a
-          href="./profile.html?tab=bids"
-          class="flex flex-col items-center gap-1 text-xs text-muted"
-        >
-          <span
-            class="material-symbols-outlined text-[23px]"
-            aria-hidden="true"
-          >
-            gavel
-          </span>
-
-          <span>My Bids</span>
-        </a>
-
-        <!-- Profile -->
-        <a
-          href="./profile.html"
-          class="flex flex-col items-center gap-1 text-xs text-muted"
-        >
-          <span
-            class="material-symbols-outlined text-[23px]"
-            aria-hidden="true"
-          >
-            person
-          </span>
-
-          <span>Profile</span>
-        </a>
-      </nav>
-    </div>
+    <div id="mobile-bottom-nav"></div>
+    <footer id="site-footer"></footer>
   </body>
 </html>

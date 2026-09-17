@@ -1,23 +1,11 @@
-// Dates
-
 const MINUTE = 1000 * 60;
 const HOUR = MINUTE * 60;
 const DAY = HOUR * 24;
 
-/**
- * Get remaining auction time.
- * @param {string} endsAt
- * @returns {number}
- */
 export function getTimeRemaining(endsAt) {
   return new Date(endsAt).getTime() - Date.now();
 }
 
-/**
- * Get auction status.
- * @param {string} endsAt
- * @returns {"open"|"ending"|"ended"}
- */
 export function getAuctionStatus(endsAt) {
   const remaining = getTimeRemaining(endsAt);
 
@@ -32,11 +20,32 @@ export function getAuctionStatus(endsAt) {
   return 'open';
 }
 
-/**
- * Format auction time remaining.
- * @param {string} endsAt
- * @returns {string}
- */
+export function getAuctionStatusDetails(endsAt) {
+  const status = getAuctionStatus(endsAt);
+
+  if (status === 'ending') {
+    return {
+      status,
+      label: 'Ending soon',
+      dotClass: 'bg-ending',
+    };
+  }
+
+  if (status === 'ended') {
+    return {
+      status,
+      label: 'Ended',
+      dotClass: 'bg-muted',
+    };
+  }
+
+  return {
+    status,
+    label: 'Open',
+    dotClass: 'bg-open',
+  };
+}
+
 export function formatTimeLeft(endsAt) {
   const remaining = getTimeRemaining(endsAt);
 
@@ -45,10 +54,8 @@ export function formatTimeLeft(endsAt) {
   }
 
   const days = Math.floor(remaining / DAY);
-
   const hours = Math.floor((remaining % DAY) / HOUR);
-
-  const minutes = Math.floor((remaining % HOUR) / MINUTE);
+  const minutes = Math.max(1, Math.floor((remaining % HOUR) / MINUTE));
 
   if (days > 0) {
     return `${days}d ${hours}h`;
@@ -58,5 +65,5 @@ export function formatTimeLeft(endsAt) {
     return `${hours}h ${minutes}m`;
   }
 
-  return `${Math.max(minutes, 1)}m`;
+  return `${minutes}m`;
 }

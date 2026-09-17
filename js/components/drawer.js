@@ -1,5 +1,3 @@
-// Drawer
-
 const focusableSelector = [
   'a[href]',
   'button:not([disabled])',
@@ -10,25 +8,29 @@ const focusableSelector = [
 ].join(',');
 
 /**
- * Set up an accessible drawer.
+ * Set up an accessible drawer or sheet.
  * @param {object} options
- * @returns {{open: Function, close: Function}}
+ * @returns {{open: Function, close: Function, isOpen: Function}}
  */
 export function setupDrawer({
-  trigger,
+  trigger = null,
   panel,
-  backdrop,
+  backdrop = null,
   closeButtons = [],
-  openClasses,
-  closedClasses,
+  openClasses = [],
+  closedClasses = [],
   lockScroll = true,
+  bindTrigger = true,
   onOpen,
   onClose,
 }) {
   let previousFocus = null;
+  let openState = false;
 
-  function getFocusable() {
-    return [...panel.querySelectorAll(focusableSelector)];
+  function getFocusableElements() {
+    return [...panel.querySelectorAll(focusableSelector)].filter(
+      (element) => !element.hasAttribute('hidden'),
+    );
   }
 
   function shouldLockScroll() {
@@ -38,47 +40,39 @@ export function setupDrawer({
   function handleKeydown(event) {
     if (event.key === 'Escape') {
       close();
-
       return;
     }
 
-    if (event.key !== 'Tab') {
-      return;
-    }
+    if (event.key !== 'Tab') return;
 
-    const focusable = getFocusable();
+    const focusable = getFocusableElements();
 
-    if (!focusable.length) {
-      return;
-    }
+    if (!focusable.length) return;
 
     const first = focusable[0];
     const last = focusable.at(-1);
 
     if (event.shiftKey && document.activeElement === first) {
       event.preventDefault();
-
       last.focus();
-    }
-
-    if (!event.shiftKey && document.activeElement === last) {
+    } else if (!event.shiftKey && document.activeElement === last) {
       event.preventDefault();
-
       first.focus();
     }
   }
 
   function open() {
+    if (openState) return;
+
+    openState = true;
     previousFocus = document.activeElement;
 
     panel.inert = false;
-
     panel.setAttribute('aria-hidden', 'false');
 
     trigger?.setAttribute('aria-expanded', 'true');
 
     panel.classList.remove(...closedClasses);
-
     panel.classList.add(...openClasses);
 
     if (backdrop) {
@@ -99,22 +93,22 @@ export function setupDrawer({
     onOpen?.();
 
     requestAnimationFrame(() => {
-      getFocusable()[0]?.focus();
+      getFocusableElements()[0]?.focus();
     });
   }
 
   function close() {
-    previousFocus?.focus();
+    if (!openState) return;
+
+    openState = false;
 
     panel.classList.remove(...openClasses);
-
     panel.classList.add(...closedClasses);
 
-    trigger?.setAttribute('aria-expanded', 'false');
-
     panel.inert = true;
-
     panel.setAttribute('aria-hidden', 'true');
+
+    trigger?.setAttribute('aria-expanded', 'false');
 
     if (backdrop) {
       backdrop.classList.remove('opacity-100');
@@ -125,17 +119,25 @@ export function setupDrawer({
       }, 300);
     }
 
-    document.body.classList.remove('overflow-hidden');
+    if (shouldLockScroll()) {
+      document.body.classList.remove('overflow-hidden');
+    }
 
     document.removeEventListener('keydown', handleKeydown);
 
     onClose?.();
+
+    if (previousFocus instanceof HTMLElement) {
+      previousFocus.focus();
+    }
   }
 
-  trigger?.addEventListener('click', open);
+  if (bindTrigger) {
+    trigger?.addEventListener('click', open);
+  }
 
   closeButtons.forEach((button) => {
-    button.addEventListener('click', close);
+    button?.addEventListener('click', close);
   });
 
   backdrop?.addEventListener('click', close);
@@ -143,5 +145,6 @@ export function setupDrawer({
   return {
     open,
     close,
+    isOpen: () => openState,
   };
 }

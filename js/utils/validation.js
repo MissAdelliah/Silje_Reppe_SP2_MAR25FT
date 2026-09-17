@@ -1,58 +1,55 @@
-// Validation
-
-const STUDENT_EMAIL_PATTERN = /^[^\s@]+@stud\.noroff\.no$/i;
-
-const USERNAME_PATTERN = /^[A-Za-z0-9_]+$/;
-
-/**
- * Validate a Noroff username.
- * @param {string} value
- * @returns {string}
- */
-export function validateName(value) {
-  const name = value.trim();
-
-  if (!name) {
-    return 'Name is required.';
-  }
-
-  if (!USERNAME_PATTERN.test(name)) {
-    return 'Use letters, numbers and underscores only.';
-  }
-
-  return '';
-}
+const studentEmailPattern = /^[^\s@]+@stud\.noroff\.no$/i;
+const usernamePattern = /^[A-Za-z0-9_]+$/;
 
 /**
  * Validate a Noroff student email.
- * @param {string} value
+ * @param {string} email
  * @returns {string}
  */
-export function validateEmail(value) {
-  const email = value.trim();
+export function validateStudentEmail(email) {
+  const value = email.trim();
 
-  if (!email) {
-    return 'Email is required.';
+  if (!value) {
+    return 'Please enter your student email.';
   }
 
-  if (!STUDENT_EMAIL_PATTERN.test(email)) {
-    return 'Use your @stud.noroff.no email.';
+  if (!studentEmailPattern.test(value)) {
+    return 'Use your @stud.noroff.no email address.';
   }
 
   return '';
 }
 
 /**
- * Validate a Noroff password.
- * @param {string} value
+ * Validate a Noroff username.
+ * @param {string} username
  * @returns {string}
  */
-export function validatePassword(value) {
+export function validateUsername(username) {
+  const value = username.trim();
+
   if (!value) {
-    return 'Password is required.';
+    return 'Please enter a username.';
   }
 
-  if (value.length < 8) {
+  if (!usernamePattern.test(value)) {
+    return 'Username can only contain letters, numbers and underscores.';
+  }
+
+  return '';
+}
+
+/**
+ * Validate a password.
+ * @param {string} password
+ * @returns {string}
+ */
+export function validatePassword(password) {
+  if (!password) {
+    return 'Please enter your password.';
+  }
+
+  if (password.length < 8) {
     return 'Password must be at least 8 characters.';
   }
 

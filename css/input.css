@@ -1,50 +1,26 @@
 @import 'tailwindcss';
 
-/* Theme */
-
 @theme {
   /* Colors */
-
   --color-page: #fcfcfc;
   --color-soft: #f0f0f0;
   --color-ink: #1c1c1c;
   --color-sand: #eeeadf;
   --color-brand: #800000;
-
   --color-muted: #666666;
   --color-border: #c7c7c7;
   --color-divider: #dedede;
-
   --color-open: #34c759;
   --color-ending: #ff9500;
 
   /* Fonts */
-
   --font-sans: 'Plus Jakarta Sans', 'Inter', sans-serif;
   --font-display: 'Zalando Sans Expanded', 'Inter', sans-serif;
 
-  /* Text */
-
-  --text-logo-mobile: 1.75rem;
-  --text-logo-desktop: 2rem;
-
-  --text-body-large: 1.125rem;
-  --text-body: 1rem;
-  --text-small: 0.875rem;
-
-  /* Line height */
-
-  --leading-heading: 1.15;
-  --leading-body: 1.5;
-  --leading-small: 1.4;
-
   /* Shadows */
-
   --shadow-control: 0 2px 8px rgb(28 28 28 / 0.12);
   --shadow-drawer: -8px 0 24px rgb(28 28 28 / 0.12);
 }
-
-/* Base */
 
 @layer base {
   [hidden] {
@@ -54,7 +30,7 @@
   html {
     color-scheme: light;
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 6.25rem;
   }
 
   body {
@@ -62,8 +38,8 @@
     background-color: var(--color-page);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-size: var(--text-body);
-    line-height: var(--leading-body);
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
   button,
@@ -90,8 +66,6 @@
   }
 }
 
-/* Utilities */
-
 @utility scrollbar-hidden {
   scrollbar-width: none;
 
@@ -99,8 +73,6 @@
     display: none;
   }
 }
-
-/* Accessibility */
 
 @media (prefers-reduced-motion: reduce) {
   html {
