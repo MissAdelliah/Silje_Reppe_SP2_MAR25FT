@@ -1,13 +1,28 @@
 import { apiRequest } from './apiClient.js';
 
 /**
- * Get an auction profile.
+ * Get one profile.
+ *
  * @param {string} name
  * @returns {Promise<object>}
  */
-export async function getProfile(name) {
+export function getProfile(name) {
+  return apiRequest(`/auction/profiles/${encodeURIComponent(name)}`, {
+    auth: true,
+  });
+}
+
+/**
+ * Get active listings created by a profile.
+ *
+ * @param {string} name
+ * @returns {Promise<Array>}
+ */
+export function getProfileListings(name) {
   return apiRequest(
-    `/auction/profiles/${encodeURIComponent(name)}?_listings=true&_wins=true`,
+    `/auction/profiles/${encodeURIComponent(
+      name,
+    )}/listings?_active=true&_bids=true&sort=created&sortOrder=desc`,
     {
       auth: true,
     },
@@ -15,15 +30,33 @@ export async function getProfile(name) {
 }
 
 /**
- * Update the logged-in user's auction profile.
+ * Get bids made by a profile.
+ *
+ * @param {string} name
+ * @returns {Promise<Array>}
+ */
+export function getProfileBids(name) {
+  return apiRequest(
+    `/auction/profiles/${encodeURIComponent(
+      name,
+    )}/bids?_listings=true&sort=created&sortOrder=desc`,
+    {
+      auth: true,
+    },
+  );
+}
+
+/**
+ * Update profile information.
+ *
  * @param {string} name
  * @param {object} profile
  * @returns {Promise<object>}
  */
-export async function updateProfile(name, profile) {
+export function updateProfile(name, profile) {
   return apiRequest(`/auction/profiles/${encodeURIComponent(name)}`, {
     method: 'PUT',
-    auth: true,
     body: profile,
+    auth: true,
   });
 }

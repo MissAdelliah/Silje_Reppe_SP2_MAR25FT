@@ -29,6 +29,7 @@ function createFullHeader() {
     >
       ${createLogo()}
 
+      <!-- Mobile -->
       <div
         class="flex items-center gap-3 justify-self-end lg:hidden"
       >
@@ -36,6 +37,7 @@ function createFullHeader() {
           <div
             data-wallet
             class="flex h-10 min-w-[96px] items-center justify-center gap-1.5 rounded-lg bg-ink px-3 text-white"
+            aria-label="Wallet balance"
           >
             <span
               class="material-symbols-outlined text-[18px]"
@@ -44,10 +46,7 @@ function createFullHeader() {
               wallet
             </span>
 
-            <span
-              data-credit
-              class="text-sm"
-            >
+            <span data-credit class="text-sm">
               0 cr
             </span>
           </div>
@@ -67,9 +66,11 @@ function createFullHeader() {
         </button>
       </div>
 
+      <!-- Desktop -->
       <div
         class="col-start-2 row-start-1 hidden justify-self-end lg:block"
       >
+        <!-- Logged out -->
         <div data-guest-only hidden>
           <a
             href="./auth.html"
@@ -79,12 +80,14 @@ function createFullHeader() {
           </a>
         </div>
 
+        <!-- Logged in -->
         <nav
           data-auth-only
           hidden
           class="items-center gap-4 lg:flex"
           aria-label="Account navigation"
         >
+          <!-- Create listing -->
           <div class="group relative">
             <a
               href="./create-listing.html"
@@ -102,54 +105,55 @@ function createFullHeader() {
             ${createTooltip('Create listing')}
           </div>
 
-          <div
-            class="inline-flex rounded-full border border-divider bg-page shadow-control"
-          >
-            <div class="group relative">
-              <a
-                href="./profile.html"
-                class="flex size-12 items-center justify-center overflow-hidden rounded-l-full bg-soft hover:bg-sand"
-                aria-label="View profile"
-              >
-                <img
-                  data-profile-avatar
-                  hidden
-                  class="h-full w-full object-cover"
-                  alt=""
-                />
-
-                <span
-                  data-profile-initial
-                  class="font-display text-sm font-semibold"
-                >
-                  S
-                </span>
-              </a>
-
-              ${createTooltip('Profile')}
-            </div>
-
-            <div
-              class="group relative border-l border-divider"
+          <!-- Profile -->
+          <div class="group relative">
+            <a
+              href="./profile.html"
+              class="flex size-12 items-center justify-center overflow-hidden rounded-full bg-soft shadow-control transition hover:ring-2 hover:ring-divider"
+              aria-label="View profile"
             >
-              <button
-                data-logout
-                type="button"
-                class="flex size-12 items-center justify-center rounded-r-full text-muted transition-colors hover:bg-brand hover:text-white"
-                aria-label="Log out"
-              >
-                <span
-                  class="material-symbols-outlined text-[21px]"
-                  aria-hidden="true"
-                >
-                  logout
-                </span>
-              </button>
+              <img
+                data-profile-avatar
+                hidden
+                class="h-full w-full object-cover"
+                alt=""
+              />
 
-              ${createTooltip('Log out')}
+              <span
+                data-profile-initial
+                class="font-display text-sm font-semibold"
+                aria-hidden="true"
+              >
+                S
+              </span>
+            </a>
+
+            <!-- Profile dropdown -->
+            <div
+              class="pointer-events-none invisible absolute right-0 top-full z-50 w-40 pt-2 opacity-0 transition duration-150 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100"
+            >
+              <div
+                class="overflow-hidden rounded-lg border border-divider bg-page shadow-control"
+              >
+                <a
+                  href="./profile.html"
+                  class="block px-4 py-3 text-sm transition-colors hover:bg-sand"
+                >
+                  View profile
+                </a>
+
+                <button
+                  data-logout
+                  type="button"
+                  class="w-full px-4 py-3 text-left text-sm transition-colors hover:bg-sand"
+                >
+                  Log out
+                </button>
+              </div>
             </div>
           </div>
 
+          <!-- Wallet -->
           <div class="group relative">
             <div
               data-wallet
@@ -192,7 +196,7 @@ function createMobileMenu() {
       id="mobile-menu"
       inert
       aria-hidden="true"
-      class="fixed inset-y-0 right-0 z-50 flex h-dvh w-[min(100%,390px)] translate-x-full flex-col bg-page shadow-drawer transition-transform duration-300 lg:hidden"
+      class="fixed inset-y-0 right-0 z-50 flex h-dvh w-[min(100%,390px)] translate-x-full flex-col bg-page shadow-drawer transition-transform duration-300 ease-out lg:hidden"
     >
       <div
         class="grid h-[82px] grid-cols-[1fr_auto] items-center border-b border-divider px-6"
@@ -222,6 +226,7 @@ function createMobileMenu() {
       <div
         class="flex min-h-0 flex-1 flex-col overflow-y-auto px-6"
       >
+        <!-- Logged out -->
         <div
           data-guest-only
           hidden
@@ -235,6 +240,7 @@ function createMobileMenu() {
           </a>
         </div>
 
+        <!-- Logged in profile -->
         <div
           data-auth-only
           hidden
@@ -257,6 +263,7 @@ function createMobileMenu() {
               <span
                 data-profile-initial
                 class="font-display text-base font-semibold"
+                aria-hidden="true"
               >
                 S
               </span>
@@ -353,6 +360,49 @@ function showAuthenticatedUI() {
   });
 }
 
+/**
+ * Update account information shown in the shared header and mobile menu.
+ *
+ * @param {object} profile
+ */
+export function updateHeaderProfile(profile) {
+  const name = profile?.name || '';
+  const avatarUrl = profile?.avatar?.url?.trim() || '';
+
+  if (profile?.credits !== undefined) {
+    document.querySelectorAll('[data-credit]').forEach((element) => {
+      element.textContent = `${profile.credits} cr`;
+    });
+  }
+
+  document.querySelectorAll('[data-profile-name]').forEach((element) => {
+    element.textContent = name;
+  });
+
+  document.querySelectorAll('[data-profile-avatar]').forEach((image) => {
+    const initial = image.parentElement?.querySelector(
+      '[data-profile-initial]',
+    );
+
+    image.hidden = !avatarUrl;
+    image.src = avatarUrl;
+    image.alt = avatarUrl ? `${name} profile image` : '';
+
+    image.onerror = () => {
+      image.hidden = true;
+
+      if (initial) {
+        initial.hidden = false;
+      }
+    };
+  });
+
+  document.querySelectorAll('[data-profile-initial]').forEach((element) => {
+    element.hidden = Boolean(avatarUrl);
+    element.textContent = name.trim().charAt(0).toUpperCase() || 'S';
+  });
+}
+
 export async function initHeader() {
   const header = document.querySelector('#site-header');
 
@@ -360,8 +410,6 @@ export async function initHeader() {
 
   const variant = header.dataset.headerVariant ?? 'full';
 
-  // Auth page:
-  // no API/profile/drawer imports required.
   if (variant === 'minimal') {
     header.className = 'border-b border-divider bg-page';
 
@@ -381,10 +429,11 @@ export async function initHeader() {
 
   header.innerHTML = createFullHeader();
 
+  document.querySelector('#menu-backdrop')?.remove();
+  document.querySelector('#mobile-menu')?.remove();
+
   header.insertAdjacentHTML('afterend', createMobileMenu());
 
-  // Only load account dependencies
-  // when the full navbar is used.
   const [authModule, profileModule, storageModule, drawerModule] =
     await Promise.all([
       import('../api/auth.js'),
@@ -394,19 +443,13 @@ export async function initHeader() {
     ]);
 
   const { logoutUser } = authModule;
-
   const { getProfile } = profileModule;
-
   const { getUser } = storageModule;
-
   const { setupDrawer } = drawerModule;
 
   const menuButton = document.querySelector('#menu-button');
-
   const mobileMenu = document.querySelector('#mobile-menu');
-
   const backdrop = document.querySelector('#menu-backdrop');
-
   const closeButton = document.querySelector('[data-menu-close]');
 
   if (mobileMenu) {
@@ -422,7 +465,6 @@ export async function initHeader() {
 
   function handleLogout() {
     logoutUser();
-
     window.location.assign('./index.html');
   }
 
@@ -438,43 +480,11 @@ export async function initHeader() {
   }
 
   showAuthenticatedUI();
-
-  function updateProfile(profile) {
-    const name = profile?.name || user.name || '';
-
-    const credits = profile?.credits ?? user.credits ?? 0;
-
-    document.querySelectorAll('[data-credit]').forEach((element) => {
-      element.textContent = `${credits} cr`;
-    });
-
-    document.querySelectorAll('[data-profile-name]').forEach((element) => {
-      element.textContent = name;
-    });
-
-    const avatarUrl = profile?.avatar?.url || user.avatar?.url;
-
-    document.querySelectorAll('[data-profile-avatar]').forEach((image) => {
-      image.hidden = !avatarUrl;
-
-      image.src = avatarUrl || '';
-
-      image.alt = avatarUrl ? `${name} profile image` : '';
-    });
-
-    document.querySelectorAll('[data-profile-initial]').forEach((element) => {
-      element.hidden = Boolean(avatarUrl);
-
-      element.textContent = name.trim().charAt(0).toUpperCase() || 'S';
-    });
-  }
-
-  updateProfile(user);
+  updateHeaderProfile(user);
 
   try {
     const profile = await getProfile(user.name);
-
-    updateProfile(profile);
+    updateHeaderProfile(profile);
   } catch (error) {
     console.error('Could not load profile:', error);
   }
