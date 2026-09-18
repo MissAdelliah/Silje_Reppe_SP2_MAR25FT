@@ -28,16 +28,13 @@
     <header id="site-header" data-header-variant="full"></header>
 
     <main>
-      <!-- ========================================
-           Mobile search / sort
-      ========================================= -->
-
+      <!-- Mobile search and sorting controls -->
       <section
         class="px-[15px] pt-5 lg:hidden"
         aria-label="Search and sort listings"
       >
         <div class="grid grid-cols-[minmax(0,1fr)_140px] items-center gap-3">
-          <!-- Search -->
+          <!-- Search listings -->
           <form id="search-form-mobile" class="min-w-0" role="search">
             <label for="search-input-mobile" class="sr-only">
               Search listings
@@ -62,7 +59,7 @@
             </div>
           </form>
 
-          <!-- Sort -->
+          <!-- Sort listing result -->
           <div class="relative" data-sort-control>
             <button
               data-sort-toggle
@@ -136,9 +133,7 @@
         ></div>
       </section>
 
-      <!-- ========================================
-           Hero
-      ========================================= -->
+      <!-- Hero -->
 
       <section class="mt-5 lg:mt-0" aria-labelledby="hero-heading">
         <div
@@ -166,9 +161,7 @@
         </div>
       </section>
 
-      <!-- ========================================
-           Desktop search / sort
-      ========================================= -->
+      <!-- Desktop search and sorting controls -->
 
       <section class="hidden lg:block" aria-label="Search and sort listings">
         <div class="mx-auto w-full max-w-[952px] pt-[38px]">
@@ -276,9 +269,7 @@
         </div>
       </section>
 
-      <!-- ========================================
-           Listings
-      ========================================= -->
+      <!-- Auction listing grid -->
 
       <section
         id="listings"
@@ -290,7 +281,7 @@
         >
           <h2 id="listings-heading" class="sr-only">Auction listings</h2>
 
-          <!-- Result count / filter -->
+          <!-- Results and filter controls -->
           <div
             class="mx-auto mb-[22px] grid w-full max-w-[340px] grid-cols-[1fr_auto] items-center md:max-w-[520px] lg:mb-8 lg:max-w-none"
           >
@@ -319,7 +310,7 @@
             </button>
           </div>
 
-          <!-- Desktop selected filters -->
+          <!-- Desktop, selected filters -->
           <div class="hidden lg:block">
             <div
               id="active-filters-desktop"
@@ -329,7 +320,7 @@
             ></div>
           </div>
 
-          <!-- Loading -->
+          <!-- Displayed while listings are loading -->
           <div
             id="loading-state"
             class="py-20 text-center text-sm text-muted"
@@ -337,8 +328,7 @@
           >
             Loading listings...
           </div>
-
-          <!-- Error -->
+          <!-- Displayed if listings cannot be loaded -->
           <div
             id="error-state"
             hidden
@@ -347,8 +337,7 @@
           >
             Could not load listings. Please try again.
           </div>
-
-          <!-- Empty -->
+          <!-- Displayed when no listings matrch the current search or filters -->
           <div id="empty-state" hidden class="py-24 text-center">
             <h3 class="font-display text-xl font-semibold">
               No listings found
@@ -364,10 +353,7 @@
       </section>
     </main>
 
-    <!-- ========================================
-         Mobile filter sheet
-    ========================================= -->
-
+    <!-- Mobile filter sheet -->
     <div
       id="mobile-filter-backdrop"
       hidden
@@ -436,9 +422,7 @@
       </form>
     </aside>
 
-    <!-- ========================================
-         Desktop filter drawer
-    ========================================= -->
+    <!-- Desktop filter drawer -->
 
     <aside
       id="desktop-filter-drawer"

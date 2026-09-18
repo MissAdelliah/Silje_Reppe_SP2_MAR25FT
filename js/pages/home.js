@@ -17,7 +17,6 @@ import {
 } from '../utils/filters.js';
 
 // DOM
-
 const mobileSearchForm = document.querySelector('#search-form-mobile');
 const mobileSearchInput = document.querySelector('#search-input-mobile');
 const desktopSearchForm = document.querySelector('#search-form-desktop');
@@ -33,7 +32,6 @@ const activeFiltersMobile = document.querySelector('#active-filters-mobile');
 const activeFiltersDesktop = document.querySelector('#active-filters-desktop');
 
 // Mobile filter
-
 const mobileFilterSheet = document.querySelector('#mobile-filter-sheet');
 const mobileFilterBackdrop = document.querySelector('#mobile-filter-backdrop');
 const mobileFilterForm = document.querySelector('#mobile-filter-form');
@@ -41,7 +39,6 @@ const mobileFilterOptions = document.querySelector('#mobile-filter-options');
 const mobileFilterClose = document.querySelector('[data-mobile-filter-close]');
 
 // Desktop filter
-
 const desktopFilterPanel = document.querySelector('#desktop-filter-drawer');
 const desktopFilterForm = document.querySelector('#desktop-filter-form');
 const desktopFilterOptions = document.querySelector('#desktop-filter-options');
@@ -50,7 +47,6 @@ const desktopFilterClose = document.querySelector(
 );
 
 // State
-
 const state = {
   listings: [],
   search: '',
@@ -157,18 +153,17 @@ function hasWorkingImage(listing) {
 function isCompleteListing(listing) {
   const hasTitle = Boolean(listing.title?.trim());
   const hasDescription = Boolean(listing.description?.trim());
+  const hasImageUrl = Boolean(listing.media?.[0]?.url?.trim());
   const endDate = new Date(listing.endsAt);
   const hasValidEndTime = !Number.isNaN(endDate.getTime());
 
-  return hasTitle && hasDescription && hasValidEndTime;
+  return hasTitle && hasDescription && hasImageUrl && hasValidEndTime;
 }
 
 function getVisibleListings() {
-  const listings = state.listings
-    .filter(isCompleteListing)
-    .filter((listing) => {
-      return matchesFilters(listing, state.filters);
-    });
+  const listings = state.listings.filter((listing) => {
+    return matchesFilters(listing, state.filters);
+  });
 
   const clientSort = sortOptions[state.sort]?.clientSort;
 
@@ -758,8 +753,10 @@ function updateTimeDisplays() {
 
 async function loadListings() {
   requestController?.abort();
+
   const controller = new AbortController();
   requestController = controller;
+
   loadingState.hidden = false;
   errorState.hidden = true;
   emptyState.hidden = true;
@@ -778,7 +775,26 @@ async function loadListings() {
       return;
     }
 
-    state.listings = Array.isArray(listings) ? listings : [];
+    // remove listings missing required data
+    const completeListings = Array.isArray(listings)
+      ? listings.filter(isCompleteListing)
+      : [];
+
+    // check that each image loads
+    const checkedListings = await Promise.all(
+      completeListings.map(async (listing) => {
+        const imageWorks = await hasWorkingImage(listing);
+
+        return imageWorks ? listing : null;
+      }),
+    );
+
+    if (requestController !== controller) {
+      return;
+    }
+
+    // Keep only listings with working images.
+    state.listings = checkedListings.filter(Boolean);
 
     renderListings();
     renderFilterPanels();
@@ -795,7 +811,6 @@ async function loadListings() {
     console.error('Could not load listings:', error);
 
     listingGrid.innerHTML = '';
-
     errorState.hidden = false;
   } finally {
     if (requestController === controller) {

@@ -53,5 +53,9 @@ export function validatePassword(password) {
     return 'Password must be at least 8 characters.';
   }
 
+  if (password.length > 30) {
+    return 'Password must be 30 characters or fewer.';
+  }
+
   return '';
 }
