@@ -1,4 +1,4 @@
-import { apiRequest } from './request.js';
+import { apiRequest } from './apiClient.js';
 
 /**
  * Get an auction profile.

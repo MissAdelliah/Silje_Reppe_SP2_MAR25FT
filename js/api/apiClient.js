@@ -1,10 +1,9 @@
 import { API_BASE_URL, API_KEY } from './config.js';
-
 import { getAccessToken } from '../utils/storage.js';
 
 /**
  * Send a request to the Noroff API.
- * Adds authentication headers when auth is true.
+ * Adds authentication headers to protected requests.
  *
  * @param {string} endpoint
  * @param {object} options
@@ -24,23 +23,21 @@ export async function apiRequest(
     const accessToken = getAccessToken();
 
     if (!accessToken) {
-      throw new Error('No access token found. Please log in again.');
+      throw new Error('No access token found.');
+    }
+
+    if (!API_KEY) {
+      throw new Error('The Noroff API key is missing.');
     }
 
     headers.set('Authorization', `Bearer ${accessToken}`);
-
     headers.set('X-Noroff-API-Key', API_KEY);
   }
 
-  const url = `${API_BASE_URL}${endpoint}`;
-
-  console.log(`${method} ${url}`);
-
-  const response = await fetch(url, {
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     method,
     headers,
     signal,
-
     body: body === null ? undefined : JSON.stringify(body),
   });
 
