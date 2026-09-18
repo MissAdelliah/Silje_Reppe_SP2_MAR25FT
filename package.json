@@ -4,7 +4,8 @@
   "description": "Second Story - Semester Project 2",
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.0"
   },
   "scripts": {
     "dev": "npx @tailwindcss/cli -i ./css/input.css -o ./css/style.css --watch",
