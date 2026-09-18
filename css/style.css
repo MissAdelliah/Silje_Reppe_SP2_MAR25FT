@@ -291,6 +291,9 @@
   .-bottom-10 {
     bottom: calc(var(--spacing) * -10);
   }
+  .-bottom-\[50px\] {
+    bottom: calc(50px * -1);
+  }
   .bottom-0 {
     bottom: 0px;
   }
@@ -511,6 +514,9 @@
   .h-\[82px\] {
     height: 82px;
   }
+  .h-\[100px\] {
+    height: 100px;
+  }
   .h-\[160px\] {
     height: 160px;
   }
@@ -582,6 +588,9 @@
   }
   .w-\[30px\] {
     width: 30px;
+  }
+  .w-\[100px\] {
+    width: 100px;
   }
   .w-\[180px\] {
     width: 180px;
@@ -1177,6 +1186,9 @@
   }
   .pl-\[72px\] {
     padding-left: 72px;
+  }
+  .pl-\[120px\] {
+    padding-left: 120px;
   }
   .text-center {
     text-align: center;
