@@ -1,0 +1,29 @@
+{
+  "name": "silje_reppe_sp2_mar25ft",
+  "version": "1.0.0",
+  "description": "Second Story - Semester Project 2",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm:dev:vite\" \"npm:dev:css\"",
+    "dev:vite": "vite",
+    "dev:css": "tailwindcss -i ./css/input.css -o ./css/style.css --watch",
+    "build:css": "tailwindcss -i ./css/input.css -o ./css/style.css --minify"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "concurrently": "^10.0.5",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MissAdelliah/Silje_Reppe_SP2_MAR25FT.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MissAdelliah/Silje_Reppe_SP2_MAR25FT/issues"
+  },
+  "homepage": "https://github.com/MissAdelliah/Silje_Reppe_SP2_MAR25FT#readme"
+}

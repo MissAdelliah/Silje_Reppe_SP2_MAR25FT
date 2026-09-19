@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="View a Second Story profile, active listings and bids."
+    />
+    <title>Profile | Second Story</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Zalando+Sans+Expanded:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body class="flex min-h-dvh flex-col bg-page text-ink">
+    <!-- Shared navigation -->
+    <header id="site-header" data-header-variant="full"></header>
+
+    <main class="flex-1">
+      <!-- Logged-out state -->
+      <section
+        id="profile-guest"
+        hidden
+        class="mx-auto flex min-h-[420px] max-w-md items-center justify-center px-6 text-center"
+        aria-labelledby="profile-guest-heading"
+      >
+        <div>
+          <h1
+            id="profile-guest-heading"
+            class="font-display text-xl font-medium"
+          >
+            Log in to view profiles
+          </h1>
+
+          <p class="mt-2 text-sm text-muted">
+            Student profiles are available after logging in.
+          </p>
+          <a
+            href="./auth.html?mode=login"
+            class="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-ink px-6 text-sm font-medium text-white transition-colors duration-200 hover:bg-brand"
+          >
+            Log in
+          </a>
+        </div>
+      </section>
+
+      <!-- Loading state -->
+      <div
+        id="profile-loading"
+        class="flex min-h-[420px] items-center justify-center"
+        role="status"
+      >
+        <p class="text-sm text-muted">Loading profile...</p>
+      </div>
+
+      <!-- Error state -->
+      <section
+        id="profile-error"
+        hidden
+        class="mx-auto flex min-h-[420px] max-w-md items-center justify-center px-6 text-center"
+        role="alert"
+        aria-labelledby="profile-error-heading"
+      >
+        <div>
+          <h1
+            id="profile-error-heading"
+            class="font-display text-lg font-medium"
+          >
+            Could not load profile
+          </h1>
+
+          <p id="profile-error-message" class="mt-2 text-sm text-muted"></p>
+        </div>
+      </section>
+
+      <!-- Profile -->
+      <section id="profile-view" hidden aria-labelledby="profile-name">
+        <!-- Profile header -->
+        <header class="px-[15px] pt-4 lg:pt-10">
+          <div class="mx-auto w-full max-w-[430px] lg:max-w-[944px]">
+            <!-- Banner -->
+            <div class="relative">
+              <div
+                class="relative h-[132px] w-full overflow-hidden rounded-xl bg-soft sm:h-[160px] lg:h-[288px]"
+              >
+                <div
+                  id="profile-banner-placeholder"
+                  class="absolute inset-0 flex items-center justify-center text-muted"
+                  aria-hidden="true"
+                >
+                  <span class="material-symbols-outlined text-[36px]">
+                    image
+                  </span>
+                </div>
+
+                <img
+                  id="profile-banner"
+                  src=""
+                  alt=""
+                  hidden
+                  class="relative h-full w-full object-cover object-center"
+                />
+              </div>
+
+              <!-- Only shown on the user's own profile -->
+              <button
+                id="edit-profile-button"
+                type="button"
+                data-own-profile-only
+                hidden
+                class="absolute right-3 top-3 flex min-h-9 items-center gap-1.5 rounded-full bg-ink/80 px-3.5 text-sm text-white transition-colors duration-200 hover:bg-ink"
+              >
+                <span
+                  class="material-symbols-outlined text-[17px]"
+                  aria-hidden="true"
+                >
+                  edit
+                </span>
+
+                <span>Edit</span>
+              </button>
+            </div>
+            <div
+              class="relative -mt-[30px] min-h-[150px] pb-5 lg:-mt-[50px] lg:min-h-[170px] lg:pb-8"
+            >
+              <div
+                class="absolute left-10 top-0 size-[60px] overflow-hidden rounded-full border-4 border-white bg-soft shadow-sm lg:left-[120px] lg:size-[100px] lg:border-[4px]"
+              >
+                <div
+                  id="profile-avatar-placeholder"
+                  class="flex h-full w-full items-center justify-center text-muted"
+                  aria-hidden="true"
+                >
+                  <span
+                    class="material-symbols-outlined text-[26px] lg:text-[36px]"
+                  >
+                    person
+                  </span>
+                </div>
+
+                <img
+                  id="profile-avatar"
+                  src=""
+                  alt=""
+                  hidden
+                  class="absolute inset-0 h-full w-full object-cover object-center"
+                />
+              </div>
+              <div
+                class="mr-4 ml-[112px] pt-[38px] text-left lg:mx-auto lg:w-[320px] lg:pt-[58px]"
+              >
+                <h1
+                  id="profile-name"
+                  class="font-sans text-[16px] font-medium leading-normal text-ink"
+                ></h1>
+
+                <p
+                  id="profile-bio"
+                  class="mt-1.5 max-w-[300px] whitespace-pre-line font-sans text-[14px] leading-[1.4] text-ink/80"
+                ></p>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Profile activity -->
+        <div class="border-b border-divider">
+          <div
+            class="mx-auto flex w-fit gap-4 sm:gap-6"
+            role="tablist"
+            aria-label="Profile activity"
+          >
+            <button
+              id="active-tab"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="active-panel"
+              class="min-w-[100px] border-b-2 border-ink px-4 py-4 text-center font-sans text-[16px] font-medium text-ink transition-colors duration-200 lg:min-w-[140px] lg:text-[20px]"
+            >
+              Active
+            </button>
+
+            <button
+              id="bids-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="bids-panel"
+              hidden
+              class="min-w-[100px] border-b-2 border-transparent px-4 py-4 text-center font-sans text-[16px] font-medium text-ink transition-colors duration-200 lg:min-w-[140px] lg:text-[20px]"
+            >
+              Bids
+            </button>
+          </div>
+        </div>
+
+        <!-- Active listings -->
+        <section
+          id="active-panel"
+          role="tabpanel"
+          aria-labelledby="active-tab"
+          class="px-[15px] py-8 lg:py-12"
+        >
+          <h2 class="sr-only">Active listings</h2>
+
+          <div
+            id="active-loading"
+            class="py-12 text-center text-sm text-muted"
+            role="status"
+          >
+            Loading listings...
+          </div>
+
+          <div id="active-empty" hidden class="py-12 text-center">
+            <p class="font-medium">No active listings</p>
+
+            <p id="active-empty-message" class="mt-1 text-sm text-muted">
+              Active listings will appear here.
+            </p>
+          </div>
+
+          <div id="active-error" hidden class="py-12 text-center" role="alert">
+            <p class="font-medium">Could not load listings.</p>
+
+            <p id="active-error-message" class="mt-1 text-sm text-muted"></p>
+          </div>
+
+          <!-- Listing cards are rendered by listingCard.js -->
+          <div
+            id="active-listings"
+            data-listing-grid
+            class="mx-auto grid w-full max-w-[376px] grid-cols-2 gap-x-4 gap-y-10 md:w-[572px] md:max-w-none md:grid-cols-[repeat(3,180px)] lg:w-[952px] lg:grid-cols-[repeat(4,220px)] lg:gap-x-6"
+          ></div>
+        </section>
+
+        <!-- Bids -->
+        <section
+          id="bids-panel"
+          role="tabpanel"
+          aria-labelledby="bids-tab"
+          hidden
+          class="px-[15px] py-8 lg:py-12"
+        >
+          <h2 class="sr-only">Listings bid on</h2>
+
+          <div
+            id="bids-loading"
+            hidden
+            class="py-12 text-center text-sm text-muted"
+            role="status"
+          >
+            Loading bids...
+          </div>
+
+          <div id="bids-empty" hidden class="py-12 text-center">
+            <p class="font-medium">No bids yet</p>
+
+            <p id="bids-empty-message" class="mt-1 text-sm text-muted">
+              Listings you have bid on will appear here.
+            </p>
+          </div>
+
+          <div id="bids-error" hidden class="py-12 text-center" role="alert">
+            <p class="font-medium">Could not load bids.</p>
+
+            <p id="bids-error-message" class="mt-1 text-sm text-muted"></p>
+          </div>
+          <div
+            id="bid-listings"
+            data-listing-grid
+            class="mx-auto grid w-full max-w-[376px] grid-cols-2 gap-x-4 gap-y-10 md:w-[572px] md:max-w-none md:grid-cols-[repeat(3,180px)] lg:w-[952px] lg:grid-cols-[repeat(4,220px)] lg:gap-x-6"
+          ></div>
+        </section>
+      </section>
+
+      <!-- Edit profile -->
+      <section
+        id="edit-profile-view"
+        hidden
+        class="mx-auto w-full max-w-[430px] px-[15px] pb-14 pt-4 lg:pt-8"
+        aria-labelledby="edit-profile-title"
+      >
+        <div class="relative flex min-h-12 items-center justify-center">
+          <button
+            id="back-to-profile"
+            type="button"
+            class="absolute left-0 flex size-11 items-center justify-center"
+            aria-label="Back to profile"
+          >
+            <span
+              class="material-symbols-outlined text-[22px]"
+              aria-hidden="true"
+            >
+              arrow_back
+            </span>
+          </button>
+
+          <h1
+            id="edit-profile-title"
+            tabindex="-1"
+            class="font-display text-base font-medium"
+          >
+            Edit Profile
+          </h1>
+        </div>
+
+        <form id="edit-profile-form" class="mt-8">
+          <fieldset>
+            <legend class="text-sm font-medium">Images</legend>
+            <div class="relative mt-3 pb-10">
+              <div class="relative h-24 overflow-hidden rounded-lg bg-soft">
+                <div
+                  id="edit-banner-placeholder"
+                  class="absolute inset-0 flex items-center justify-center text-muted"
+                  aria-hidden="true"
+                >
+                  <span class="material-symbols-outlined text-[36px]">
+                    image
+                  </span>
+                </div>
+
+                <img
+                  id="edit-banner-preview"
+                  src=""
+                  alt=""
+                  hidden
+                  class="relative h-full w-full object-cover object-center"
+                />
+              </div>
+
+              <div
+                class="absolute bottom-0 left-1/2 size-20 -translate-x-1/2 overflow-hidden rounded-full border-[5px] border-white bg-soft shadow-control"
+              >
+                <div
+                  id="edit-avatar-placeholder"
+                  class="flex h-full w-full items-center justify-center text-muted"
+                  aria-hidden="true"
+                >
+                  <span class="material-symbols-outlined text-[32px]">
+                    person
+                  </span>
+                </div>
+
+                <img
+                  id="edit-avatar-preview"
+                  src=""
+                  alt=""
+                  hidden
+                  class="absolute inset-0 h-full w-full object-cover object-center"
+                />
+              </div>
+            </div>
+
+            <!-- Avatar -->
+            <div class="mt-7">
+              <label for="avatar-url" class="block text-sm font-medium">
+                Profile image
+              </label>
+
+              <p class="mt-1 text-xs text-muted">Paste a public image URL.</p>
+
+              <div class="mt-2 flex gap-2">
+                <input
+                  id="avatar-url"
+                  name="avatar"
+                  type="url"
+                  autocomplete="url"
+                  placeholder="https://..."
+                  class="min-h-11 min-w-0 flex-1 rounded-lg border border-divider bg-white px-3 text-sm outline-none transition-colors duration-200 focus:border-ink"
+                />
+
+                <button
+                  id="apply-avatar"
+                  type="button"
+                  class="min-h-11 shrink-0 rounded-lg bg-ink px-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-brand"
+                >
+                  Apply
+                </button>
+              </div>
+
+              <p
+                id="avatar-error"
+                hidden
+                class="mt-1 text-xs text-brand"
+                role="alert"
+              ></p>
+            </div>
+
+            <!-- Banner -->
+            <div class="mt-5">
+              <label for="banner-url" class="block text-sm font-medium">
+                Banner image
+              </label>
+
+              <p class="mt-1 text-xs text-muted">Paste a public image URL.</p>
+
+              <div class="mt-2 flex gap-2">
+                <input
+                  id="banner-url"
+                  name="banner"
+                  type="url"
+                  autocomplete="url"
+                  placeholder="https://..."
+                  class="min-h-11 min-w-0 flex-1 rounded-lg border border-divider bg-white px-3 text-sm outline-none transition-colors duration-200 focus:border-ink"
+                />
+
+                <button
+                  id="apply-banner"
+                  type="button"
+                  class="min-h-11 shrink-0 rounded-lg bg-ink px-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-brand"
+                >
+                  Apply
+                </button>
+              </div>
+
+              <p
+                id="banner-error"
+                hidden
+                class="mt-1 text-xs text-brand"
+                role="alert"
+              ></p>
+            </div>
+          </fieldset>
+
+          <!-- Bio -->
+          <div class="mt-8">
+            <label for="profile-bio-input" class="block text-sm font-medium">
+              Bio
+            </label>
+
+            <p class="mt-1 text-xs text-muted">
+              What do you want people to know?
+            </p>
+
+            <textarea
+              id="profile-bio-input"
+              name="bio"
+              rows="5"
+              maxlength="150"
+              aria-describedby="bio-character-count"
+              class="mt-2 w-full resize-y rounded-xl border border-divider bg-white px-3 py-3 text-sm outline-none transition-colors duration-200 focus:border-ink"
+            ></textarea>
+
+            <p
+              id="bio-character-count"
+              class="mt-1 text-right text-xs text-muted"
+            >
+              0/150
+            </p>
+          </div>
+
+          <!-- Save error -->
+          <p
+            id="edit-profile-error"
+            hidden
+            class="mt-4 text-sm text-brand"
+            role="alert"
+            aria-live="assertive"
+          ></p>
+
+          <div class="mt-10">
+            <button
+              id="save-profile-button"
+              type="submit"
+              class="flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-ink px-4 text-sm font-medium text-white transition-colors duration-200 hover:bg-brand disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <span
+                class="material-symbols-outlined text-[18px]"
+                aria-hidden="true"
+              >
+                save
+              </span>
+
+              <span> Save Changes </span>
+            </button>
+
+            <button
+              id="cancel-edit-profile"
+              type="button"
+              class="mt-2 min-h-11 w-full text-sm text-muted transition-colors duration-200 hover:text-ink"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+    <div data-auth-only hidden class="h-20 lg:hidden" aria-hidden="true"></div>
+    <div id="mobile-bottom-nav"></div>
+    <footer id="site-footer"></footer>
+    <script type="module" src="./js/pages/profile.js"></script>
+  </body>
+</html>

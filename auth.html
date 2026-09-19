@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Log in or register for Second Story." />
+    <title>Register / Log in | Second Story</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Zalando+Sans+Expanded:ital,wght@0,200..900;1,200..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body class="flex min-h-dvh flex-col bg-page text-ink">
+    <header id="site-header" data-header-variant="minimal"></header>
+
+    <main class="flex flex-1 items-start lg:items-center">
+      <div
+        class="mx-auto w-full px-5 pt-8 pb-16 sm:max-w-[520px] sm:px-[30px] lg:grid lg:min-h-[620px] lg:max-w-[1260px] lg:grid-cols-[500px_420px] lg:items-center lg:justify-center lg:gap-[105px] lg:px-10 lg:pt-0 lg:pb-16"
+      >
+        <!-- Desktop image -->
+        <div class="hidden overflow-hidden lg:block">
+          <img
+            src="./assets/images/hero.jpeg"
+            alt="Student photographing second-hand shoes with a phone"
+            class="h-[500px] w-[500px] object-cover object-center"
+          />
+        </div>
+
+        <section
+          class="mx-auto w-full max-w-[420px]"
+          aria-labelledby="auth-heading"
+        >
+          <h1 id="auth-heading" class="sr-only">Register or log in</h1>
+
+          <!-- Login / register -->
+          <div
+            class="mb-11 flex items-end justify-center gap-7 lg:mb-16 lg:justify-start lg:gap-5"
+            aria-label="Authentication mode"
+          >
+            <button
+              id="login-tab"
+              type="button"
+              aria-pressed="true"
+              class="border-b border-ink px-1 pb-2 font-display text-base font-semibold text-brand transition-colors duration-200 lg:text-xl"
+            >
+              Log in
+            </button>
+
+            <button
+              id="register-tab"
+              type="button"
+              aria-pressed="false"
+              class="border-b border-transparent px-1 pb-2 font-display text-base font-semibold text-muted transition-colors duration-200 hover:text-ink lg:text-xl"
+            >
+              Register
+            </button>
+          </div>
+
+          <form id="auth-form" novalidate class="space-y-6">
+            <!-- Name: register only -->
+            <div id="name-group" hidden>
+              <label for="name" class="block text-sm font-semibold">
+                Name
+              </label>
+
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autocomplete="username"
+                autocapitalize="none"
+                spellcheck="false"
+                placeholder="Isabella_Eriksen"
+                aria-describedby="name-error"
+                class="mt-2 h-11 w-full rounded-lg border border-border bg-page px-4 text-base outline-none transition-colors duration-200 placeholder:text-border focus:border-ink"
+              />
+
+              <p id="name-error" hidden class="mt-1.5 text-sm text-brand"></p>
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label for="email" class="block text-sm font-semibold">
+                Email
+              </label>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                autocapitalize="none"
+                spellcheck="false"
+                placeholder="isabella@stud.noroff.no"
+                aria-describedby="email-error"
+                class="mt-2 h-11 w-full rounded-lg border border-border bg-page px-4 text-base outline-none transition-colors duration-200 placeholder:text-border focus:border-ink"
+              />
+
+              <p id="email-error" hidden class="mt-1.5 text-sm text-brand"></p>
+            </div>
+
+            <!-- Password -->
+            <div>
+              <label for="password" class="block text-sm font-semibold">
+                Password
+              </label>
+              <div class="relative mt-2">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="Password"
+                  aria-describedby="password-error"
+                  class="h-11 w-full rounded-lg border border-border bg-page pr-24 pl-4 text-base outline-none transition-colors duration-200 placeholder:text-border focus:border-ink"
+                />
+                <button
+                  id="password-toggle"
+                  type="button"
+                  class="absolute top-1/2 right-2 flex min-h-10 -translate-y-1/2 items-center gap-1.5 px-2 text-sm text-muted transition-colors duration-150 hover:text-ink"
+                  aria-label="Show password"
+                  aria-pressed="false"
+                >
+                  <span
+                    id="password-icon"
+                    class="material-symbols-outlined text-[14px] lg:text-[16px]"
+                    aria-hidden="true"
+                  >
+                    visibility_off
+                  </span>
+
+                  <span id="password-status">Show</span>
+                </button>
+              </div>
+
+              <p
+                id="password-error"
+                hidden
+                class="mt-1.5 text-sm text-brand"
+              ></p>
+            </div>
+
+            <p
+              id="auth-description"
+              class="pt-5 text-center text-sm text-muted lg:pt-8"
+            >
+              Sign in to bid and create listings.
+            </p>
+
+            <div
+              id="form-error"
+              hidden
+              class="rounded-lg border border-brand/30 bg-sand px-3 py-2 text-sm text-brand"
+              role="alert"
+              aria-live="assertive"
+            ></div>
+
+            <button
+              id="submit-button"
+              type="submit"
+              class="flex h-12 w-full items-center justify-center rounded-lg bg-ink font-display text-base font-medium text-white transition-colors duration-200 hover:bg-brand disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <span id="submit-text"> Log in </span>
+
+              <span
+                id="submit-spinner"
+                hidden
+                class="size-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
+                aria-hidden="true"
+              ></span>
+            </button>
+
+            <a
+              href="./index.html"
+              class="flex min-h-11 w-full items-center justify-center text-sm transition-colors duration-150 hover:text-brand lg:hidden"
+            >
+              Cancel
+            </a>
+          </form>
+        </section>
+      </div>
+    </main>
+
+    <footer id="site-footer"></footer>
+
+    <!-- Keep the module here so the HTML definitely exists first -->
+    <script type="module" src="./js/pages/auth.js"></script>
+  </body>
+</html>

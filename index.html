@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Second Story is a student auction marketplace for buying and selling second-hand items."
+    />
+
+    <title>Second Story | Student Auction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Zalando+Sans+Expanded:ital,wght@0,200..900;1,200..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+    <script type="module" src="./js/pages/home.js"></script>
+  </head>
+
+  <body class="bg-page text-ink">
+    <!-- Shared full navigation -->
+    <header id="site-header" data-header-variant="full"></header>
+
+    <main>
+      <!-- Mobile search and sorting controls -->
+      <section
+        class="px-[15px] pt-5 lg:hidden"
+        aria-label="Search and sort listings"
+      >
+        <div class="grid grid-cols-[minmax(0,1fr)_140px] items-center gap-3">
+          <!-- Search listings -->
+          <form id="search-form-mobile" class="min-w-0" role="search">
+            <label for="search-input-mobile" class="sr-only">
+              Search listings
+            </label>
+
+            <div class="relative">
+              <span
+                class="material-symbols-outlined pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[20px]"
+                aria-hidden="true"
+              >
+                search
+              </span>
+
+              <input
+                id="search-input-mobile"
+                name="search"
+                type="search"
+                autocomplete="off"
+                placeholder="Search"
+                class="h-11 w-full rounded-full border border-border bg-page pr-3 pl-10 text-base outline-none transition-colors duration-200 focus:border-ink"
+              />
+            </div>
+          </form>
+
+          <!-- Sort listing result -->
+          <div class="relative" data-sort-control>
+            <button
+              data-sort-toggle
+              type="button"
+              class="flex h-11 w-full items-center justify-between gap-2 rounded-full border border-border bg-page px-4 text-sm transition-colors duration-200 hover:border-ink focus:border-ink"
+              aria-label="Sort listings"
+              aria-expanded="false"
+              aria-controls="mobile-sort-menu"
+            >
+              <span data-sort-label class="truncate"> All </span>
+
+              <span
+                data-sort-icon
+                class="material-symbols-outlined text-[20px] transition-transform duration-200"
+                aria-hidden="true"
+              >
+                expand_more
+              </span>
+            </button>
+
+            <div
+              id="mobile-sort-menu"
+              data-sort-menu
+              class="pointer-events-none invisible absolute top-[52px] right-0 z-30 w-[225px] translate-y-1 scale-[0.98] overflow-hidden rounded-2xl border border-divider bg-page opacity-0 shadow-control transition-[opacity,transform,visibility] duration-200"
+            >
+              <button
+                type="button"
+                data-sort="default"
+                aria-pressed="true"
+                class="block w-full border-b border-divider px-5 py-4 text-left text-sm transition-colors hover:bg-soft"
+              >
+                All
+              </button>
+
+              <button
+                type="button"
+                data-sort="endingSoon"
+                aria-pressed="false"
+                class="block w-full border-b border-divider px-5 py-4 text-left text-sm transition-colors hover:bg-soft"
+              >
+                Ending soon
+              </button>
+
+              <button
+                type="button"
+                data-sort="priceLow"
+                aria-pressed="false"
+                class="block w-full border-b border-divider px-5 py-4 text-left text-sm transition-colors hover:bg-soft"
+              >
+                Price: low to high
+              </button>
+
+              <button
+                type="button"
+                data-sort="priceHigh"
+                aria-pressed="false"
+                class="block w-full px-5 py-4 text-left text-sm transition-colors hover:bg-soft"
+              >
+                Price: high to low
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selected filters -->
+        <div
+          id="active-filters-mobile"
+          hidden
+          class="mt-3 space-y-2"
+          aria-label="Active filters"
+        ></div>
+      </section>
+
+      <!-- Hero -->
+
+      <section class="mt-5 lg:mt-0" aria-labelledby="hero-heading">
+        <div
+          class="relative mx-[14px] overflow-hidden rounded-[14px] lg:mx-0 lg:rounded-none"
+        >
+          <img
+            src="./assets/images/hero.jpeg"
+            alt="Student photographing second-hand shoes with a phone"
+            fetchpriority="high"
+            class="h-[240px] w-full object-cover object-center sm:h-[300px] md:h-[360px] lg:h-[560px]"
+          />
+
+          <div
+            class="absolute inset-x-0 bottom-[18px] px-5 text-white lg:bottom-[52px] lg:px-[130px]"
+          >
+            <p class="text-sm leading-tight lg:text-lg">Featured today</p>
+
+            <h1
+              id="hero-heading"
+              class="mt-1 font-display text-2xl font-semibold leading-none lg:text-4xl"
+            >
+              New arrivals
+            </h1>
+          </div>
+        </div>
+      </section>
+
+      <!-- Desktop search and sorting controls -->
+
+      <section class="hidden lg:block" aria-label="Search and sort listings">
+        <div class="mx-auto w-full max-w-[952px] pt-[38px]">
+          <div class="grid grid-cols-[1fr_auto] items-center">
+            <!-- Search -->
+            <form
+              id="search-form-desktop"
+              class="flex items-center gap-2"
+              role="search"
+            >
+              <div class="relative w-[292px]">
+                <label for="search-input-desktop" class="sr-only">
+                  Search listings
+                </label>
+
+                <span
+                  class="material-symbols-outlined pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[18px]"
+                  aria-hidden="true"
+                >
+                  search
+                </span>
+
+                <input
+                  id="search-input-desktop"
+                  name="search"
+                  type="search"
+                  autocomplete="off"
+                  placeholder="Search"
+                  class="h-9 w-full rounded-full border border-border bg-page pr-3 pl-9 text-sm outline-none transition-colors duration-200 focus:border-ink"
+                />
+              </div>
+
+              <button
+                type="submit"
+                class="h-9 rounded-lg border border-border bg-page px-4 text-sm transition-colors duration-200 hover:border-ink hover:bg-soft"
+              >
+                Search
+              </button>
+            </form>
+
+            <!-- Sort -->
+            <div class="relative" data-sort-control>
+              <button
+                data-sort-toggle
+                type="button"
+                class="flex h-9 w-[180px] items-center justify-between gap-2 rounded-full border border-border bg-page px-4 text-sm transition-colors duration-200 hover:border-ink focus:border-ink"
+                aria-label="Sort listings"
+                aria-expanded="false"
+                aria-controls="desktop-sort-menu"
+              >
+                <span data-sort-label class="truncate"> All </span>
+
+                <span
+                  data-sort-icon
+                  class="material-symbols-outlined text-[18px] transition-transform duration-200"
+                  aria-hidden="true"
+                >
+                  expand_more
+                </span>
+              </button>
+
+              <div
+                id="desktop-sort-menu"
+                data-sort-menu
+                class="pointer-events-none invisible absolute top-[44px] right-0 z-30 w-[210px] translate-y-1 scale-[0.98] overflow-hidden rounded-xl border border-divider bg-page opacity-0 shadow-control transition-[opacity,transform,visibility] duration-200"
+              >
+                <button
+                  type="button"
+                  data-sort="default"
+                  aria-pressed="true"
+                  class="block w-full border-b border-divider px-4 py-3 text-left text-sm transition-colors hover:bg-soft"
+                >
+                  All
+                </button>
+
+                <button
+                  type="button"
+                  data-sort="endingSoon"
+                  aria-pressed="false"
+                  class="block w-full border-b border-divider px-4 py-3 text-left text-sm transition-colors hover:bg-soft"
+                >
+                  Ending soon
+                </button>
+
+                <button
+                  type="button"
+                  data-sort="priceLow"
+                  aria-pressed="false"
+                  class="block w-full border-b border-divider px-4 py-3 text-left text-sm transition-colors hover:bg-soft"
+                >
+                  Price: low to high
+                </button>
+
+                <button
+                  type="button"
+                  data-sort="priceHigh"
+                  aria-pressed="false"
+                  class="block w-full px-4 py-3 text-left text-sm transition-colors hover:bg-soft"
+                >
+                  Price: high to low
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Auction listing grid -->
+
+      <section
+        id="listings"
+        class="mt-[22px] lg:mt-0"
+        aria-labelledby="listings-heading"
+      >
+        <div
+          class="mx-auto w-full px-[15px] pb-16 lg:max-w-[952px] lg:px-0 lg:pt-12 lg:pb-28"
+        >
+          <h2 id="listings-heading" class="sr-only">Auction listings</h2>
+
+          <!-- Results and filter controls -->
+          <div
+            class="mx-auto mb-[22px] grid w-full max-w-[340px] grid-cols-[1fr_auto] items-center md:max-w-[520px] lg:mb-8 lg:max-w-none"
+          >
+            <p
+              id="result-count"
+              class="text-sm lg:text-base"
+              aria-live="polite"
+            >
+              Loading...
+            </p>
+
+            <button
+              id="filter-button"
+              type="button"
+              class="flex h-9 items-center gap-2 rounded-full border border-border bg-page px-4 text-sm shadow-control transition-colors duration-200 hover:border-ink hover:bg-soft"
+              aria-expanded="false"
+            >
+              <span
+                class="material-symbols-outlined text-[18px]"
+                aria-hidden="true"
+              >
+                filter_list
+              </span>
+
+              <span>Filter</span>
+            </button>
+          </div>
+
+          <!-- Desktop, selected filters -->
+          <div class="hidden lg:block">
+            <div
+              id="active-filters-desktop"
+              hidden
+              class="mb-8 space-y-2"
+              aria-label="Active filters"
+            ></div>
+          </div>
+
+          <!-- Displayed while listings are loading -->
+          <div
+            id="loading-state"
+            class="py-20 text-center text-sm text-muted"
+            role="status"
+          >
+            Loading listings...
+          </div>
+          <!-- Displayed if listings cannot be loaded -->
+          <div
+            id="error-state"
+            hidden
+            class="rounded-xl border border-brand bg-sand p-5 text-sm"
+            role="alert"
+          >
+            Could not load listings. Please try again.
+          </div>
+          <!-- Displayed when no listings matrch the current search or filters -->
+          <div id="empty-state" hidden class="py-24 text-center">
+            <h3 class="font-display text-xl font-semibold">
+              No listings found
+            </h3>
+            <p class="mt-2 text-sm text-muted"></p>
+          </div>
+          <div
+            id="listing-grid"
+            data-listing-grid
+            class="mx-auto grid w-full max-w-[376px] grid-cols-2 gap-x-4 gap-y-10 md:w-[572px] md:max-w-none md:grid-cols-[repeat(3,180px)] lg:w-[952px] lg:grid-cols-[repeat(4,220px)] lg:gap-x-6"
+          ></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Mobile filter sheet -->
+    <div
+      id="mobile-filter-backdrop"
+      hidden
+      class="fixed inset-0 z-40 bg-black/35 opacity-0 transition-opacity duration-300 lg:hidden"
+    ></div>
+
+    <aside
+      id="mobile-filter-sheet"
+      inert
+      aria-hidden="true"
+      aria-labelledby="mobile-filter-heading"
+      class="fixed inset-x-0 bottom-0 z-50 flex max-h-[88dvh] translate-y-full flex-col rounded-t-[28px] bg-page shadow-2xl transition-transform duration-300 ease-out lg:hidden"
+    >
+      <div class="flex justify-center pt-3" aria-hidden="true">
+        <span class="h-1 w-10 rounded-full bg-border"></span>
+      </div>
+
+      <div
+        class="grid min-h-16 grid-cols-[40px_1fr_40px] items-center border-b border-divider px-5"
+      >
+        <span aria-hidden="true"></span>
+
+        <h2
+          id="mobile-filter-heading"
+          class="justify-self-center font-display text-lg font-semibold"
+        >
+          Filters
+        </h2>
+
+        <button
+          data-mobile-filter-close
+          type="button"
+          class="flex size-10 items-center justify-center"
+          aria-label="Close filters"
+        >
+          <span
+            class="material-symbols-outlined text-[24px]"
+            aria-hidden="true"
+          >
+            close
+          </span>
+        </button>
+      </div>
+
+      <form id="mobile-filter-form" class="flex min-h-0 flex-1 flex-col">
+        <div id="mobile-filter-options" class="flex-1 overflow-y-auto"></div>
+
+        <div
+          class="border-t border-divider bg-page px-[14px] pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))]"
+        >
+          <button
+            type="submit"
+            class="h-12 w-full rounded-lg bg-ink font-display text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand"
+          >
+            Apply filters
+          </button>
+
+          <button
+            data-clear-all-filters
+            type="button"
+            class="mt-2 h-10 w-full text-sm text-muted transition-colors duration-150 hover:text-ink"
+          >
+            Clear all
+          </button>
+        </div>
+      </form>
+    </aside>
+
+    <!-- Desktop filter drawer -->
+
+    <aside
+      id="desktop-filter-drawer"
+      inert
+      aria-hidden="true"
+      aria-labelledby="desktop-filter-heading"
+      class="fixed top-[100px] right-0 bottom-0 z-40 hidden w-[390px] translate-x-full flex-col bg-sand shadow-drawer transition-transform duration-300 ease-out lg:flex"
+    >
+      <div
+        class="grid min-h-16 grid-cols-[1fr_auto] items-center border-b border-divider px-6"
+      >
+        <h2
+          id="desktop-filter-heading"
+          class="font-display text-lg font-semibold"
+        >
+          Filters
+        </h2>
+
+        <button
+          data-desktop-filter-close
+          type="button"
+          class="flex size-10 items-center justify-center"
+          aria-label="Close filters"
+        >
+          <span
+            class="material-symbols-outlined text-[20px]"
+            aria-hidden="true"
+          >
+            close
+          </span>
+        </button>
+      </div>
+
+      <form id="desktop-filter-form" class="flex min-h-0 flex-1 flex-col">
+        <div id="desktop-filter-options" class="flex-1 overflow-y-auto"></div>
+
+        <div class="border-t border-divider bg-sand p-6">
+          <button
+            type="submit"
+            class="h-12 w-full rounded-xl bg-ink font-display text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand"
+          >
+            Apply filters
+          </button>
+
+          <button
+            data-clear-all-filters
+            type="button"
+            class="mt-2 h-10 w-full text-sm text-muted transition-colors duration-150 hover:text-ink"
+          >
+            Clear all
+          </button>
+        </div>
+      </form>
+    </aside>
+    <div data-auth-only hidden class="h-20 lg:hidden" aria-hidden="true"></div>
+    <div id="mobile-bottom-nav"></div>
+    <footer id="site-footer"></footer>
+  </body>
+</html>
