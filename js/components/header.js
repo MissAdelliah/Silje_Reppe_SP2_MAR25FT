@@ -90,7 +90,7 @@ function createFullHeader() {
           <!-- Create listing -->
           <div class="group relative">
             <a
-              href="./create-listing.html"
+              href="./create.html"
               class="flex size-12 items-center justify-center rounded-full bg-ink text-white transition-colors hover:bg-brand"
               aria-label="Create listing"
             >
@@ -307,7 +307,7 @@ function createMobileMenu() {
             hidden
           >
             <a
-              href="./create-listing.html"
+              href="./create.html"
               class="block border-b border-divider py-4"
             >
               Create listing

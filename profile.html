@@ -2,33 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <meta
       name="description"
       content="View a Second Story profile, active listings and bids."
     />
-
     <title>Profile | Second Story</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Zalando+Sans+Expanded:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
       rel="stylesheet"
     />
-
     <link rel="stylesheet" href="./css/style.css" />
   </head>
-
   <body class="flex min-h-dvh flex-col bg-page text-ink">
     <!-- Shared navigation -->
     <header id="site-header" data-header-variant="full"></header>
@@ -52,7 +43,6 @@
           <p class="mt-2 text-sm text-muted">
             Student profiles are available after logging in.
           </p>
-
           <a
             href="./auth.html?mode=login"
             class="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-ink px-6 text-sm font-medium text-white transition-colors duration-200 hover:bg-brand"
@@ -167,14 +157,6 @@
                   class="absolute inset-0 h-full w-full object-cover object-center"
                 />
               </div>
-
-              <!--
-                Mobile:
-                text sits beside the 60px avatar.
-
-                Desktop:
-                the 320px text block is independently centred.
-              -->
               <div
                 class="mr-4 ml-[112px] pt-[38px] text-left lg:mx-auto lg:w-[320px] lg:pt-[58px]"
               >
@@ -216,7 +198,6 @@
               role="tab"
               aria-selected="false"
               aria-controls="bids-panel"
-              data-own-profile-only
               hidden
               class="min-w-[100px] border-b-2 border-transparent px-4 py-4 text-center font-sans text-[16px] font-medium text-ink transition-colors duration-200 lg:min-w-[140px] lg:text-[20px]"
             >
@@ -264,7 +245,7 @@
           ></div>
         </section>
 
-        <!-- Bids - own profile only -->
+        <!-- Bids -->
         <section
           id="bids-panel"
           role="tabpanel"
@@ -286,7 +267,7 @@
           <div id="bids-empty" hidden class="py-12 text-center">
             <p class="font-medium">No bids yet</p>
 
-            <p class="mt-1 text-sm text-muted">
+            <p id="bids-empty-message" class="mt-1 text-sm text-muted">
               Listings you have bid on will appear here.
             </p>
           </div>
@@ -506,7 +487,7 @@
                 save
               </span>
 
-              <span>Save Changes</span>
+              <span> Save Changes </span>
             </button>
 
             <button

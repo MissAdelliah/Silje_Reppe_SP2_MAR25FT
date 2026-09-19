@@ -50,6 +50,7 @@ const activeListings = document.querySelector('#active-listings');
 
 const bidsLoading = document.querySelector('#bids-loading');
 const bidsEmpty = document.querySelector('#bids-empty');
+const bidsEmptyMessage = document.querySelector('#bids-empty-message');
 const bidsError = document.querySelector('#bids-error');
 const bidsErrorMessage = document.querySelector('#bids-error-message');
 const bidListings = document.querySelector('#bid-listings');
@@ -222,9 +223,12 @@ async function loadActiveListings(name) {
 /**
  * Load listings the logged-in user has bid on.
  *
- * @param {string} name
+ * On the user's own profile, all bid listings are shown.
+ * On another profile, only listings owned by that seller are shown.
+ *
+ * @param {string} profileName
  */
-async function loadBidListings(name) {
+async function loadBidListings(profileName) {
   if (bidsLoaded) return;
 
   bidsLoading.hidden = false;
@@ -233,10 +237,12 @@ async function loadBidListings(name) {
   bidListings.replaceChildren();
 
   try {
-    const bids = await getProfileBids(name);
+    const bids = await getProfileBids(currentUser.name);
 
     const listingIds = [
-      ...new Set(bids.map((bid) => bid.listing?.id).filter(Boolean)),
+      ...new Set(
+        bids.map((bid) => bid.listing?.id || bid.listingId).filter(Boolean),
+      ),
     ];
 
     if (!listingIds.length) {
@@ -248,10 +254,24 @@ async function loadBidListings(name) {
 
     const listings = await Promise.all(listingIds.map((id) => getListing(id)));
 
+    const ownProfile = isOwnProfile(profileName);
+
+    const visibleListings = ownProfile
+      ? listings
+      : listings.filter(
+          (listing) =>
+            listing.seller?.name?.toLowerCase() === profileName.toLowerCase(),
+        );
+
     bidsLoading.hidden = true;
     bidsLoaded = true;
 
-    renderListings(listings, bidListings);
+    if (!visibleListings.length) {
+      bidsEmpty.hidden = false;
+      return;
+    }
+
+    renderListings(visibleListings, bidListings);
   } catch (error) {
     bidsLoading.hidden = true;
     bidsError.hidden = false;
@@ -426,10 +446,7 @@ async function handleProfileUpdate(event) {
 
     saveUser(currentUser);
 
-    // Update profile page.
     renderProfile(updatedProfile);
-
-    // Update desktop header and hamburger immediately.
     updateHeaderProfile(updatedProfile);
 
     closeEditProfile();
@@ -460,11 +477,25 @@ async function initProfile() {
 
   try {
     const profile = await getProfile(name);
+
     loadedProfile = profile;
+
     const ownProfile = isOwnProfile(profile.name);
 
     renderProfile(profile);
     showOwnProfileControls(ownProfile);
+
+    /*
+     * The bid tab is available on all logged-in profiles.
+     * Its meaning changes depending on whose profile is open.
+     */
+    bidsTab.hidden = false;
+
+    bidsTab.textContent = ownProfile ? 'Bids' : 'My bids';
+
+    bidsEmptyMessage.textContent = ownProfile
+      ? 'Listings you have bid on will appear here.'
+      : `You have not bid on ${profile.name}'s listings yet.`;
 
     loadingView.hidden = true;
     profileView.hidden = false;
@@ -473,7 +504,7 @@ async function initProfile() {
 
     const requestedTab = new URLSearchParams(window.location.search).get('tab');
 
-    if (ownProfile && requestedTab === 'bids') {
+    if (requestedTab === 'bids') {
       showTab('bids');
     }
   } catch (error) {

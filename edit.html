@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Edit an auction listing on Second Story."
+    />
+
+    <title>Edit Listing | Second Story</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Zalando+Sans+Expanded:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+
+  <body class="flex min-h-dvh flex-col bg-page text-ink">
+    <header id="site-header" data-header-variant="full"></header>
+
+    <main class="flex-1">
+      <div
+        id="edit-loading"
+        class="flex min-h-[420px] items-center justify-center"
+        role="status"
+      >
+        <p class="text-sm text-muted">Loading listing...</p>
+      </div>
+
+      <section
+        id="edit-load-error"
+        hidden
+        class="mx-auto flex min-h-[420px] max-w-md items-center justify-center px-6 text-center"
+        role="alert"
+      >
+        <div>
+          <h1 class="font-display text-lg font-medium">
+            Could not edit listing
+          </h1>
+
+          <p id="edit-load-error-message" class="mt-2 text-sm text-muted"></p>
+
+          <a
+            href="./index.html"
+            class="mt-6 inline-flex min-h-11 items-center rounded-lg bg-ink px-6 text-sm text-white"
+          >
+            Back to listings
+          </a>
+        </div>
+      </section>
+
+      <section
+        id="edit-view"
+        hidden
+        class="mx-auto w-full max-w-[430px] px-[15px] pb-14 pt-3 lg:max-w-[960px] lg:px-0 lg:pb-24 lg:pt-12"
+        aria-labelledby="edit-title-heading"
+      >
+        <div
+          class="relative mb-6 flex min-h-11 items-center justify-center lg:mb-12 lg:justify-start"
+        >
+          <a
+            id="back-to-listing"
+            href="./listing.html"
+            class="absolute left-0 flex size-11 items-center justify-center lg:static lg:mr-14"
+            aria-label="Back to listing"
+          >
+            <span
+              class="material-symbols-outlined text-[20px]"
+              aria-hidden="true"
+            >
+              arrow_back
+            </span>
+          </a>
+
+          <h1
+            id="edit-title-heading"
+            class="text-[16px] font-medium lg:text-sm"
+          >
+            Edit Listing
+          </h1>
+        </div>
+
+        <form
+          id="edit-listing-form"
+          novalidate
+          class="lg:grid lg:grid-cols-[480px_1fr] lg:gap-x-[50px]"
+        >
+          <!-- Media -->
+          <section class="lg:sticky lg:top-[120px] lg:self-start">
+            <p class="mb-2 text-xs text-muted">Preview listing</p>
+
+            <div
+              class="relative aspect-square overflow-hidden rounded-xl bg-soft lg:h-[480px] lg:rounded-none"
+            >
+              <div
+                id="edit-media-placeholder"
+                class="absolute inset-0 flex items-center justify-center text-muted"
+              >
+                <span class="material-symbols-outlined text-[40px]">
+                  image
+                </span>
+              </div>
+
+              <img
+                id="edit-main-image"
+                src=""
+                alt=""
+                hidden
+                class="relative h-full w-full object-cover"
+              />
+            </div>
+
+            <div
+              id="edit-media-thumbnails"
+              class="mt-3 flex gap-3 overflow-x-auto"
+            ></div>
+
+            <div class="mt-3 flex gap-2">
+              <input
+                id="edit-media-url"
+                type="url"
+                placeholder="Paste image URL..."
+                class="min-h-11 min-w-0 flex-1 rounded-lg border border-divider px-3 text-sm"
+              />
+
+              <button
+                id="edit-add-media"
+                type="button"
+                class="min-h-11 rounded-lg bg-ink px-5 text-sm text-white"
+              >
+                Add
+              </button>
+            </div>
+
+            <p
+              id="edit-media-error"
+              hidden
+              class="mt-2 text-xs text-brand"
+              role="alert"
+            ></p>
+
+            <button
+              id="delete-listing-button"
+              type="button"
+              class="mt-8 min-h-11 w-full rounded-lg border border-ink text-sm font-medium"
+            >
+              Delete Listing
+            </button>
+
+            <p class="mt-2 text-center text-xs text-muted">
+              The bid history will be deleted and cannot be recovered.
+            </p>
+          </section>
+
+          <!-- Fields -->
+          <section class="mt-8 lg:mt-0">
+            <div>
+              <label for="edit-title" class="block text-sm font-medium">
+                Title
+              </label>
+
+              <input
+                id="edit-title"
+                name="title"
+                maxlength="120"
+                required
+                class="mt-2 min-h-11 w-full rounded-lg border border-divider px-3 text-sm"
+              />
+            </div>
+
+            <div class="mt-5">
+              <label for="edit-description" class="block text-sm font-medium">
+                Description
+              </label>
+
+              <textarea
+                id="edit-description"
+                name="description"
+                rows="5"
+                maxlength="500"
+                required
+                class="mt-2 w-full rounded-lg border border-divider px-3 py-3 text-sm"
+              ></textarea>
+            </div>
+
+            <div class="mt-5">
+              <label for="edit-brand" class="block text-sm font-medium">
+                Brand
+              </label>
+
+              <input
+                id="edit-brand"
+                class="mt-2 min-h-11 w-full rounded-lg border border-divider px-3 text-sm"
+              />
+            </div>
+
+            <div class="mt-5">
+              <label for="edit-size" class="block text-sm font-medium">
+                Size
+              </label>
+
+              <input
+                id="edit-size"
+                class="mt-2 min-h-11 w-full rounded-lg border border-divider px-3 text-sm"
+              />
+            </div>
+
+            <div class="mt-5">
+              <label for="edit-color" class="block text-sm font-medium">
+                Color
+              </label>
+
+              <input
+                id="edit-color"
+                class="mt-2 min-h-11 w-full rounded-lg border border-divider px-3 text-sm"
+              />
+            </div>
+
+            <div class="mt-5">
+              <label for="edit-material" class="block text-sm font-medium">
+                Material
+              </label>
+
+              <input
+                id="edit-material"
+                class="mt-2 min-h-11 w-full rounded-lg border border-divider px-3 text-sm"
+              />
+            </div>
+
+            <div class="mt-5">
+              <label for="edit-condition" class="block text-sm font-medium">
+                State
+              </label>
+
+              <select
+                id="edit-condition"
+                class="mt-2 min-h-11 w-full rounded-lg border border-divider bg-white px-3 text-sm"
+              >
+                <option value="">Select condition</option>
+
+                <option value="new">New</option>
+
+                <option value="excellent">Excellent</option>
+
+                <option value="good">Good</option>
+
+                <option value="used">Used</option>
+              </select>
+            </div>
+
+            <div class="mt-5">
+              <label for="edit-category" class="block text-sm font-medium">
+                Category
+              </label>
+
+              <select
+                id="edit-category"
+                class="mt-2 min-h-11 w-full rounded-lg border border-divider bg-white px-3 text-sm"
+              >
+                <option value="">Select category</option>
+
+                <option value="womens-fashion">Women's fashion</option>
+
+                <option value="mens-fashion">Men's fashion</option>
+
+                <option value="electronics">Electronics</option>
+
+                <option value="art-design">Art and design</option>
+
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="mt-7">
+              <label for="edit-deadline" class="block text-sm font-medium">
+                Auction deadline
+              </label>
+
+              <p class="mt-1 text-xs text-muted">
+                The API does not allow the deadline to be changed after
+                publishing.
+              </p>
+
+              <input
+                id="edit-deadline"
+                type="text"
+                disabled
+                class="mt-2 min-h-11 w-full rounded-lg border border-divider bg-soft px-3 text-sm text-muted"
+              />
+            </div>
+
+            <p
+              id="edit-error"
+              hidden
+              class="mt-5 text-sm text-brand"
+              role="alert"
+            ></p>
+
+            <button
+              id="preview-edit"
+              type="button"
+              class="mt-8 min-h-11 w-full rounded-lg border border-ink text-sm font-medium"
+            >
+              Preview Changes
+            </button>
+
+            <button
+              id="update-listing"
+              type="submit"
+              class="mt-3 min-h-12 w-full rounded-lg bg-ink text-sm font-medium text-white disabled:opacity-60"
+            >
+              Update Listing
+            </button>
+
+            <a
+              id="cancel-edit"
+              href="./listing.html"
+              class="mt-3 flex min-h-11 items-center justify-center text-sm text-muted"
+            >
+              Cancel
+            </a>
+          </section>
+        </form>
+
+        <!-- Edit preview -->
+        <section
+          id="edit-preview"
+          hidden
+          aria-labelledby="edit-preview-heading"
+        >
+          <button
+            id="back-to-edit"
+            type="button"
+            class="mb-5 min-h-11 text-sm text-muted"
+          >
+            ← Back to edit
+          </button>
+
+          <h2 id="edit-preview-heading" class="sr-only">
+            Updated listing preview
+          </h2>
+
+          <div class="lg:grid lg:grid-cols-[480px_1fr] lg:gap-x-[68px]">
+            <div
+              class="aspect-square overflow-hidden rounded-xl bg-soft lg:h-[480px] lg:rounded-none"
+            >
+              <img
+                id="edit-preview-image"
+                src=""
+                alt=""
+                class="h-full w-full object-cover"
+              />
+            </div>
+
+            <div class="pt-4 lg:pt-0">
+              <p id="edit-preview-brand" class="text-xs text-muted"></p>
+
+              <h2 id="edit-preview-title" class="mt-1 text-xl font-medium"></h2>
+
+              <p class="mt-5 text-xs text-muted">Description</p>
+
+              <p
+                id="edit-preview-description"
+                class="mt-2 whitespace-pre-line text-sm"
+              ></p>
+
+              <div
+                id="edit-preview-tags"
+                class="mt-5 flex flex-wrap gap-2"
+              ></div>
+
+              <button
+                id="update-from-preview"
+                type="button"
+                class="mt-8 min-h-12 w-full rounded-lg bg-ink text-sm font-medium text-white"
+              >
+                Update Listing
+              </button>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <!-- Delete confirmation -->
+    <dialog
+      id="delete-dialog"
+      class="m-auto w-[calc(100%-30px)] max-w-[390px] rounded-2xl bg-page p-0 backdrop:bg-black/40"
+      aria-labelledby="delete-title"
+    >
+      <div class="p-5">
+        <h2 id="delete-title" class="font-display text-lg font-medium">
+          Delete listing?
+        </h2>
+
+        <p class="mt-3 text-sm text-muted">This action cannot be undone.</p>
+
+        <p
+          id="delete-error"
+          hidden
+          class="mt-4 text-sm text-brand"
+          role="alert"
+        ></p>
+
+        <div class="mt-7 grid grid-cols-2 gap-3">
+          <button
+            id="cancel-delete"
+            type="button"
+            class="min-h-11 rounded-lg border border-divider text-sm"
+          >
+            Cancel
+          </button>
+
+          <button
+            id="confirm-delete"
+            type="button"
+            class="min-h-11 rounded-lg bg-ink text-sm font-medium text-white"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <div data-auth-only hidden class="h-20 lg:hidden" aria-hidden="true"></div>
+
+    <div id="mobile-bottom-nav"></div>
+
+    <footer id="site-footer"></footer>
+
+    <script type="module" src="./js/pages/editListing.js"></script>
+  </body>
+</html>
