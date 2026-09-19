@@ -46,12 +46,7 @@ export function isLoggedIn() {
   return Boolean(getAccessToken());
 }
 
-/**
- * Clear authenticated user data.
- */
 export function clearUser() {
   localStorage.removeItem(USER_KEY);
 }
-
-// Compatibility with older imports.
 export const removeUser = clearUser;

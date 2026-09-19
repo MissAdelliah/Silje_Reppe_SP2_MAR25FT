@@ -1,10 +1,10 @@
 import { createListing } from '../api/listings.js';
 import { initFooter } from '../components/footer.js';
 import { initHeader } from '../components/header.js';
+import { renderListingPreview } from '../components/listingPreview.js';
 import { getUser } from '../utils/storage.js';
 
 const form = document.querySelector('#create-listing-form');
-
 const mediaUrlInput = document.querySelector('#media-url');
 const addMediaButton = document.querySelector('#add-media');
 const mainPreview = document.querySelector('#media-main-preview');
@@ -12,7 +12,6 @@ const mediaPlaceholder = document.querySelector('#media-placeholder');
 const mediaThumbnails = document.querySelector('#media-thumbnails');
 const mediaCount = document.querySelector('#media-count');
 const mediaError = document.querySelector('#media-error');
-
 const titleInput = document.querySelector('#listing-title');
 const titleCount = document.querySelector('#title-count');
 
@@ -26,10 +25,24 @@ const materialInput = document.querySelector('#listing-material');
 const conditionInput = document.querySelector('#listing-condition');
 const categoryInput = document.querySelector('#listing-category');
 const deadlineInput = document.querySelector('#listing-deadline');
-
 const publishButton = document.querySelector('#publish-listing');
 const createError = document.querySelector('#create-error');
 
+// Preview
+const previewButton = document.querySelector('#preview-listing');
+const previewView = document.querySelector('#create-preview');
+const backToCreateButton = document.querySelector('#back-to-create');
+const publishFromPreviewButton = document.querySelector(
+  '#publish-from-preview',
+);
+
+const previewHeading = document.querySelector('#preview-heading');
+const previewImage = document.querySelector('#preview-main-image');
+const previewBrand = document.querySelector('#preview-brand');
+const previewTitle = document.querySelector('#preview-title');
+const previewDescription = document.querySelector('#preview-description');
+
+const previewTags = document.querySelector('#preview-tags');
 const mediaUrls = [];
 
 function isValidImageUrl(value) {
@@ -67,6 +80,7 @@ function renderMedia() {
   if (!mediaUrls.length) {
     mainPreview.hidden = true;
     mainPreview.src = '';
+
     mediaPlaceholder.hidden = false;
 
     return;
@@ -108,14 +122,14 @@ function renderMedia() {
 
     removeButton.setAttribute('aria-label', `Remove image ${index + 1}`);
 
-    removeButton.innerHTML = `
-      <span
-        class="material-symbols-outlined text-[15px]"
-        aria-hidden="true"
-      >
-        close
-      </span>
-    `;
+    const removeIcon = document.createElement('span');
+
+    removeIcon.className = 'material-symbols-outlined text-[15px]';
+
+    removeIcon.textContent = 'close';
+    removeIcon.setAttribute('aria-hidden', 'true');
+
+    removeButton.append(removeIcon);
 
     removeButton.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -126,6 +140,7 @@ function renderMedia() {
     });
 
     wrapper.append(selectButton, removeButton);
+
     mediaThumbnails.append(wrapper);
   });
 }
@@ -138,6 +153,7 @@ function addMedia() {
   if (!url) {
     mediaError.textContent = 'Paste an image URL first.';
     mediaError.hidden = false;
+
     return;
   }
 
@@ -156,7 +172,6 @@ function addMedia() {
   }
 
   const testImage = new Image();
-
   testImage.onload = () => {
     mediaUrls.push(url);
 
@@ -189,7 +204,9 @@ function createTags() {
   Object.entries(fields).forEach(([key, value]) => {
     const cleanValue = value.trim();
 
-    if (!cleanValue) return;
+    if (!cleanValue) {
+      return;
+    }
 
     tags.push(`${key}:${cleanValue.toLowerCase()}`);
   });
@@ -206,6 +223,7 @@ function validateListing() {
     createError.hidden = false;
 
     titleInput.focus();
+
     return false;
   }
 
@@ -214,6 +232,7 @@ function validateListing() {
     createError.hidden = false;
 
     descriptionInput.focus();
+
     return false;
   }
 
@@ -223,15 +242,16 @@ function validateListing() {
     mediaError.hidden = false;
 
     mediaUrlInput.focus();
+
     return false;
   }
 
   if (!deadlineInput.value) {
     createError.textContent = 'Choose an auction deadline.';
-
     createError.hidden = false;
 
     deadlineInput.focus();
+
     return false;
   }
 
@@ -243,12 +263,18 @@ function validateListing() {
     createError.hidden = false;
 
     deadlineInput.focus();
+
     return false;
   }
 
   return true;
 }
 
+/**
+ * Build an API-ready listing from the current form values.
+ *
+ * @returns {object}
+ */
 function buildListing() {
   const title = titleInput.value.trim();
 
@@ -261,6 +287,7 @@ function buildListing() {
 
     media: mediaUrls.map((url, index) => ({
       url,
+
       alt: `${title} image ${index + 1}`,
     })),
 
@@ -268,21 +295,67 @@ function buildListing() {
   };
 }
 
-async function handlePublish(event) {
-  event.preventDefault();
+function showForm() {
+  previewView.hidden = true;
+  form.hidden = false;
+}
 
+function showPreview() {
   if (!validateListing()) {
     return;
   }
 
+  const listing = buildListing();
+
+  renderListingPreview(listing, {
+    image: previewImage,
+    brand: previewBrand,
+    title: previewTitle,
+    description: previewDescription,
+    tags: previewTags,
+  });
+
+  form.hidden = true;
+  previewView.hidden = false;
+
+  previewHeading.tabIndex = -1;
+  previewHeading.focus();
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+}
+
+function setPublishingState(isPublishing) {
+  publishButton.disabled = isPublishing;
+
+  publishFromPreviewButton.disabled = isPublishing;
+
+  publishButton.textContent = isPublishing
+    ? 'Publishing...'
+    : 'Publish Listing';
+
+  publishFromPreviewButton.textContent = isPublishing
+    ? 'Publishing...'
+    : 'Publish Listing';
+}
+
+async function handlePublish(event) {
+  event.preventDefault();
+
+  if (!validateListing()) {
+    showForm();
+
+    return;
+  }
+
   createError.hidden = true;
-  publishButton.disabled = true;
-  publishButton.textContent = 'Publishing...';
+
+  setPublishingState(true);
 
   try {
     const listing = await createListing(buildListing());
-
-    console.log('Created listing:', listing);
 
     window.location.assign(
       `./listing.html?id=${encodeURIComponent(listing.id)}`,
@@ -290,13 +363,14 @@ async function handlePublish(event) {
   } catch (error) {
     console.error('Could not create listing:', error);
 
+    showForm();
+
     createError.textContent =
       error instanceof Error ? error.message : 'Could not publish listing.';
 
     createError.hidden = false;
   } finally {
-    publishButton.disabled = false;
-    publishButton.textContent = 'Publish Listing';
+    setPublishingState(false);
   }
 }
 
@@ -318,20 +392,34 @@ descriptionInput.addEventListener('input', () => {
   descriptionCount.textContent = `${descriptionInput.value.length}/500`;
 });
 
+previewButton.addEventListener('click', showPreview);
+
+backToCreateButton.addEventListener('click', () => {
+  showForm();
+
+  previewButton.focus();
+});
+
+publishFromPreviewButton.addEventListener('click', () => {
+  form.requestSubmit();
+});
+
 form.addEventListener('submit', handlePublish);
 
 async function init() {
   initFooter();
-
   await initHeader();
 
   const user = getUser();
-
   if (!user?.accessToken) {
     window.location.assign('./auth.html?mode=login');
 
     return;
   }
+
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  deadlineInput.min = now.toISOString().slice(0, 16);
 
   renderMedia();
 }

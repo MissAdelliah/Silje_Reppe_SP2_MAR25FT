@@ -10,17 +10,30 @@ let listing = null;
 let currentUser = getUser();
 let pendingBidAmount = null;
 
+// Gallery state
+let currentImageIndex = 0;
+let galleryTransitionTimer = null;
+let galleryTransitionId = 0;
+
+let touchStartX = 0;
+let touchStartY = 0;
+
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const loadingView = document.querySelector('#listing-loading');
 const errorView = document.querySelector('#listing-error');
 const errorMessage = document.querySelector('#listing-error-message');
 const listingView = document.querySelector('#listing-view');
-
 const pageTitle = document.querySelector('#listing-page-title');
+const galleryMain = document.querySelector('#listing-gallery-main');
 const mainImage = document.querySelector('#listing-main-image');
 const imagePlaceholder = document.querySelector('#listing-image-placeholder');
 
 const thumbnails = document.querySelector('#listing-thumbnails');
 const imageDots = document.querySelector('#listing-image-dots');
+
+const previousImageButton = document.querySelector('#previous-listing-image');
+const nextImageButton = document.querySelector('#next-listing-image');
+const imageStatus = document.querySelector('#listing-image-status');
 
 const brand = document.querySelector('#listing-brand');
 const title = document.querySelector('#listing-title');
@@ -38,10 +51,12 @@ const sellerBio = document.querySelector('#seller-bio');
 
 const bidHistory = document.querySelector('#bid-history');
 const bidHistoryEmpty = document.querySelector('#bid-history-empty');
+
 const guestAction = document.querySelector('#guest-action');
 const bidAction = document.querySelector('#bid-action');
 const ownerAction = document.querySelector('#owner-action');
 const endedMessage = document.querySelector('#ended-message');
+
 const editListingLink = document.querySelector('#edit-listing-link');
 const openBidFormButton = document.querySelector('#open-bid-form');
 const bidForm = document.querySelector('#bid-form');
@@ -77,7 +92,9 @@ function isOwner() {
 }
 
 function isActive() {
-  if (!listing?.endsAt) return false;
+  if (!listing?.endsAt) {
+    return false;
+  }
 
   return new Date(listing.endsAt).getTime() > Date.now();
 }
@@ -91,7 +108,9 @@ function getTagValue(prefix) {
     item.toLowerCase().startsWith(`${prefix}:`),
   );
 
-  if (!tag) return '';
+  if (!tag) {
+    return '';
+  }
 
   return tag.slice(prefix.length + 1);
 }
@@ -106,40 +125,139 @@ function renderGallery() {
   thumbnails.replaceChildren();
   imageDots.replaceChildren();
 
-  const media = listing.media ?? [];
+  clearTimeout(galleryTransitionTimer);
+
+  const media = (listing.media ?? []).filter((item) => item?.url?.trim());
+
+  currentImageIndex = 0;
 
   if (!media.length) {
     mainImage.hidden = true;
     imagePlaceholder.hidden = false;
+
+    previousImageButton.hidden = true;
+    nextImageButton.hidden = true;
+
+    imageStatus.textContent = 'No listing images available.';
+
     return;
   }
 
-  function selectImage(index) {
+  const hasMultipleImages = media.length > 1;
+
+  previousImageButton.hidden = !hasMultipleImages;
+  nextImageButton.hidden = !hasMultipleImages;
+
+  function normaliseIndex(index) {
+    if (index < 0) {
+      return media.length - 1;
+    }
+
+    if (index >= media.length) {
+      return 0;
+    }
+
+    return index;
+  }
+
+  function updateGalleryControls() {
+    thumbnails
+      .querySelectorAll('[data-thumbnail]')
+      .forEach((thumbnail, index) => {
+        const isActive = index === currentImageIndex;
+        thumbnail.setAttribute('aria-current', isActive ? 'true' : 'false');
+      });
+
+    imageDots.querySelectorAll('[data-dot]').forEach((dot, index) => {
+      const isActive = index === currentImageIndex;
+
+      dot.classList.toggle('w-7', isActive);
+      dot.classList.toggle('w-2', !isActive);
+      dot.classList.toggle('bg-white', isActive);
+      dot.classList.toggle('bg-white/70', !isActive);
+    });
+
+    imageStatus.textContent = `Image ${currentImageIndex + 1} of ${media.length}`;
+  }
+
+  function applyImage(index) {
     const item = media[index];
 
     mainImage.src = item.url;
-    mainImage.alt = item.alt || listing.title || 'Auction listing';
+
+    mainImage.alt =
+      item.alt || `${listing.title || 'Auction listing'} image ${index + 1}`;
 
     mainImage.hidden = false;
     imagePlaceholder.hidden = true;
+  }
 
-    imageDots.querySelectorAll('[data-dot]').forEach((dot, dotIndex) => {
-      dot.classList.toggle('bg-white', dotIndex === index);
+  function selectImage(index, { instant = false } = {}) {
+    const nextIndex = normaliseIndex(index);
 
-      dot.classList.toggle('bg-white/50', dotIndex !== index);
-    });
+    if (nextIndex === currentImageIndex && !instant) {
+      return;
+    }
+
+    clearTimeout(galleryTransitionTimer);
+
+    const requestId = ++galleryTransitionId;
+
+    if (instant || reducedMotion.matches) {
+      currentImageIndex = nextIndex;
+
+      applyImage(nextIndex);
+      updateGalleryControls();
+
+      mainImage.classList.remove('opacity-0');
+
+      return;
+    }
+
+    const preloader = new Image();
+
+    preloader.onload = () => {
+      if (requestId !== galleryTransitionId) {
+        return;
+      }
+
+      mainImage.classList.add('opacity-0');
+
+      galleryTransitionTimer = window.setTimeout(() => {
+        if (requestId !== galleryTransitionId) {
+          return;
+        }
+
+        currentImageIndex = nextIndex;
+
+        applyImage(nextIndex);
+        updateGalleryControls();
+        requestAnimationFrame(() => {
+          mainImage.classList.remove('opacity-0');
+        });
+      }, 150);
+    };
+
+    preloader.onerror = () => {
+      mainImage.classList.remove('opacity-0');
+    };
+
+    preloader.src = media[nextIndex].url;
   }
 
   media.forEach((item, index) => {
+    // Desktop thumbnail
     const thumbButton = document.createElement('button');
-
     thumbButton.type = 'button';
+    thumbButton.dataset.thumbnail = '';
     thumbButton.className = 'size-[84px] shrink-0 overflow-hidden bg-soft';
     thumbButton.setAttribute('aria-label', `View image ${index + 1}`);
 
     const thumbImage = document.createElement('img');
     thumbImage.src = item.url;
-    thumbImage.alt = item.alt || `${listing.title} image ${index + 1}`;
+    thumbImage.alt =
+      item.alt || `${listing.title || 'Listing'} image ${index + 1}`;
+
     thumbImage.className = 'h-full w-full object-cover';
     thumbButton.append(thumbImage);
     thumbButton.addEventListener('click', () => {
@@ -148,15 +266,84 @@ function renderGallery() {
 
     thumbnails.append(thumbButton);
 
-    const dot = document.createElement('span');
+    // Mobile indicator
+    if (hasMultipleImages) {
+      const dot = document.createElement('span');
 
-    dot.dataset.dot = '';
-    dot.className = 'size-2 rounded-full bg-white/50';
+      dot.dataset.dot = '';
 
-    imageDots.append(dot);
+      dot.className =
+        'h-2 w-2 rounded-full bg-white/70 shadow-sm transition-all duration-300';
+
+      imageDots.append(dot);
+    }
   });
 
-  selectImage(0);
+  mainImage.onerror = () => {
+    mainImage.hidden = true;
+    imagePlaceholder.hidden = false;
+  };
+
+  previousImageButton.onclick = () => {
+    selectImage(currentImageIndex - 1);
+  };
+
+  nextImageButton.onclick = () => {
+    selectImage(currentImageIndex + 1);
+  };
+
+  // Keyboard navigation.
+  galleryMain.onkeydown = (event) => {
+    if (!hasMultipleImages) {
+      return;
+    }
+
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+
+      selectImage(currentImageIndex - 1);
+    }
+
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+
+      selectImage(currentImageIndex + 1);
+    }
+  };
+
+  // Mobile swipe.
+  galleryMain.ontouchstart = (event) => {
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+  };
+
+  galleryMain.ontouchend = (event) => {
+    if (!hasMultipleImages) {
+      return;
+    }
+
+    const touchEndX = event.changedTouches[0].clientX;
+    const touchEndY = event.changedTouches[0].clientY;
+    const distanceX = touchEndX - touchStartX;
+    const distanceY = touchEndY - touchStartY;
+
+    const isHorizontalSwipe =
+      Math.abs(distanceX) > 40 && Math.abs(distanceX) > Math.abs(distanceY);
+
+    if (!isHorizontalSwipe) {
+      return;
+    }
+
+    if (distanceX < 0) {
+      selectImage(currentImageIndex + 1);
+    } else {
+      selectImage(currentImageIndex - 1);
+    }
+  };
+
+  selectImage(0, {
+    instant: true,
+  });
 }
 
 function renderTags() {
@@ -172,11 +359,8 @@ function renderTags() {
 
   values.forEach((value) => {
     const tag = document.createElement('span');
-
     tag.className = 'rounded-md bg-soft px-2.5 py-1 text-xs';
-
     tag.textContent = formatTag(value);
-
     tags.append(tag);
   });
 }
@@ -184,22 +368,20 @@ function renderTags() {
 function renderSeller() {
   const seller = listing.seller;
 
-  if (!seller) return;
+  if (!seller) {
+    return;
+  }
 
   sellerName.textContent = seller.name;
   sellerBio.textContent = seller.bio?.trim() || 'View seller profile';
   sellerInitial.textContent = getInitial(seller.name);
 
   const avatarUrl = seller.avatar?.url?.trim();
-
   if (avatarUrl) {
     sellerAvatar.src = avatarUrl;
-
     sellerAvatar.alt = seller.avatar?.alt || `${seller.name} profile image`;
-
     sellerAvatar.hidden = false;
     sellerInitial.hidden = true;
-
     sellerAvatar.onerror = () => {
       sellerAvatar.hidden = true;
       sellerInitial.hidden = false;
@@ -220,23 +402,23 @@ function renderBidHistory() {
   bidHistory.replaceChildren();
 
   const bids = [...(listing.bids ?? [])].sort((a, b) => b.amount - a.amount);
+
   bidHistoryEmpty.hidden = bids.length > 0;
+
   bids.forEach((bid, index) => {
     const isHighest = index === 0;
-
     const item = document.createElement('li');
     item.className = 'flex items-center gap-3 py-3';
-
     const avatar = document.createElement('div');
     avatar.className =
       'flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-soft text-xs font-medium';
-
     const avatarUrl = bid.bidder?.avatar?.url?.trim();
 
     if (avatarUrl) {
       const image = document.createElement('img');
 
       image.src = avatarUrl;
+
       image.alt =
         bid.bidder?.avatar?.alt ||
         `${bid.bidder?.name ?? 'Bidder'} profile image`;
@@ -250,7 +432,6 @@ function renderBidHistory() {
 
     const info = document.createElement('div');
     info.className = 'min-w-0 flex-1';
-
     const name = document.createElement('p');
     name.className = isHighest
       ? 'truncate text-sm font-medium text-brand'
@@ -259,7 +440,6 @@ function renderBidHistory() {
     name.textContent = bid.bidder?.name || 'Unknown bidder';
 
     const time = document.createElement('p');
-
     time.className = 'mt-0.5 text-xs text-muted';
     time.textContent = new Date(bid.created).toLocaleString();
     info.append(name, time);
@@ -269,10 +449,10 @@ function renderBidHistory() {
 
     if (isHighest) {
       const icon = document.createElement('span');
-
       icon.className = 'material-symbols-outlined text-[17px] text-brand';
       icon.textContent = 'show_chart';
       icon.setAttribute('aria-hidden', 'true');
+
       amountWrapper.append(icon);
     }
 
@@ -284,7 +464,6 @@ function renderBidHistory() {
 
     amount.textContent = `${bid.amount} cr`;
     amountWrapper.append(amount);
-
     item.append(avatar, info, amountWrapper);
     bidHistory.append(item);
   });
@@ -298,11 +477,13 @@ function renderActionState() {
 
   if (!isActive()) {
     endedMessage.hidden = false;
+
     return;
   }
 
   if (!isLoggedIn()) {
     guestAction.hidden = false;
+
     return;
   }
 
@@ -375,7 +556,9 @@ function validateBid(amount) {
 }
 
 async function refreshCurrentUser() {
-  if (!currentUser?.name) return;
+  if (!currentUser?.name) {
+    return;
+  }
 
   const profile = await getProfile(currentUser.name);
 
@@ -394,6 +577,7 @@ async function loadListing() {
 
   if (!id) {
     showError('No listing ID was provided.');
+
     return;
   }
 
@@ -439,6 +623,7 @@ bidForm?.addEventListener('submit', (event) => {
   if (error) {
     bidError.textContent = error;
     bidError.hidden = false;
+
     return;
   }
 
@@ -451,6 +636,7 @@ bidForm?.addEventListener('submit', (event) => {
   reviewCurrentBid.textContent = `${currentHighest} cr`;
   reviewCreditBalance.textContent = `${credits} cr`;
   reviewCreditAfter.textContent = `${credits - amount} cr`;
+
   reviewDialog.showModal();
 });
 
@@ -461,23 +647,21 @@ backToBidButton?.addEventListener('click', () => {
 });
 
 confirmBidButton?.addEventListener('click', async () => {
-  if (!pendingBidAmount) return;
+  if (!pendingBidAmount) {
+    return;
+  }
 
   reviewError.hidden = true;
   confirmBidButton.disabled = true;
 
   try {
     await placeBid(listing.id, pendingBidAmount);
-
     await refreshCurrentUser();
-
     await loadListing();
 
     reviewDialog.close();
-
     bidForm.hidden = true;
     openBidFormButton.hidden = false;
-
     bidAmountInput.value = '';
     pendingBidAmount = null;
 
@@ -495,9 +679,7 @@ confirmBidButton?.addEventListener('click', async () => {
 
 async function init() {
   initFooter();
-
   await initHeader();
-
   await loadListing();
 }
 
