@@ -7,7 +7,9 @@
     "dev": "concurrently \"npm:dev:vite\" \"npm:dev:css\"",
     "dev:vite": "vite",
     "dev:css": "tailwindcss -i ./css/input.css -o ./css/style.css --watch",
-    "build:css": "tailwindcss -i ./css/input.css -o ./css/style.css --minify"
+    "build:css": "tailwindcss -i ./css/input.css -o ./css/style.css --minify",
+    "build": "npm run build:css && vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
@@ -25,5 +27,5 @@
   "bugs": {
     "url": "https://github.com/MissAdelliah/Silje_Reppe_SP2_MAR25FT/issues"
   },
-  "homepage": "https://github.com/MissAdelliah/Silje_Reppe_SP2_MAR25FT#readme"
+  "homepage": "https://missadelliah.github.io/Silje_Reppe_SP2_MAR25FT/"
 }
