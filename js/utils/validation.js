@@ -21,7 +21,7 @@ export function validateStudentEmail(email) {
 }
 
 /**
- * Validate a Noroff username.
+ * Validate username.
  * @param {string} username
  * @returns {string}
  */
@@ -40,7 +40,7 @@ export function validateUsername(username) {
 }
 
 /**
- * Validate a password.
+ * Validate password.
  * @param {string} password
  * @returns {string}
  */

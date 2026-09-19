@@ -3,7 +3,6 @@ import { getHighestBid } from '../utils/filters.js';
 
 function createElement(tag, className = '', text = '') {
   const element = document.createElement(tag);
-
   element.className = className;
 
   if (text) {
@@ -32,7 +31,6 @@ function createListingImage(listing) {
 
   wrapper.append(image);
 
-  // Auction status
   const status = getAuctionStatusDetails(listing.endsAt);
   const statusBadge = createElement(
     'div',
@@ -57,8 +55,6 @@ function createListingImage(listing) {
 
 function createMobileDetails(listing) {
   const details = createElement('div', 'mt-auto space-y-1 pt-3 lg:hidden');
-
-  // Highest bid
   const bidRow = createElement('div', 'flex items-center gap-1.5 text-sm');
   const bidIcon = createElement(
     'span',
@@ -76,7 +72,6 @@ function createMobileDetails(listing) {
 
   bidRow.append(bidIcon, bidValue);
 
-  // Ends in
   const timeRow = createElement('div', 'flex items-center gap-1.5 text-sm');
   const timeIcon = createElement(
     'span',
@@ -105,7 +100,6 @@ function createDesktopDetails(listing) {
     'mt-auto hidden grid-cols-2 gap-3 pt-3 lg:grid',
   );
 
-  // Highest bid
   const bid = createElement('div');
   const bidLabel = createElement('p', 'text-sm text-muted', 'Highest bid');
   const bidRow = createElement('div', 'mt-1 flex items-center gap-1');
@@ -126,7 +120,6 @@ function createDesktopDetails(listing) {
   bidRow.append(bidIcon, bidValue);
   bid.append(bidLabel, bidRow);
 
-  // Ends in
   const time = createElement('div', 'text-right');
   const timeLabel = createElement('p', 'text-sm text-muted', 'Ends in');
   const timeRow = createElement(
@@ -157,7 +150,7 @@ function createDesktopDetails(listing) {
 }
 
 /**
- * Create a reusable auction listing card.
+ * reusable auction listing card.
  * @param {object} listing
  * @returns {HTMLElement}
  */
@@ -177,7 +170,6 @@ export function createListingCard(listing) {
 
   content.append(heading);
 
-  // Desktop description
   const description = createElement(
     'p',
     'mt-1 hidden min-h-10 text-sm leading-5 text-muted lg:line-clamp-2',
