@@ -140,6 +140,8 @@ Keyboard navigation
 Broken links
 Console errors
 Production deployment
+
+disclaimer: Hero img is gpt generated
 Lighthouse test
 
 Author: Silje Reppe
